@@ -1,13 +1,18 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useScreenSize } from '../hooks/useScreenSize';
 import { topics, lessonIds } from '../data/topics';
 import lessonStates from '../data/lessonStates';
 import Toast from '../components/Toast';
+import crownIcon from '../assets/crown_icon.png';
+import lockIcon from '../assets/lock_icon.png';
+import checkmarkIcon from '../assets/checkmark_icon.png';
 
 export default function MainMenuScreen() {
   const [expandedTopicId, setExpandedTopicId] = useState<string | null>(null);
   const [toastMessage, setToastMessage] = useState('');
   const [toastVisible, setToastVisible] = useState(false);
+  const { isWide, isMedium, isNarrow } = useScreenSize();
 
   const showToast = (message: string) => {
     setToastMessage(message);
@@ -26,97 +31,159 @@ export default function MainMenuScreen() {
       <Toast message={toastMessage} visible={toastVisible} />
       <h1 className="text-3xl font-bold uppercase text-center section">Topics</h1>
 
-      {topics.map((topic, index) => (
-        <div key={topic.id} className="space-y-2">
-          <div className="relative z-10">
-            {/* topic button */}
-            <button
-              onClick={() => setExpandedTopicId(expandedTopicId === topic.id ? null : topic.id)}
-              className={`btn-topic ${glowClasses[index % glowClasses.length]}`}
-            >
-              <span>{topic.name}</span>
-              <span className="text-sm text-white">
-                {topic.progress === 10 ? (
-                  <img
-                    src="/src/assets/checkmark_icon.png"
-                    alt="completed"
-                    className="w-5 h-5 inline"
-                  />
-                ) : (
-                  `${topic.progress}/10`
-                )}
-              </span>
+      {topics.map((topic, index) => {
+        // ✅ This helper must be inside so we can use topic.id
+        const renderLessonButton = (lessonId: string) => {
+          const lessonKey = `${topic.id}-${lessonId}`;
+          const state = lessonStates[lessonKey] || 'uncompleted';
 
-            </button>
-          </div>
+          const isIcon = state === 'perfect' || state === 'locked';
+          const iconSrc = state === 'perfect'
+            ? crownIcon
+            : state === 'locked'
+              ? lockIcon
+              : null;
 
-          {expandedTopicId === topic.id && (
-            <div className="relative z-0">
-              {/* Horizontal line BEHIND everything */}
-              <div className="absolute top-1/2 left-0 w-full h-[2px] bg-white z-[-1]" />
+          const borderClass =
+            state === 'locked'
+              ? 'border-white/30'
+              : state === 'perfect' || state === 'completed'
+                ? 'border-white shadow-[0_0_20px_white]'
+                : 'border-white';
 
-              <div className="flex justify-between relative z-10 w-full">
-                {lessonIds.map((lessonId) => {
-                  const lessonKey = `${topic.id}-${lessonId}`;
-                  const state = lessonStates[lessonKey] || 'uncompleted';
-
-                  const isIcon = state === 'perfect' || state === 'locked';
-                  const iconSrc = state === 'perfect'
-                    ? '/src/assets/crown_icon.png'
-                    : state === 'locked'
-                      ? '/src/assets/lock_icon.png'
-                      : null;
-
-                  const borderClass =
-                    state === 'locked'
-                      ? 'border-white/30'
-                      : state === 'perfect' || state === 'completed'
-                        ? 'border-white shadow-[0_0_20px_white]'
-                        : 'border-white';
-
-                  const showTopLine =
-                    lessonId === '01' || lessonId === 'review';
-
-                  return (
-                    <div className="relative" key={lessonKey}>
-                      {showTopLine && (
-                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-[2px] h-4 bg-white z-[-1]" />
-                      )}
-                      {state === 'locked' ? (
-                        <button
-                          onClick={() => showToast('Lesson locked. Complete previous lessons first.')}
-                          className={`btn-lesson ${borderClass} cursor-not-allowed`}
-                          aria-disabled="true"
-                        >
-                          <img src={iconSrc!} alt="locked" className="w-5 h-5" />
-                        </button>
-                      ) : (
-                        <Link
-                          to={`/lesson/${topic.id}/${lessonId}`}
-                          className={`btn-lesson ${borderClass}`}
-                        >
-                          {isIcon ? (
-                            <img src={iconSrc!} alt={state} className="w-5 h-5" />
-                          ) : (
-                            lessonId === 'review' ? 'R' : lessonId.padStart(2, '0')
-                          )}
-                        </Link>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
+          return (
+            <div className="relative flex justify-center items-center" key={lessonKey}>
+              {state === 'locked' ? (
+                <button
+                  onClick={() => showToast('Lesson locked. Complete previous lessons first.')}
+                  className={`btn-lesson ${borderClass} cursor-not-allowed`}
+                  aria-disabled="true"
+                >
+                  <img src={iconSrc!} alt="locked" className="w-full h-full object-contain" />
+                </button>
+              ) : (
+                <Link
+                  to={`/lesson/${topic.id}/${lessonId}`}
+                  className={`btn-lesson ${borderClass}`}
+                >
+                  {isIcon ? (
+                    <img src={iconSrc!} alt={state} className="w-full h-full object-contain" />
+                  ) : (
+                    <span className="text-sm leading-none w-full text-center">
+                      {lessonId === 'review' ? 'R' : lessonId.padStart(2, '0')}
+                    </span>
+                  )}
+                </Link>
+              )}
             </div>
-          )}
-        </div>
+          );
+        };
 
-      ))}
+        return (
+          <div key={topic.id} className="space-y-2 px-6">
+            {/* Topic button */}
+            <div className="relative z-10">
+              <button
+                onClick={() => setExpandedTopicId(expandedTopicId === topic.id ? null : topic.id)}
+                className={`btn-topic ${glowClasses[index % glowClasses.length]}`}
+              >
+                <span>{topic.name}</span>
+                <span className="text-sm text-white">
+                  {topic.progress === 10 ? (
+                    <img src={checkmarkIcon} alt="completed" className="w-5 h-5 inline" />
+                  ) : (
+                    `${topic.progress}/10`
+                  )}
+                </span>
+              </button>
+            </div>
+
+            {/* Lesson grid */}
+            {expandedTopicId === topic.id && (
+              <div className="relative z-0 mt-4">
+                {/* Button rows will go here */}
+                {isWide && (
+                  <div className="relative w-full">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 w-[98%] h-[2px] bg-white z-[-1]" />
+                    <div className="w-full relative flex justify-between gap-y-2">
+                      {lessonIds.map((lessonId) => (
+                        <div key={lessonId} className="relative flex justify-center items-center w-[3rem] h-[3rem]">
+                          {(lessonId === '01' || lessonId === 'review') && (
+                            <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-[2px] h-full bg-white z-[-1]" />
+                          )}
+                          {renderLessonButton(lessonId)}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {isMedium && (
+                  <div className="w-full space-y-2">
+                    <div className="relative w-full">
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 w-[98%] h-[2px] bg-white z-[-1]" />
+                      <div className="w-full flex justify-between gap-y-2">
+                        {lessonIds.slice(0, 5).map((lessonId) => (
+                          <div className="relative flex justify-center items-center w-[3rem] h-[3rem]" key={lessonId}>
+                            {(lessonId === '01' || lessonId === '05') && (
+                              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-[2px] h-full bg-white z-[-1]" />
+                            )}
+                            {renderLessonButton(lessonId)}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="relative w-full">
+                      {/* Horizontal line behind row 2 */}
+                      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 w-[98%] h-[2px] bg-white z-[-1]" />
+                      {/* Vertical lines from btn 06 (left) and btn 10 (right) */}
+
+                      <div className="w-full flex justify-between gap-y-2">
+                        {lessonIds.slice(5, 10).map((lessonId) => (
+                          <div className="relative flex justify-center items-center w-[3rem] h-[3rem]" key={lessonId}>
+                            {(lessonId === '06' || lessonId === 'review') && (
+                              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-[2px] h-full bg-white z-[-1]" />
+                            )}
+                            {renderLessonButton(lessonId)}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {isNarrow && (
+                  <div className="w-full space-y-2">
+                    {[0, 2, 4, 6, 8].map((startIndex) => (
+                      <div className="relative w-full" key={startIndex}>
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 w-[98%] h-[2px] bg-white z-[-1]" />
+                        <div className="w-full flex justify-between gap-y-2">
+                          {lessonIds.slice(startIndex, startIndex + 2).map((lessonId) => (
+                            <div
+                              key={lessonId}
+                              className="relative flex justify-center items-center w-[3rem] h-[3rem]"
+                            >
+                              {/* ⬇️ Vertical line for every button */}
+                              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-[2px] h-full bg-white z-[-1]" />
+                              {renderLessonButton(lessonId)}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+              </div>
+            )}
+          </div>
+        );
+      })}
 
       <div className="mt-8 flex justify-center space-x-8">
         <Link to="/stats" className="btn-utility">Stats</Link>
         <Link to="/preferences" className="btn-utility">Preferences</Link>
       </div>
-
     </div>
   );
 }
