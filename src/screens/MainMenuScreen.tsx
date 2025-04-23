@@ -4,6 +4,7 @@ import { useScreenSize } from '../hooks/useScreenSize';
 import { topics, lessonIds } from '../data/topics';
 import lessonStates from '../data/lessonStates';
 import Toast from '../components/Toast';
+import PrimaryButton from '../components/PrimaryButton';
 import crownIcon from '../assets/crown_icon.png';
 import lockIcon from '../assets/lock_icon.png';
 import checkmarkIcon from '../assets/checkmark_icon.png';
@@ -83,9 +84,11 @@ export default function MainMenuScreen() {
           <div key={topic.id} className="space-y-2 px-6">
             {/* Topic button */}
             <div className="relative z-10">
-              <button
-                onClick={() => setExpandedTopicId(expandedTopicId === topic.id ? null : topic.id)}
-                className={`btn-topic ${glowClasses[index % glowClasses.length]}`}
+              <PrimaryButton
+                onClick={() =>
+                  setExpandedTopicId(expandedTopicId === topic.id ? null : topic.id)
+                }
+                variant={['pink', 'purple', 'cyan'][index % 3]}
               >
                 <span>{topic.name}</span>
                 <span className="text-sm text-white">
@@ -95,7 +98,7 @@ export default function MainMenuScreen() {
                     `${topic.progress}/10`
                   )}
                 </span>
-              </button>
+              </PrimaryButton>
             </div>
 
             {/* Lesson grid */}
@@ -134,10 +137,7 @@ export default function MainMenuScreen() {
                       </div>
                     </div>
                     <div className="relative w-full">
-                      {/* Horizontal line behind row 2 */}
                       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 w-[98%] h-[2px] bg-white z-[-1]" />
-                      {/* Vertical lines from btn 06 (left) and btn 10 (right) */}
-
                       <div className="w-full flex justify-between gap-y-2">
                         {lessonIds.slice(5, 10).map((lessonId) => (
                           <div className="relative flex justify-center items-center w-[3rem] h-[3rem]" key={lessonId}>
@@ -163,7 +163,6 @@ export default function MainMenuScreen() {
                               key={lessonId}
                               className="relative flex justify-center items-center w-[3rem] h-[3rem]"
                             >
-                              {/* ⬇️ Vertical line for every button */}
                               <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-[2px] h-full bg-white z-[-1]" />
                               {renderLessonButton(lessonId)}
                             </div>
@@ -173,7 +172,6 @@ export default function MainMenuScreen() {
                     ))}
                   </div>
                 )}
-
               </div>
             )}
           </div>

@@ -1,0 +1,23 @@
+{
+    "clozes": [
+      {
+        "id": 2,
+        "sentence_with_gaps": "The ___ valve prevents backflow from the left ventricle to the left atrium.",
+        "choices": ["mitral", "tricuspid", "aortic", "pulmonary"],
+        "correct_answer": "mitral"
+      },
+      {
+        "id": 6,
+        "sentence_with_gaps": "The ___ is responsible for maintaining balance through fluid movement in the inner ear.",
+        "choices": ["cochlea", "vestibule", "ossicles", "eustachian tube"],
+        "correct_answer": "vestibule"
+      },
+      {
+        "id": 9,
+        "sentence_with_gaps": "Coronary blood flow primarily occurs during ___ in the cardiac cycle.",
+        "choices": ["systole", "diastole", "isovolumetric contraction", "atrial kick"],
+        "correct_answer": "diastole"
+      }
+    ]
+  }
+  
