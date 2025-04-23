@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useScreenSize } from '../hooks/useScreenSize';
 import { topics, lessonIds } from '../data/topics';
 import lessonStates from '../data/lessonStates';
