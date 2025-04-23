@@ -22,11 +22,31 @@ export default function LessonScreen() {
   const progress = Math.min(Math.round((currentIndex / LESSON_LENGTH) * 100), 100);
 
   // 1. Get all relevant question-type exercises for now
-  const lessonExercises = exercisesData.exercises
-    .filter((e) => e.type === 'question')
-    .slice(0, LESSON_LENGTH)
+  // 1.1. Get all question-type exercises for the current topic
+  const topicExercises = exercisesData.exercises
+    .filter((e) => e.topic.toLowerCase() === topicId?.toLowerCase() && e.type === 'question');
+
+  // 1.2. Shuffle the array
+  const shuffled = [...topicExercises].sort(() => Math.random() - 0.5);
+
+  // 1.3. Ensure we have exactly LESSON_LENGTH entries
+  let selectedExercises: typeof topicExercises = [];
+
+  if (shuffled.length >= LESSON_LENGTH) {
+    selectedExercises = shuffled.slice(0, LESSON_LENGTH);
+  } else {
+    // 1.4. Repeat random items until we reach length
+    while (selectedExercises.length < LESSON_LENGTH) {
+      const next = shuffled[Math.floor(Math.random() * shuffled.length)];
+      selectedExercises.push(next);
+    }
+  }
+
+  // 1.5. Get full question data
+  const lessonExercises = selectedExercises
     .map((e) => questionsData.questions.find((q) => q.id === e.id))
     .filter(Boolean);
+
 
   const currentQuestion = lessonExercises[currentIndex];
 
@@ -64,7 +84,7 @@ export default function LessonScreen() {
           <img
             src={getHappyImageForTopic(topicId || '')}
             alt="Happy organ"
-            className="w-40 h-auto object-contain"
+            className="w-2/3 h-auto object-contain"
           />
           <div className="text-2xl font-bold text-white">Lesson complete!</div>
           <PrimaryButton
@@ -94,6 +114,7 @@ export default function LessonScreen() {
         {/* Main content area */}
         <ExerciseStage>
           <Question
+            key={currentIndex} // ✅ Forces a rerender for each exercise step
             question={currentQuestion.question_text}
             options={[
               currentQuestion.option_1,

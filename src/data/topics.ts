@@ -1,6 +1,6 @@
 export const topics = [
   {
-    id: "lung",
+    id: "lungs",
     name: "Lungs",
     progress: 10
   },
