@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useScreenSize } from '../hooks/useScreenSize';
 import { topics, lessonIds } from '../data/topics';
 import lessonStates from '../data/lessonStates';
+import ScreenLayout from '../components/ScreenLayout';
 import Toast from '../components/Toast';
 import PrimaryButton from '../components/PrimaryButton';
+import LessonButton from '../components/LessonButton';
+import UtilityButton from '../components/UtilityButton';
 import crownIcon from '../assets/crown_icon.png';
 import lockIcon from '../assets/lock_icon.png';
 import checkmarkIcon from '../assets/checkmark_icon.png';
@@ -21,14 +23,8 @@ export default function MainMenuScreen() {
     setTimeout(() => setToastVisible(false), 2500);
   };
 
-  const glowClasses = [
-    'border-neonPink hover:shadow-[0_0_20px_#FF007F]',
-    'border-glowPurple hover:shadow-[0_0_20px_#8A2BE2]',
-    'border-neonCyan hover:shadow-[0_0_20px_#00FFFF]',
-  ];
-
   return (
-    <div className="screen text-white space-y-8">
+    <ScreenLayout className="text-white space-y-8">
       <Toast message={toastMessage} visible={toastVisible} />
       <h1 className="text-3xl font-bold uppercase text-center section">Topics</h1>
 
@@ -55,26 +51,26 @@ export default function MainMenuScreen() {
           return (
             <div className="relative flex justify-center items-center" key={lessonKey}>
               {state === 'locked' ? (
-                <button
+                <LessonButton
                   onClick={() => showToast('Lesson locked. Complete previous lessons first.')}
-                  className={`btn-lesson ${borderClass} cursor-not-allowed`}
-                  aria-disabled="true"
-                >
-                  <img src={iconSrc!} alt="locked" className="w-full h-full object-contain" />
-                </button>
+                  disabled
+                  icon={iconSrc!}
+                  alt="locked"
+                  className={borderClass}
+                />
               ) : (
-                <Link
+                <LessonButton
                   to={`/lesson/${topic.id}/${lessonId}`}
-                  className={`btn-lesson ${borderClass}`}
+                  icon={isIcon ? iconSrc! : undefined}
+                  alt={state}
+                  className={borderClass}
                 >
-                  {isIcon ? (
-                    <img src={iconSrc!} alt={state} className="w-full h-full object-contain" />
-                  ) : (
+                  {!isIcon && (
                     <span className="text-sm leading-none w-full text-center">
                       {lessonId === 'review' ? 'R' : lessonId.padStart(2, '0')}
                     </span>
                   )}
-                </Link>
+                </LessonButton>
               )}
             </div>
           );
@@ -88,7 +84,7 @@ export default function MainMenuScreen() {
                 onClick={() =>
                   setExpandedTopicId(expandedTopicId === topic.id ? null : topic.id)
                 }
-                variant={['pink', 'purple', 'cyan'][index % 3]}
+                variant={['pink', 'purple', 'cyan'][index % 3] as 'pink' | 'purple' | 'cyan'}
               >
                 <span>{topic.name}</span>
                 <span className="text-sm text-white">
@@ -179,9 +175,9 @@ export default function MainMenuScreen() {
       })}
 
       <div className="mt-8 flex justify-center space-x-8">
-        <Link to="/stats" className="btn-utility">Stats</Link>
-        <Link to="/preferences" className="btn-utility">Preferences</Link>
+        <UtilityButton to="/stats">Stats</UtilityButton>
+        <UtilityButton to="/preferences">Preferences</UtilityButton>
       </div>
-    </div>
+    </ScreenLayout>
   );
 }

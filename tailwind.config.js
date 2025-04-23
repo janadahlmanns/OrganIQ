@@ -8,7 +8,7 @@ module.exports = {
     extend: {
       screens: {
         xs: '320px',
-      },      
+      },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
       },
@@ -17,7 +17,7 @@ module.exports = {
         glowPurple: '#8A2BE2',
         neonCyan: '#00FFFF',
         darkPurple: '#0b0019', // from moodboard — for background
-        gray: '#ffffff33', 
+        gray: '#ffffff33',
       },
       boxShadow: {
         glow: '0 0 12px rgba(255, 0, 255, 0.6)', // pink glow
@@ -42,10 +42,14 @@ module.exports = {
       },
       transitionTimingFunction: {
         DEFAULT: 'ease-in-out',
-      }        
+      }
+    },
+  },
+  variants: {
+    extend: {
+      boxShadow: ['enabled'],
     },
   },
 
   plugins: [],
 };
-

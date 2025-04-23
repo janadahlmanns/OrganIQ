@@ -1,5 +1,5 @@
-import { useParams } from 'react-router-dom';
 import { useState } from 'react';
+import ScreenLayout from '../components/ScreenLayout';
 import ProgressBar from '../components/ProgressBar';
 import CancelButton from '../components/CancelButton';
 import ExerciseStage from '../components/ExerciseStage';
@@ -34,7 +34,7 @@ export default function LessonScreen() {
   const currentQuestion = getQuestionById(1);
 
   return (
-    <div className="screen text-white flex flex-col space-y-4 items-center">
+    <ScreenLayout>
       <div className="w-full max-w-[480px] px-4 pt-4 flex flex-col flex-1">
         {/* Top bar with progress + cancel */}
         <div className="flex items-center justify-between">
@@ -55,6 +55,6 @@ export default function LessonScreen() {
           )}
         </ExerciseStage>
       </div>
-    </div>
+    </ScreenLayout>
   );
 }

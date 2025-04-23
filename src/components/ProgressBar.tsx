@@ -1,4 +1,3 @@
-import React from 'react';
 
 type ProgressBarProps = {
   value: number; // from 0 to 100
