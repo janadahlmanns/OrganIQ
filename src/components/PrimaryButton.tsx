@@ -41,7 +41,7 @@ export default function PrimaryButton({
     active = false,
 }: PrimaryButtonProps) {
     const baseClasses =
-        'w-full flex justify-between items-center px-6 py-3 rounded font-semibold text-white transition bg-darkPurple border-2 duration-200 ease-in-out';
+        'flex justify-between items-center px-6 py-3 rounded font-semibold text-white transition bg-darkPurple border-2 duration-200 ease-in-out';
 
     const borderClass = variantBorders[variant];
     const hoverClass = interactive && !disabled ? hoverGlow[variant] : '';

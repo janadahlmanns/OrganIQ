@@ -85,6 +85,7 @@ export default function MainMenuScreen() {
                   setExpandedTopicId(expandedTopicId === topic.id ? null : topic.id)
                 }
                 variant={['pink', 'purple', 'cyan'][index % 3] as 'pink' | 'purple' | 'cyan'}
+                className="w-full"
               >
                 <span>{topic.name}</span>
                 <span className="text-sm text-white">

@@ -22,7 +22,8 @@ module.exports = {
       boxShadow: {
         glow: '0 0 12px rgba(255, 0, 255, 0.6)', // pink glow
         glowPurple: '0 0 12px rgba(138, 43, 226, 0.6)', // purple glow
-        glowCyan: '0 0 12px rgba(0, 255, 255, 0.5)', // cyan glow
+        glowCyan: '0 0 12px rgba(0, 255, 255, 0.9)', // cyan glow
+        glowWhite:'0 0 12px rgba(255 255 255, 0.5)', // white glow
       },
       borderRadius: {
         DEFAULT: '0.5rem', // applies when using just `rounded`

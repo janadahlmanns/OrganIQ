@@ -1,10 +1,11 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import PrimaryButton from './PrimaryButton';
 
 type QuestionProps = {
     question: string;
     options: string[];
     correctIndex: number;
+    onComplete: () => void;
 };
 
 type ShuffledOption = {
@@ -12,8 +13,17 @@ type ShuffledOption = {
     isCorrect: boolean;
 };
 
-export default function Question({ question, options, correctIndex }: QuestionProps) {
+export default function Question({ question, options, correctIndex, onComplete }: QuestionProps) {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+    const [showContinue, setShowContinue] = useState(false);
+    const [wasCorrect, setWasCorrect] = useState<boolean | null>(null);
+
+    useEffect(() => {
+        setSelectedIndex(null);
+        setShowContinue(false);      // ✅ hide feedback card
+        setWasCorrect(null);         // ✅ clear previous result
+    }, [question]);
+
 
     const shuffledOptions: ShuffledOption[] = useMemo(() => {
         const labeled = options.map((label, idx) => ({
@@ -24,15 +34,11 @@ export default function Question({ question, options, correctIndex }: QuestionPr
     }, [options, correctIndex]);
 
     const handleSelect = (index: number) => {
-        if (selectedIndex !== null) return; // prevent multiple clicks
-        setSelectedIndex(index);
+        if (selectedIndex !== null) return;
 
-        // Feedback delay (1s) — replace with next() call later
-        setTimeout(() => {
-            console.log(
-                shuffledOptions[index].isCorrect ? '✅ Correct' : '❌ Incorrect'
-            );
-        }, 1000);
+        setSelectedIndex(index);
+        setWasCorrect(shuffledOptions[index].isCorrect);
+        setShowContinue(true);
     };
 
     return (
@@ -61,6 +67,17 @@ export default function Question({ question, options, correctIndex }: QuestionPr
                     );
                 })}
             </div>
+            {showContinue && (
+                <PrimaryButton
+                    onClick={onComplete}
+                    variant={wasCorrect ? 'cyan' : 'white'}
+                    active // 🔥 static glow
+                    className="w-2/3 mx-auto px-6 py-4 flex flex-col items-center space-y-1 text-base"
+                >
+                    <span>{wasCorrect ? 'Correct!' : 'Incorrect'}</span>
+                    <span className="font-bold">Continue</span>
+                </PrimaryButton>
+            )}
         </div>
     );
 }
