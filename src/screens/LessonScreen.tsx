@@ -91,7 +91,12 @@ export default function LessonScreen() {
             variant="cyan"
             active
             className="w-2/3 mx-auto px-8 py-3 flex flex-col items-center text-base font-semibold"
-            onClick={() => navigate('/')} // make sure to import useNavigate
+            onClick={() => {
+              if (topicId) {
+                localStorage.setItem('lastTopicId', topicId);
+              }
+              navigate('/');
+            }}
           >
             Back to Menu
           </PrimaryButton>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useScreenSize } from '../hooks/useScreenSize';
 import { topics, lessonIds } from '../data/topics';
 import lessonStates from '../data/lessonStates';
@@ -12,7 +12,9 @@ import lockIcon from '../assets/lock_icon.png';
 import checkmarkIcon from '../assets/checkmark_icon.png';
 
 export default function MainMenuScreen() {
-  const [expandedTopicId, setExpandedTopicId] = useState<string | null>(null);
+  const [expandedTopicId, setExpandedTopicId] = useState<string | null>(() => {
+    return localStorage.getItem('lastTopicId') || null;
+  });
   const [toastMessage, setToastMessage] = useState('');
   const [toastVisible, setToastVisible] = useState(false);
   const { isWide, isMedium, isNarrow } = useScreenSize();
@@ -86,6 +88,7 @@ export default function MainMenuScreen() {
                 }
                 variant={['pink', 'purple', 'cyan'][index % 3] as 'pink' | 'purple' | 'cyan'}
                 className="w-full"
+                active={expandedTopicId === topic.id}
               >
                 <span>{topic.name}</span>
                 <span className="text-sm text-white">
