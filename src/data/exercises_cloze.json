@@ -1,23 +1,31 @@
 {
-    "clozes": [
-      {
-        "id": 2,
-        "sentence_with_gaps": "The ___ valve prevents backflow from the left ventricle to the left atrium.",
-        "choices": ["mitral", "tricuspid", "aortic", "pulmonary"],
-        "correct_answer": "mitral"
-      },
-      {
-        "id": 6,
-        "sentence_with_gaps": "The ___ is responsible for maintaining balance through fluid movement in the inner ear.",
-        "choices": ["cochlea", "vestibule", "ossicles", "eustachian tube"],
-        "correct_answer": "vestibule"
-      },
-      {
-        "id": 9,
-        "sentence_with_gaps": "Coronary blood flow primarily occurs during ___ in the cardiac cycle.",
-        "choices": ["systole", "diastole", "isovolumetric contraction", "atrial kick"],
-        "correct_answer": "diastole"
-      }
-    ]
-  }
-  
+  "clozes": [
+    {
+      "id": 2,
+      "question_text": "The ___ valve prevents backflow from the left ventricle to the left atrium.",
+      "option_1": "mitral",
+      "option_2": "tricuspid",
+      "option_3": "aortic",
+      "option_4": "pulmonary",
+      "correct_option": 1
+    },
+    {
+      "id": 6,
+      "question_text": "The ___ is responsible for maintaining balance through fluid movement in the inner ear.",
+      "option_1": "cochlea",
+      "option_2": "vestibule",
+      "option_3": "ossicles",
+      "option_4": "eustachian tube",
+      "correct_option": 2
+    },
+    {
+      "id": 9,
+      "question_text": "Coronary blood flow primarily occurs during ___ in the cardiac cycle.",
+      "option_1": "systole",
+      "option_2": "diastole",
+      "option_3": "isovolumetric contraction",
+      "option_4": "atrial kick",
+      "correct_option": 2
+    }
+  ]
+}
