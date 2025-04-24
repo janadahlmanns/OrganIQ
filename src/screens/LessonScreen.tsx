@@ -19,7 +19,7 @@ export default function LessonScreen() {
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const LESSON_LENGTH = 3; // we will have more in the real app
-  const progress = Math.min(Math.round((currentIndex / LESSON_LENGTH) * 100), 100);
+  const [progress, setProgress] = useState(0);
 
   // 1. Get all relevant question-type exercises for now
   // 1.1. Get all question-type exercises for the current topic
@@ -49,6 +49,11 @@ export default function LessonScreen() {
 
 
   const currentQuestion = lessonExercises[currentIndex];
+
+  // Update progress bar
+  const handleAnswerSelected = () => {
+    setProgress(prev => Math.min(Math.round(((currentIndex + 1) / LESSON_LENGTH) * 100), 100));
+  };
 
   // 2. Advance after delay
   const goToNext = () => {
@@ -119,7 +124,7 @@ export default function LessonScreen() {
         {/* Main content area */}
         <ExerciseStage>
           <Question
-            key={currentIndex} // ✅ Forces a rerender for each exercise step
+            key={currentIndex}
             question={currentQuestion.question_text}
             options={[
               currentQuestion.option_1,
@@ -128,6 +133,7 @@ export default function LessonScreen() {
               currentQuestion.option_4,
             ]}
             correctIndex={currentQuestion.correct_option - 1}
+            onAnswerSelected={handleAnswerSelected} // 🆕
             onComplete={goToNext}
           />
         </ExerciseStage>

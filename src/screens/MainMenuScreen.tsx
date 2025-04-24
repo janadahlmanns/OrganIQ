@@ -15,6 +15,7 @@ export default function MainMenuScreen() {
   const [expandedTopicId, setExpandedTopicId] = useState<string | null>(() => {
     return localStorage.getItem('lastTopicId') || null;
   });
+
   const [toastMessage, setToastMessage] = useState('');
   const [toastVisible, setToastVisible] = useState(false);
   const { isWide, isMedium, isNarrow } = useScreenSize();
@@ -28,53 +29,43 @@ export default function MainMenuScreen() {
   return (
     <ScreenLayout className="text-white space-y-8">
       <Toast message={toastMessage} visible={toastVisible} />
-      <h1 className="text-3xl font-bold uppercase text-center section">Topics</h1>
+      <h1 className="text-heading-xl font-bold uppercase text-center section">Topics</h1>
 
       {topics.map((topic, index) => {
         // ✅ This helper must be inside so we can use topic.id
         const renderLessonButton = (lessonId: string) => {
           const lessonKey = `${topic.id}-${lessonId}`;
-          const state = lessonStates[lessonKey] || 'uncompleted';
+          const status = lessonStates[lessonKey] || 'uncompleted';
 
-          const isIcon = state === 'perfect' || state === 'locked';
-          const iconSrc = state === 'perfect'
-            ? crownIcon
-            : state === 'locked'
-              ? lockIcon
-              : null;
+          // Determine props for LessonButton
+          const state = status === 'perfect' || status === 'completed'
+            ? 'active'
+            : status === 'locked'
+              ? 'inactive'
+              : undefined;
 
-          const borderClass =
-            state === 'locked'
-              ? 'border-white/30'
-              : state === 'perfect' || state === 'completed'
-                ? 'border-white shadow-[0_0_20px_white]'
-                : 'border-white';
+          const to = state !== 'inactive' ? `/lesson/${topic.id}/${lessonId}` : undefined;
+          const onClick = state === 'inactive'
+            ? () => showToast('Lesson locked. Complete previous lessons first.')
+            : undefined;
+
+          const content = status === 'perfect'
+            ? { icon: crownIcon, alt: 'perfect' }
+            : status === 'locked'
+              ? { icon: lockIcon, alt: 'locked' }
+              : lessonId === 'review'
+                ? 'R'
+                : lessonId.padStart(2, '0');
 
           return (
-            <div className="relative flex justify-center items-center" key={lessonKey}>
-              {state === 'locked' ? (
-                <LessonButton
-                  onClick={() => showToast('Lesson locked. Complete previous lessons first.')}
-                  disabled
-                  icon={iconSrc!}
-                  alt="locked"
-                  className={borderClass}
-                />
-              ) : (
-                <LessonButton
-                  to={`/lesson/${topic.id}/${lessonId}`}
-                  icon={isIcon ? iconSrc! : undefined}
-                  alt={state}
-                  className={borderClass}
-                >
-                  {!isIcon && (
-                    <span className="text-sm leading-none w-full text-center">
-                      {lessonId === 'review' ? 'R' : lessonId.padStart(2, '0')}
-                    </span>
-                  )}
-                </LessonButton>
-              )}
-            </div>
+              <LessonButton
+                className='relative flex justify-center border border-red items-center'
+                to={to}
+                onClick={onClick}
+                state={state}
+                content={content}
+                key={lessonKey}
+              />
           );
         };
 
@@ -110,7 +101,7 @@ export default function MainMenuScreen() {
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 w-[98%] h-[2px] bg-white z-[-1]" />
                     <div className="w-full relative flex justify-between gap-y-2">
                       {lessonIds.map((lessonId) => (
-                        <div key={lessonId} className="relative flex justify-center items-center w-[3rem] h-[3rem]">
+                        <div key={lessonId} className="relative flex justify-center items-center w-12 h-12">
                           {(lessonId === '01' || lessonId === 'review') && (
                             <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-[2px] h-full bg-white z-[-1]" />
                           )}
@@ -127,7 +118,7 @@ export default function MainMenuScreen() {
                       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 w-[98%] h-[2px] bg-white z-[-1]" />
                       <div className="w-full flex justify-between gap-y-2">
                         {lessonIds.slice(0, 5).map((lessonId) => (
-                          <div className="relative flex justify-center items-center w-[3rem] h-[3rem]" key={lessonId}>
+                          <div className="relative flex justify-center items-center w-12 h-12" key={lessonId}>
                             {(lessonId === '01' || lessonId === '05') && (
                               <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-[2px] h-full bg-white z-[-1]" />
                             )}
@@ -140,7 +131,7 @@ export default function MainMenuScreen() {
                       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 w-[98%] h-[2px] bg-white z-[-1]" />
                       <div className="w-full flex justify-between gap-y-2">
                         {lessonIds.slice(5, 10).map((lessonId) => (
-                          <div className="relative flex justify-center items-center w-[3rem] h-[3rem]" key={lessonId}>
+                          <div className="relative flex justify-center items-center w-12 h-12" key={lessonId}>
                             {(lessonId === '06' || lessonId === 'review') && (
                               <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-[2px] h-full bg-white z-[-1]" />
                             )}
@@ -161,7 +152,7 @@ export default function MainMenuScreen() {
                           {lessonIds.slice(startIndex, startIndex + 2).map((lessonId) => (
                             <div
                               key={lessonId}
-                              className="relative flex justify-center items-center w-[3rem] h-[3rem]"
+                              className="relative flex justify-center items-center w-12 h-12"
                             >
                               <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-[2px] h-full bg-white z-[-1]" />
                               {renderLessonButton(lessonId)}

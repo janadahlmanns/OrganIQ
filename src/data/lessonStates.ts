@@ -1,15 +1,15 @@
 const lessonStates: Record<string, 'perfect' | 'completed' | 'uncompleted' | 'locked'> = {
   // Lungs (fully completed)
-  'lung-01': 'perfect',
-  'lung-02': 'perfect',
-  'lung-03': 'completed',
-  'lung-04': 'perfect',
-  'lung-05': 'completed',
-  'lung-06': 'completed',
-  'lung-07': 'completed',
-  'lung-08': 'perfect',
-  'lung-09': 'completed',
-  'lung-review': 'completed',
+  'lungs-01': 'perfect',
+  'lungs-02': 'perfect',
+  'lungs-03': 'completed',
+  'lungs-04': 'perfect',
+  'lungs-05': 'completed',
+  'lungs-06': 'completed',
+  'lungs-07': 'completed',
+  'lungs-08': 'perfect',
+  'lungs-09': 'completed',
+  'lungs-review': 'completed',
 
   // Heart (previous lung state)
   'heart-01': 'perfect',

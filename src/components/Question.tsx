@@ -5,6 +5,7 @@ type QuestionProps = {
     question: string;
     options: string[];
     correctIndex: number;
+    onAnswerSelected: () => void;
     onComplete: () => void;
 };
 
@@ -13,7 +14,7 @@ type ShuffledOption = {
     isCorrect: boolean;
 };
 
-export default function Question({ question, options, correctIndex, onComplete }: QuestionProps) {
+export default function Question({ question, options, correctIndex, onAnswerSelected, onComplete }: QuestionProps) {
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
     const [showContinue, setShowContinue] = useState(false);
     const [wasCorrect, setWasCorrect] = useState<boolean | null>(null);
@@ -39,6 +40,7 @@ export default function Question({ question, options, correctIndex, onComplete }
         setSelectedIndex(index);
         setWasCorrect(shuffledOptions[index].isCorrect);
         setShowContinue(true);
+        onAnswerSelected();
     };
 
     return (

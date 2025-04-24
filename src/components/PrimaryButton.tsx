@@ -18,17 +18,17 @@ const variantBorders = {
 };
 
 const staticGlow = {
-    pink: 'shadow-[0_0_20px_#FF007F]',
-    purple: 'shadow-[0_0_20px_#8A2BE2]',
-    cyan: 'shadow-[0_0_20px_#00FFFF]',
-    white: 'shadow-[0_0_20px_white]',
+    pink: 'shadow-glow',
+    purple: 'shadow-glowPurple',
+    cyan: 'shadow-glowCyan',
+    white: 'shadow-glowWhite',
 };
 
 const hoverGlow = {
-    pink: 'enabled:hover:shadow-[0_0_20px_#FF007F]',
-    purple: 'enabled:hover:shadow-[0_0_20px_#8A2BE2]',
-    cyan: 'enabled:hover:shadow-[0_0_20px_#00FFFF]',
-    white: 'enabled:hover:shadow-[0_0_20px_white]',
+    pink: 'enabled:hover:shadow-glow',
+    purple: 'enabled:hover:shadow-glowPurple',
+    cyan: 'enabled:hover:shadow-glowCyan',
+    white: 'enabled:hover:shadow-glowWhite',
 };
 
 export default function PrimaryButton({
@@ -41,7 +41,7 @@ export default function PrimaryButton({
     active = false,
 }: PrimaryButtonProps) {
     const baseClasses =
-        'flex justify-between items-center px-6 py-3 rounded font-semibold text-white transition bg-darkPurple border-2 duration-200 ease-in-out';
+        'flex justify-between items-center px-6 py-3 rounded font-semibold text-white bg-darkPurple border-2';
 
     const borderClass = variantBorders[variant];
     const hoverClass = interactive && !disabled ? hoverGlow[variant] : '';

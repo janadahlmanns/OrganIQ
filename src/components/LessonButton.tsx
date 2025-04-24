@@ -1,48 +1,59 @@
-import React from 'react';
+
 import { Link } from 'react-router-dom';
 
 type LessonButtonProps = {
     to?: string;
     onClick?: () => void;
-    disabled?: boolean;
-    children?: React.ReactNode;
+    state?: 'active' | 'inactive' | undefined;
+    content: string | { icon: string; alt: string };
     className?: string;
-    icon?: string;
-    alt?: string;
 };
 
 export default function LessonButton({
     to,
     onClick,
-    disabled = false,
-    children,
+    state,
+    content,
     className = '',
-    icon,
-    alt = '',
 }: LessonButtonProps) {
-    const baseStyle = `flex items-center justify-center bg-darkPurple text-white font-bold rounded border-2 transition w-[3rem] h-[3rem] p-1 overflow-hidden ${disabled
-        ? 'cursor-not-allowed'
-        : 'hover:brightness-125 hover:shadow-[0_0_18px_white]'
-        } ${className}`;
-    if (to) {
+const isActive = state === 'active';
+const isInactive = state === 'inactive';
+const isDefault = state === undefined;
+
+    const baseClasses =
+        'flex items-center justify-center w-[3rem] h-[3rem] p-1 rounded border text-white bg-darkPurple font-bold transition overflow-hidden';
+    const staticGlow = isActive ? 'shadow-glowWhite' : '';
+    const hoverGlow = isDefault ? 'hover:shadow-glowWhite hover:brightness-125' : '';
+    const clickability = isInactive ? 'cursor-not-allowed' : '';
+
+    const combinedClassName = [
+        baseClasses,
+        staticGlow,
+        hoverGlow,
+        clickability,
+        className,
+    ]
+        .filter(Boolean)
+        .join(' ');
+
+    const inner =
+        typeof content === 'string' ? (
+            <span className="text-sm leading-none w-full text-center">{content}</span>
+        ) : (
+            <img src={content.icon} alt={content.alt} className="w-full h-full object-contain" />
+        );
+
+    if (!isInactive && to) {
         return (
-            <Link to={to} className={baseStyle} aria-disabled={disabled}>
-                {icon ? (
-                    <img src={icon} alt={alt} className="w-full h-full object-contain" />
-                ) : (
-                    children
-                )}
+            <Link to={to} className={combinedClassName}>
+                {inner}
             </Link>
         );
     }
 
     return (
-        <button onClick={onClick} className={baseStyle} disabled={disabled} aria-disabled={disabled}>
-            {icon ? (
-                <img src={icon} alt={alt} className="w-full h-full object-contain" />
-            ) : (
-                children
-            )}
+        <button onClick={onClick} className={combinedClassName}>
+            {inner}
         </button>
     );
 }

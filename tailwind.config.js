@@ -4,6 +4,14 @@ module.exports = {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  safelist: [
+    'hover:shadow-glowWhite',
+    'shadow-glowWhite',
+    'enabled:hover:shadow-glow',
+    'enabled:hover:shadow-glowPurple',
+    'enabled:hover:shadow-glowCyan',
+    'enabled:hover:shadow-glowWhite',
+  ],
   theme: {
     extend: {
       screens: {
@@ -11,6 +19,9 @@ module.exports = {
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
+      },
+      fontSize: {
+        'heading-xl': '1.875rem', // 3xl
       },
       colors: {
         neonPink: '#FF007F',
@@ -22,8 +33,8 @@ module.exports = {
       boxShadow: {
         glow: '0 0 12px rgba(255, 0, 255, 0.6)', // pink glow
         glowPurple: '0 0 12px rgba(138, 43, 226, 0.6)', // purple glow
-        glowCyan: '0 0 12px rgba(0, 255, 255, 0.9)', // cyan glow
-        glowWhite:'0 0 12px rgba(255 255 255, 0.5)', // white glow
+        glowCyan: '0 0 12px rgba(0, 255, 255, 0.6)', // cyan glow
+        glowWhite: '0 0 12px rgba(255, 255, 255, 0.9)', // white glow
       },
       borderRadius: {
         DEFAULT: '0.5rem', // applies when using just `rounded`
@@ -34,6 +45,9 @@ module.exports = {
         DEFAULT: '2px',
         1: '1px',
         3: '3px',
+      },
+      spacing: {
+        '12': '3rem',
       },
       transitionProperty: {
         DEFAULT: 'all',
