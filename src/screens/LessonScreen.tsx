@@ -1,114 +1,54 @@
-import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useMemo, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import ScreenLayout from '../components/ScreenLayout';
 import ProgressBar from '../components/ProgressBar';
 import CancelButton from '../components/CancelButton';
 import ExerciseStage from '../components/ExerciseStage';
 import Question from '../components/Question';
-import PrimaryButton from '../components/PrimaryButton';
+import SuccessScreen from '../components/SuccessScreen';
 
 import exercisesData from '../data/exercises.json';
-import questionsData from '../data/exercises_questions.json';
-import happyHeart from '../assets/happy_heart.png';
-import happyLungs from '../assets/happy_lungs.png';
-import happyEar from '../assets/happy_ear.png';
-
 
 export default function LessonScreen() {
   const { topicId } = useParams();
-  const navigate = useNavigate();
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const LESSON_LENGTH = 3; // we will have more in the real app
-  const [progress, setProgress] = useState(0);
+  const LESSON_LENGTH = 3;
 
-  // 1. Get all relevant question-type exercises for now
-  // 1.1. Get all question-type exercises for the current topic
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [incorrectIds, setIncorrectIds] = useState<number[]>([]);
+
   const topicExercises = exercisesData.exercises
     .filter((e) => e.topic.toLowerCase() === topicId?.toLowerCase() && e.type === 'question');
 
-  // 1.2. Shuffle the array
-  const shuffled = [...topicExercises].sort(() => Math.random() - 0.5);
-
-  // 1.3. Ensure we have exactly LESSON_LENGTH entries
-  let selectedExercises: typeof topicExercises = [];
-
-  if (shuffled.length >= LESSON_LENGTH) {
-    selectedExercises = shuffled.slice(0, LESSON_LENGTH);
-  } else {
-    // 1.4. Repeat random items until we reach length
-    while (selectedExercises.length < LESSON_LENGTH) {
-      const next = shuffled[Math.floor(Math.random() * shuffled.length)];
-      selectedExercises.push(next);
+  const lessonExercises = useMemo(() => {
+    const shuffled = [...topicExercises].sort(() => Math.random() - 0.5);
+    const chosen: number[] = [];
+    while (chosen.length < LESSON_LENGTH) {
+      const next = shuffled[chosen.length % shuffled.length];
+      chosen.push(next.id);
     }
-  }
+    return chosen;
+  }, [topicExercises]);
 
-  // 1.5. Get full question data
-  const lessonExercises = selectedExercises
-    .map((e) => questionsData.questions.find((q) => q.id === e.id))
-    .filter(Boolean);
+  const currentExerciseId = lessonExercises[currentIndex];
+  const isLessonComplete = currentIndex >= LESSON_LENGTH;
 
-
-  const currentQuestion = lessonExercises[currentIndex];
-
-  // Update progress bar
-  const handleAnswerSelected = () => {
-    setProgress(prev => Math.min(Math.round(((currentIndex + 1) / LESSON_LENGTH) * 100), 100));
-  };
-
-  // 2. Advance after delay
-  const goToNext = () => {
-    setTimeout(() => {
-      if (currentIndex < LESSON_LENGTH - 1) {
-        setCurrentIndex((prev) => prev + 1);
-      } else {
-        // Trigger final screen (by advancing one last time)
-        setCurrentIndex(LESSON_LENGTH);
+  const handleComplete = ({ done, incorrect }: { done: true; incorrect: boolean }) => {
+    if (done) {
+      if (incorrect) {
+        setIncorrectIds((prev) => [...prev, currentExerciseId]);
       }
-    }, 200);
-  };
-
-  //3. Get end of lesson picture
-  const getHappyImageForTopic = (topicId: string) => {
-    switch (topicId.toLowerCase()) {
-      case 'heart':
-        return happyHeart;
-      case 'lungs':
-        return happyLungs;
-      case 'ear':
-        return happyEar;
-      default:
-        return happyHeart; // fallback
+      setProgress(Math.min(Math.round(((currentIndex + 1) / LESSON_LENGTH) * 100), 100));
     }
   };
 
-  // 4. Handle end of lesson
-  if (!currentQuestion) {
-    return (
-      <ScreenLayout>
-        <div className="w-full max-w-[480px] mx-auto flex flex-col items-center space-y-6 pt-12 text-center">
-          <img
-            src={getHappyImageForTopic(topicId || '')}
-            alt="Happy organ"
-            className="w-2/3 h-auto object-contain"
-          />
-          <div className="text-2xl font-bold text-white">Lesson complete!</div>
-          <PrimaryButton
-            variant="cyan"
-            active
-            className="w-2/3 mx-auto px-8 py-3 flex flex-col items-center text-base font-semibold"
-            onClick={() => {
-              if (topicId) {
-                localStorage.setItem('lastTopicId', topicId);
-              }
-              navigate('/');
-            }}
-          >
-            Back to Menu
-          </PrimaryButton>
-        </div>
-      </ScreenLayout>
-    );
-  }
+  const handleContinue = () => {
+    if (currentIndex < LESSON_LENGTH - 1) {
+      setCurrentIndex((prev) => prev + 1);
+    } else {
+      setCurrentIndex(LESSON_LENGTH);
+    }
+  };
 
   return (
     <ScreenLayout>
@@ -123,19 +63,23 @@ export default function LessonScreen() {
 
         {/* Main content area */}
         <ExerciseStage>
-          <Question
-            key={currentIndex}
-            question={currentQuestion.question_text}
-            options={[
-              currentQuestion.option_1,
-              currentQuestion.option_2,
-              currentQuestion.option_3,
-              currentQuestion.option_4,
-            ]}
-            correctIndex={currentQuestion.correct_option - 1}
-            onAnswerSelected={handleAnswerSelected} // 🆕
-            onComplete={goToNext}
-          />
+          {isLessonComplete ? (
+            <SuccessScreen
+              topicId={topicId || ''}
+              incorrectIds={incorrectIds}
+              lessonLength={LESSON_LENGTH}
+            />
+          ) : (
+            <div key={currentExerciseId}>
+                <Question
+                  key={`${currentExerciseId}-${currentIndex}`} // Composite of ExerciseID and currentIndex to trigger re-render even if an exerciseID repeats itself
+                  exerciseId={currentExerciseId}
+                  onEvaluation={handleComplete}
+                  onContinue={handleContinue}
+                />
+
+            </div>
+          )}
         </ExerciseStage>
       </div>
     </ScreenLayout>
