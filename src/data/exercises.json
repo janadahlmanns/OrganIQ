@@ -9,7 +9,8 @@
       { "id": 7, "topic": "Ear", "difficulty": 1, "type": "question" },
       { "id": 8, "topic": "Heart", "difficulty": 3, "type": "question" },
       { "id": 9, "topic": "Heart", "difficulty": 3, "type": "cloze" },
-      { "id": 10, "topic": "Heart", "difficulty": 4, "type": "question" }
+      { "id": 10, "topic": "Heart", "difficulty": 4, "type": "question" },
+      { "id": 11, "topic": "Ear", "difficulty": 1, "type": "truefalse" },
+      { "id": 12, "topic": "Ear", "difficulty": 2, "type": "truefalse" }
     ]
   }
-  
