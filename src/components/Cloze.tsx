@@ -15,6 +15,7 @@ type ClozeProps = {
 
 export default function Cloze({ exerciseId, beforeProgress, progressStep, onContinue }: ClozeProps) {
     const questionData = clozesData.clozes.find(q => q.id === exerciseId);
+    const navigate = useNavigate();
 
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
     const [wasCorrect, setWasCorrect] = useState<boolean | null>(null);
@@ -27,7 +28,6 @@ export default function Cloze({ exerciseId, beforeProgress, progressStep, onCont
     }, [exerciseId, beforeProgress]);
 
     if (!questionData) {
-        const navigate = useNavigate();
         return (
             <div className="text-white text-center space-y-4">
                 <div className="text-xl font-bold">Question not found.</div>

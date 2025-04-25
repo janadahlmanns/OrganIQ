@@ -4,6 +4,7 @@ import ExerciseStage from '../components/ExerciseStage';
 import Question from '../components/Question';
 import Cloze from '../components/Cloze';
 import TrueFalse from '../components/TrueFalse';
+import Memory from '../components/Memory';
 import SuccessScreen from '../components/SuccessScreen';
 
 import exercisesData from '../data/exercises.json';
@@ -17,13 +18,19 @@ export default function LessonScreen() {
   const [progress, setProgress] = useState(0);
 
   const topicExercises = exercisesData.exercises
-    .filter((e) => e.topic.toLowerCase() === topicId?.toLowerCase() && ['question', 'cloze', 'truefalse'].includes(e.type));
+    .filter((e) =>
+      e.topic.toLowerCase() === topicId?.toLowerCase() &&
+      ['question', 'cloze', 'truefalse', 'memory'].includes(e.type)
+    );
 
   const lessonExercises = useMemo(() => {
+    if (topicExercises.length === 0) return [];
+
     const shuffled = [...topicExercises].sort(() => Math.random() - 0.5);
     const chosen: number[] = [];
+
     while (chosen.length < LESSON_LENGTH) {
-      const next = shuffled[chosen.length % shuffled.length];
+      const next = shuffled[chosen.length % shuffled.length]; // modulo = safely loops over
       chosen.push(next.id);
     }
     return chosen;
@@ -68,6 +75,14 @@ export default function LessonScreen() {
         />
       ) : currentType === 'truefalse' ? (
         <TrueFalse
+          key={`${currentExerciseId}-${currentIndex}`}
+          exerciseId={currentExerciseId}
+          beforeProgress={progress}
+          progressStep={progressStep}
+          onContinue={handleContinue}
+        />
+      ) : currentType === 'memory' ? (
+        <Memory
           key={`${currentExerciseId}-${currentIndex}`}
           exerciseId={currentExerciseId}
           beforeProgress={progress}

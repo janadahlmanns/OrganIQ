@@ -15,7 +15,7 @@ type QuestionProps = {
 
 export default function Question({ exerciseId, beforeProgress, progressStep, onContinue }: QuestionProps) {
     const questionData = questionsData.questions.find(q => q.id === exerciseId);
-
+    const navigate = useNavigate();
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
     const [wasCorrect, setWasCorrect] = useState<boolean | null>(null);
     const [progressAfter, setProgressAfter] = useState<number>(beforeProgress);
@@ -27,7 +27,6 @@ export default function Question({ exerciseId, beforeProgress, progressStep, onC
     }, [exerciseId, beforeProgress]);
 
     if (!questionData) {
-        const navigate = useNavigate();
         return (
             <div className="text-white text-center space-y-4">
                 <div className="text-xl font-bold">Question not found.</div>

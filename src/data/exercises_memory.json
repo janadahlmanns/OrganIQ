@@ -10,21 +10,21 @@
       ]
     },
     {
-      "id": 5,
+      "id": 13,
       "pairs": [
-        { "cardA": { "type": "image", "value": "ear_cochlea.png" }, "cardB": { "type": "image", "value": "ear_cochlea_label.png" } },
-        { "cardA": { "type": "image", "value": "ear_ossicles.png" }, "cardB": { "type": "image", "value": "ear_ossicles_label.png" } },
-        { "cardA": { "type": "image", "value": "ear_auditory_nerve.png" }, "cardB": { "type": "image", "value": "ear_auditory_nerve_label.png" } },
-        { "cardA": { "type": "image", "value": "ear_eustachian_tube.png" }, "cardB": { "type": "image", "value": "ear_eustachian_tube_label.png" } }
+        { "cardA": { "type": "image", "value": "cochlea.png" }, "cardB": { "type": "image", "value": "cochlea.png" } },
+        { "cardA": { "type": "image", "value": "ossicles.png" }, "cardB": { "type": "image", "value": "ossicles.png" } },
+        { "cardA": { "type": "image", "value": "hair_cell.png" }, "cardB": { "type": "image", "value": "hair_cell.png" } },
+        { "cardA": { "type": "image", "value": "stapes.png" }, "cardB": { "type": "image", "value": "stapes.png" } }
       ]
     },
     {
-      "id": 6,
+      "id": 14,
       "pairs": [
-        { "cardA": { "type": "image", "value": "ear_tympanic_membrane.png" }, "cardB": { "type": "text", "value": "Eardrum" } },
-        { "cardA": { "type": "image", "value": "ear_semi_circular_canals.png" }, "cardB": { "type": "text", "value": "Balance sensors" } },
-        { "cardA": { "type": "image", "value": "ear_stapes.png" }, "cardB": { "type": "text", "value": "Smallest bone" } },
-        { "cardA": { "type": "image", "value": "ear_cochlear_duct.png" }, "cardB": { "type": "text", "value": "Hearing organ" } }
+        { "cardA": { "type": "image", "value": "cochlea.png" }, "cardB": { "type": "text", "value": "Cochlea" } },
+        { "cardA": { "type": "image", "value": "ossicles.png" }, "cardB": { "type": "text", "value": "Ossicles" } },
+        { "cardA": { "type": "image", "value": "stapes.png" }, "cardB": { "type": "text", "value": "Stapes" } },
+        { "cardA": { "type": "image", "value": "hair_cell.png" }, "cardB": { "type": "text", "value": "Hair Cell" } }
       ]
     }
   ]

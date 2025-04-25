@@ -15,6 +15,7 @@ type TrueFalseProps = {
 
 export default function TrueFalse({ exerciseId, beforeProgress, progressStep, onContinue }: TrueFalseProps) {
     const questionData = truefalseData.truefalse.find(q => q.id === exerciseId);
+    const navigate = useNavigate();
 
     const [selectedAnswer, setSelectedAnswer] = useState<boolean | null>(null);
     const [wasCorrect, setWasCorrect] = useState<boolean | null>(null);
@@ -27,7 +28,6 @@ export default function TrueFalse({ exerciseId, beforeProgress, progressStep, on
     }, [exerciseId, beforeProgress]);
 
     if (!questionData) {
-        const navigate = useNavigate();
         return (
             <div className="text-white text-center space-y-4">
                 <div className="text-xl font-bold">Question not found.</div>

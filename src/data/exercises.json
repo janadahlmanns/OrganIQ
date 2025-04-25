@@ -11,6 +11,8 @@
       { "id": 9, "topic": "Heart", "difficulty": 3, "type": "cloze" },
       { "id": 10, "topic": "Heart", "difficulty": 4, "type": "question" },
       { "id": 11, "topic": "Ear", "difficulty": 1, "type": "truefalse" },
-      { "id": 12, "topic": "Ear", "difficulty": 2, "type": "truefalse" }
+      { "id": 12, "topic": "Ear", "difficulty": 2, "type": "truefalse" },
+      { "id": 13, "topic": "Ear", "difficulty": 2, "type": "memory" },
+      { "id": 14, "topic": "Ear", "difficulty": 2, "type": "memory" }
     ]
   }
