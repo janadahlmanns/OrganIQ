@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import PrimaryButton from './PrimaryButton';
 import ProgressBar from './ProgressBar';
 import CancelButton from './CancelButton';
+import FeedbackButton from './FeedbackButton';
 import truefalseData from '../data/exercises_truefalse.json';
 
 type TrueFalseProps = {
@@ -100,29 +101,12 @@ export default function TrueFalse({ exerciseId, beforeProgress, progressStep, on
                 </div>
 
                 {wasCorrect !== null && (
-                    <PrimaryButton
-                        onClick={() => onContinue({ incorrect: !wasCorrect, progressAfter })}
-                        variant={wasCorrect ? 'cyan' : 'white'}
-                        active
-                        className="w-2/3 mx-auto px-6 py-4 flex flex-col items-center space-y-1 text-base"
-                    >
-                        {/* First line: Correct! or Incorrect! (bold) */}
-                        <span className="font-bold">
-                            {wasCorrect ? 'Correct!' : 'Incorrect!'}
-                        </span>
-
-                        {/* Second line: Correction text (normal weight, only if incorrect) */}
-                        {!wasCorrect && questionData.correction && (
-                            <span className="text-center font-normal">
-                                {questionData.correction}
-                            </span>
-                        )}
-
-                        {/* Third line: Continue (bold) */}
-                        <span className="font-bold">
-                            Continue
-                        </span>
-                    </PrimaryButton>
+                    <FeedbackButton
+                        evaluation={wasCorrect ? 'Correct!' : 'Incorrect!'}
+                        explanation={questionData.correct_option === false ? questionData.correction : undefined}
+                        correct={wasCorrect}
+                        onContinue={() => onContinue({ incorrect: !wasCorrect, progressAfter })}
+                    />
                 )}
             </div>
         </div>
