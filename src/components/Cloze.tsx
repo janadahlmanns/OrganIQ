@@ -65,7 +65,10 @@ export default function Cloze({ exerciseId, beforeProgress, progressStep, onCont
             {/* Top bar with progress + cancel */}
             <div className="flex items-center justify-between mb-6">
                 <div className="flex-1">
-                    <ProgressBar value={progressAfter} />
+                    <ProgressBar
+                        currentProgress={beforeProgress}
+                        newProgress={progressAfter}
+                    />
                 </div>
                 <CancelButton className="ml-4" />
             </div>

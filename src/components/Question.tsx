@@ -57,7 +57,8 @@ export default function Question({ exerciseId, beforeProgress, progressStep, onC
         const correct = index === correctIndex;
         setSelectedIndex(index);
         setWasCorrect(correct);
-        setProgressAfter(beforeProgress + progressStep);
+        setProgressAfter(Math.min(beforeProgress + progressStep, 100));
+
     };
 
     return (
@@ -65,7 +66,10 @@ export default function Question({ exerciseId, beforeProgress, progressStep, onC
             {/* Top bar with progress + cancel */}
             <div className="flex items-center justify-between mb-6">
                 <div className="flex-1">
-                    <ProgressBar value={progressAfter} />
+                    <ProgressBar
+                        currentProgress={beforeProgress}
+                        newProgress={progressAfter}
+                    />
                 </div>
                 <CancelButton className="ml-4" />
             </div>

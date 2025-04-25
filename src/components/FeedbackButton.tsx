@@ -12,6 +12,7 @@ type FeedbackButtonProps = {
 export default function FeedbackButton({ evaluation, explanation, onContinue, correct }: FeedbackButtonProps) {
     return (
         <motion.div
+            style={{ willChange: 'transform, opacity' }}
             {...fadeSlideIn}
             className="w-full flex justify-center"
         >
