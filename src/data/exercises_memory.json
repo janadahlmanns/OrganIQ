@@ -1,14 +1,31 @@
 {
-    "memory_pairs": [
-      {
-        "id": 4,
-        "pairs": [
-          { "term": "Aorta", "match": "Main artery" },
-          { "term": "Vena cava", "match": "Main vein" },
-          { "term": "AV node", "match": "Delays conduction" },
-          { "term": "Sinoatrial node", "match": "Pacemaker of the heart" }
-        ]
-      }
-    ]
-  }
-  
+  "memory_pairs": [
+    {
+      "id": 4,
+      "pairs": [
+        { "cardA": { "type": "text", "value": "Aorta" }, "cardB": { "type": "text", "value": "Main artery" } },
+        { "cardA": { "type": "text", "value": "Vena cava" }, "cardB": { "type": "text", "value": "Main vein" } },
+        { "cardA": { "type": "text", "value": "AV node" }, "cardB": { "type": "text", "value": "Delays conduction" } },
+        { "cardA": { "type": "text", "value": "Sinoatrial node" }, "cardB": { "type": "text", "value": "Pacemaker of the heart" } }
+      ]
+    },
+    {
+      "id": 5,
+      "pairs": [
+        { "cardA": { "type": "image", "value": "ear_cochlea.png" }, "cardB": { "type": "image", "value": "ear_cochlea_label.png" } },
+        { "cardA": { "type": "image", "value": "ear_ossicles.png" }, "cardB": { "type": "image", "value": "ear_ossicles_label.png" } },
+        { "cardA": { "type": "image", "value": "ear_auditory_nerve.png" }, "cardB": { "type": "image", "value": "ear_auditory_nerve_label.png" } },
+        { "cardA": { "type": "image", "value": "ear_eustachian_tube.png" }, "cardB": { "type": "image", "value": "ear_eustachian_tube_label.png" } }
+      ]
+    },
+    {
+      "id": 6,
+      "pairs": [
+        { "cardA": { "type": "image", "value": "ear_tympanic_membrane.png" }, "cardB": { "type": "text", "value": "Eardrum" } },
+        { "cardA": { "type": "image", "value": "ear_semi_circular_canals.png" }, "cardB": { "type": "text", "value": "Balance sensors" } },
+        { "cardA": { "type": "image", "value": "ear_stapes.png" }, "cardB": { "type": "text", "value": "Smallest bone" } },
+        { "cardA": { "type": "image", "value": "ear_cochlear_duct.png" }, "cardB": { "type": "text", "value": "Hearing organ" } }
+      ]
+    }
+  ]
+}

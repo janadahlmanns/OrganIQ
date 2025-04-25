@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import cancelIcon from '../assets/cancel_icon.png';
+import cancelIcon from '../assets/images/icons/cancel_icon.png';
 
 type CancelButtonProps = {
   to?: string; // target route

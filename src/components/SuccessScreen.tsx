@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import PrimaryButton from './PrimaryButton';
 
-import happyHeart from '../assets/happy_heart.png';
-import happyLungs from '../assets/happy_lungs.png';
-import happyEar from '../assets/happy_ear.png';
+import happyHeart from '../assets/images/characters/happy_heart.png';
+import happyLungs from '../assets/images/characters/happy_lungs.png';
+import happyEar from '../assets/images/characters/happy_ear.png';
 
 type SuccessScreenProps = {
     topicId: string;

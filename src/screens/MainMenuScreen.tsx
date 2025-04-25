@@ -7,9 +7,9 @@ import Toast from '../components/Toast';
 import PrimaryButton from '../components/PrimaryButton';
 import LessonButton from '../components/LessonButton';
 import UtilityButton from '../components/UtilityButton';
-import crownIcon from '../assets/crown_icon.png';
-import lockIcon from '../assets/lock_icon.png';
-import checkmarkIcon from '../assets/checkmark_icon.png';
+import crownIcon from '../assets/images/icons/crown_icon.png';
+import lockIcon from '../assets/images/icons/lock_icon.png';
+import checkmarkIcon from '../assets/images/icons/checkmark_icon.png';
 
 export default function MainMenuScreen() {
   const [expandedTopicId, setExpandedTopicId] = useState<string | null>(() => {
