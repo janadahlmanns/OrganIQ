@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import PrimaryButton from './PrimaryButton';
 import ProgressBar from './ProgressBar';
 import CancelButton from './CancelButton';
+import FeedbackButton from './FeedbackButton';
 import questionsData from '../data/exercises_questions.json';
 
 type QuestionProps = {
@@ -95,15 +96,12 @@ export default function Question({ exerciseId, beforeProgress, progressStep, onC
                 </div>
 
                 {wasCorrect !== null && (
-                    <PrimaryButton
-                        onClick={() => onContinue({ incorrect: !wasCorrect, progressAfter })}
-                        variant={wasCorrect ? 'cyan' : 'white'}
-                        active
-                        className="w-2/3 mx-auto px-6 py-4 flex flex-col items-center space-y-1 text-base"
-                    >
-                        <span>{wasCorrect ? 'Correct! Explanation of why goes here.' : 'Incorrect! Explanation of why goes here.'}</span>
-                        <span className="font-bold">Continue</span>
-                    </PrimaryButton>
+                    <FeedbackButton
+                        evaluation={wasCorrect ? 'Correct!' : 'Incorrect!'}
+                        explanation={!wasCorrect ? 'Explanation goes here.' : undefined}
+                        correct={wasCorrect}
+                        onContinue={() => onContinue({ incorrect: !wasCorrect, progressAfter })}
+                    />
                 )}
             </div>
         </div>
