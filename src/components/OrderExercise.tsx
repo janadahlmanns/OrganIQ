@@ -84,14 +84,13 @@ export default function OrderExercise({ exerciseId, beforeProgress, progressStep
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
-            activationConstraint: {
-                distance: 1,
-            },
+            activationConstraint: { distance: 1 },
         })
     );
 
     return (
         <div className="w-full max-w-[480px] mx-auto px-4 pt-4 flex flex-col flex-1 font-sans text-white">
+            {/* Top bar with progress and cancel */}
             <div className="flex items-center justify-between mb-6">
                 <div className="flex-1">
                     <ProgressBar currentProgress={beforeProgress} newProgress={progressAfter} />
@@ -99,10 +98,14 @@ export default function OrderExercise({ exerciseId, beforeProgress, progressStep
                 <CancelButton className="ml-4" />
             </div>
 
+            {/* Exercise instruction */}
             <div className="text-center mb-6">
-                <h2 className="text-heading-xl font-bold">Arrange the items in the correct order:</h2>
+                <h2 className="text-heading-xl font-bold">
+                    Arrange the items in the correct order:
+                </h2>
             </div>
 
+            {/* Drag and drop area */}
             <DndContext
                 sensors={sensors}
                 collisionDetection={closestCorners}
@@ -112,7 +115,7 @@ export default function OrderExercise({ exerciseId, beforeProgress, progressStep
                     items={items.map((item) => item.id)}
                     strategy={verticalListSortingStrategy}
                 >
-                    <div className="flex flex-col gap-4 mb-6">
+                    <div className="relative flex flex-col gap-4 mb-6">
                         {items.map((item, index) => (
                             <ExerciseLabel
                                 key={item.id}
@@ -120,8 +123,11 @@ export default function OrderExercise({ exerciseId, beforeProgress, progressStep
                                 content={item.content}
                                 disabled={isEvaluated}
                                 variant={
-                                    !isEvaluated ? 'native' :
-                                        item.id === correctOrder[index] ? 'correct' : 'incorrect'
+                                    !isEvaluated
+                                        ? 'native'
+                                        : item.id === correctOrder[index]
+                                            ? 'correct'
+                                            : 'incorrect'
                                 }
                             />
                         ))}
@@ -129,12 +135,13 @@ export default function OrderExercise({ exerciseId, beforeProgress, progressStep
                 </SortableContext>
             </DndContext>
 
+            {/* Done button */}
             {!isEvaluated && (
-                <PrimaryButton onClick={handleEvaluate} className="mx-auto w-2/3">
+                <PrimaryButton onClick={handleEvaluate} className="mx-auto w-2/3 !justify-center">
                     Done
                 </PrimaryButton>
             )}
-
+            {/* Feedback after evaluation */}
             {wasCorrect !== null && (
                 <FeedbackButton
                     evaluation={wasCorrect ? 'Correct!' : 'Incorrect!'}
