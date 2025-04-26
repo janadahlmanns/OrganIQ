@@ -19,6 +19,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
+        handwriting: ['"Playwrite RO"', 'cursive'],
       },
       fontSize: {
         'heading-xl': '1.875rem', // 3xl
