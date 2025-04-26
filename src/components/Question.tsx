@@ -58,8 +58,6 @@ export default function Question({ exerciseId, beforeProgress, progressStep, onC
         );
     }
 
-    const correctIndex = questionData.correct_option - 1;
-
     const handleSelect = (index: number) => {
         if (selectedIndex !== null) return;
 

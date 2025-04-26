@@ -59,8 +59,6 @@ export default function Cloze({ exerciseId, beforeProgress, progressStep, onCont
         );
     }
 
-    const correctIndex = questionData.correct_option - 1;
-
     const handleSelect = (index: number) => {
         if (selectedIndex !== null) return;
 
