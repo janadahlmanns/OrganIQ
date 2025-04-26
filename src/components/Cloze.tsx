@@ -20,11 +20,27 @@ export default function Cloze({ exerciseId, beforeProgress, progressStep, onCont
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
     const [wasCorrect, setWasCorrect] = useState<boolean | null>(null);
     const [progressAfter, setProgressAfter] = useState<number>(beforeProgress);
+    const [shuffledOptions, setShuffledOptions] = useState<string[]>([]);
+    const [shuffledCorrectIndex, setShuffledCorrectIndex] = useState<number>(0);
 
     useEffect(() => {
         setSelectedIndex(null);
         setWasCorrect(null);
         setProgressAfter(beforeProgress);
+
+        if (!questionData) return;
+
+        const newOptions = [
+            { text: questionData.option_1, isCorrect: questionData.correct_option === 1 },
+            { text: questionData.option_2, isCorrect: questionData.correct_option === 2 },
+            { text: questionData.option_3, isCorrect: questionData.correct_option === 3 },
+            { text: questionData.option_4, isCorrect: questionData.correct_option === 4 },
+        ];
+
+        const shuffled = newOptions.sort(() => Math.random() - 0.5);
+
+        setShuffledOptions(shuffled.map(opt => opt.text));
+        setShuffledCorrectIndex(shuffled.findIndex(opt => opt.isCorrect));
     }, [exerciseId, beforeProgress]);
 
     if (!questionData) {
@@ -43,12 +59,6 @@ export default function Cloze({ exerciseId, beforeProgress, progressStep, onCont
         );
     }
 
-    const options = [
-        questionData.option_1,
-        questionData.option_2,
-        questionData.option_3,
-        questionData.option_4,
-    ];
     const correctIndex = questionData.correct_option - 1;
 
     const handleSelect = (index: number) => {
@@ -87,7 +97,7 @@ export default function Cloze({ exerciseId, beforeProgress, progressStep, onCont
                 </h2>
 
                 <div className="flex flex-col gap-4">
-                    {options.map((option, index) => (
+                    {shuffledOptions.map((option, index) => (
                         <PrimaryButton
                             key={index}
                             onClick={() => handleSelect(index)}
@@ -98,7 +108,7 @@ export default function Cloze({ exerciseId, beforeProgress, progressStep, onCont
                                 selectedIndex === null
                                     ? 'pink'
                                     : index === selectedIndex
-                                        ? (index === correctIndex ? 'cyan' : 'white')
+                                        ? (index === shuffledCorrectIndex ? 'cyan' : 'white')
                                         : 'pink'
                             }
                         >

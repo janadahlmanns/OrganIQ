@@ -10,7 +10,7 @@ export default function CancelButton({ to = "/", className = "" }: CancelButtonP
   return (
     <Link
       to={to}
-      className={`btn-utility w-10 h-10 p-1 hover:drop-shadow-[0_0_4px_white] transition ${className}`}
+      className={`btn-utility w-10 h-10 p-1 hover:drop-shadow-inner-glowWhite transition ${className}`}
     >
       <img src={cancelIcon} alt="Cancel" className="w-full h-full object-contain" />
     </Link>

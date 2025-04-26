@@ -36,6 +36,10 @@ module.exports = {
         glowCyan: '0 0 12px rgba(0, 255, 255, 0.6)', // cyan glow
         glowWhite: '0 0 12px rgba(255, 255, 255, 1)', // white glow
       },
+      dropShadow: {
+        'inner-glowPink': '0 0 8px #FF007F',
+        'inner-glowWhite': '0 0 4px #FFFFFF',
+      },
       borderRadius: {
         DEFAULT: '0.5rem', // applies when using just `rounded`
         xl: '0.5rem',
