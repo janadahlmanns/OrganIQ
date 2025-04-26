@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import PrimaryButton from './PrimaryButton';
 import ProgressBar from './ProgressBar';
 import CancelButton from './CancelButton';
@@ -33,7 +32,6 @@ type Item = {
 };
 
 export default function OrderExercise({ exerciseId, beforeProgress, progressStep, onContinue }: OrderExerciseProps) {
-    const navigate = useNavigate();
     const [items, setItems] = useState<Item[]>([]);
     const [correctOrder, setCorrectOrder] = useState<string[]>([]);
     const [wasCorrect, setWasCorrect] = useState<boolean | null>(null);

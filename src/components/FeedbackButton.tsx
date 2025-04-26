@@ -18,7 +18,7 @@ export default function FeedbackButton({ evaluation, explanation, onContinue, co
         >
             <PrimaryButton
                 onClick={onContinue}
-                variant={correct ? 'cyan' : 'white'}
+                variant={correct ? 'cyan' : 'pink'}
                 active
                 className="w-2/3 mx-auto px-6 py-4 flex flex-col items-center space-y-2 text-base"
             >
