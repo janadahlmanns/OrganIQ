@@ -1,0 +1,28 @@
+{
+  "ordering": [
+    {
+      "id": 15,
+      "question_text": "Put the steps of phototransduction in the correct order.",
+      "items": [
+        "Retinal captures a photon",
+        "cAMP is produced",
+        "Neurotransmitter release decreases",
+        "Ganglion cell fires an action potential"
+    ]
+    },
+    {
+      "id": 16,
+      "question_text": "Put the structures of the respiratory system in order, starting from the nose.",
+    "items": [
+        "Nose",
+        "Nasal cavity",
+        "Pharynx",
+        "Larynx",
+        "Trachea",
+        "Bronchi",
+        "Bronchioles",
+        "Alveoli"
+    ]
+    }
+  ]
+}

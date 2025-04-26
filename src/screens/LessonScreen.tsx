@@ -5,6 +5,7 @@ import Question from '../components/Question';
 import Cloze from '../components/Cloze';
 import TrueFalse from '../components/TrueFalse';
 import Memory from '../components/Memory';
+import OrderExercise from '../components/OrderExercise';
 import SuccessScreen from '../components/SuccessScreen';
 import { useAppDispatch } from '../store/hooks';
 import { completeLesson, perfectLesson, addXP, addCrown, unlockLesson } from '../store/lessonSlice';
@@ -24,7 +25,7 @@ export default function LessonScreen() {
   const topicExercises = exercisesData.exercises
     .filter((e) =>
       e.topic.toLowerCase() === topicId?.toLowerCase() &&
-      ['question', 'cloze', 'truefalse', 'memory'].includes(e.type)
+      ['question', 'cloze', 'truefalse', 'memory', 'ordering'].includes(e.type)
     );
 
   const lessonExercises = useMemo(() => {
@@ -127,6 +128,14 @@ export default function LessonScreen() {
         />
       ) : currentType === 'memory' ? (
         <Memory
+          key={`${currentExerciseId}-${currentIndex}`}
+          exerciseId={currentExerciseId}
+          beforeProgress={progress}
+          progressStep={progressStep}
+          onContinue={handleContinue}
+        />
+      ) : currentType === 'ordering' ? (
+        <OrderExercise
           key={`${currentExerciseId}-${currentIndex}`}
           exerciseId={currentExerciseId}
           beforeProgress={progress}
