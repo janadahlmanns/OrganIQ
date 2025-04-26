@@ -5,6 +5,9 @@ import StatsScreen from './screens/StatsScreen';
 import PreferencesScreen from './screens/PreferencesScreen';
 
 function App() {
+  // 🚨 Temporary for testing:
+  //localStorage.clear();
+
   return (
     <Routes>
       <Route path="/" element={<MainMenuScreen />} />
