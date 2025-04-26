@@ -63,7 +63,7 @@ export default function Question({ exerciseId, beforeProgress, progressStep, onC
     const handleSelect = (index: number) => {
         if (selectedIndex !== null) return;
 
-        const correct = index === correctIndex;
+        const correct = index === shuffledCorrectIndex;
         setSelectedIndex(index);
         setWasCorrect(correct);
         setProgressAfter(Math.min(beforeProgress + progressStep, 100));

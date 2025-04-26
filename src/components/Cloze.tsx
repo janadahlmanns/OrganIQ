@@ -64,7 +64,7 @@ export default function Cloze({ exerciseId, beforeProgress, progressStep, onCont
     const handleSelect = (index: number) => {
         if (selectedIndex !== null) return;
 
-        const correct = index === correctIndex;
+        const correct = index === shuffledCorrectIndex;
         setSelectedIndex(index);
         setWasCorrect(correct);
         setProgressAfter(beforeProgress + progressStep);
