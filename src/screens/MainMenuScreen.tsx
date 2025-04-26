@@ -2,6 +2,10 @@ import { useState } from 'react';
 import { useScreenSize } from '../hooks/useScreenSize';
 import { useAppSelector } from '../store/hooks';
 import { RootState } from '../store';
+import { motion } from 'framer-motion';
+import { revealRight } from '../config/motion';
+import { useFirstVisit } from '../hooks/useFirstVisit';
+
 
 import ScreenLayout from '../components/ScreenLayout';
 import Toast from '../components/Toast';
@@ -18,6 +22,7 @@ export default function MainMenuScreen() {
   const [expandedTopicId, setExpandedTopicId] = useState<string | null>(() => {
     return localStorage.getItem('lastTopicId') || null;
   });
+  const { isFirstVisit, markVisited } = useFirstVisit();
   const crowns = useAppSelector((state) => state.lessons.crowns);
   const [toastMessage, setToastMessage] = useState('');
   const [toastVisible, setToastVisible] = useState(false);
@@ -33,7 +38,16 @@ export default function MainMenuScreen() {
   return (
     <ScreenLayout className="text-white space-y-8">
       <Toast message={toastMessage} visible={toastVisible} />
-      <div className="text-white text-center text-xl font-handwriting mb-6 drop-shadow-inner-glowWhite">
+      <motion.div
+        className="text-white text-center text-xl font-handwriting mb-6 drop-shadow-inner-glowWhite"
+        initial={isFirstVisit ? revealRight.initial : false}
+        animate={isFirstVisit ? revealRight.animate : false}
+        transition={isFirstVisit ? revealRight.transition : undefined}
+        onAnimationComplete={() => {
+          if (isFirstVisit) markVisited();
+        }}
+        style={{ willChange: 'clip-path' }}
+      >
         <span className="inline-flex items-center gap-2 flex-wrap justify-center">
           You have {crowns}
           <img
@@ -43,7 +57,7 @@ export default function MainMenuScreen() {
           />
           Let's play to get more...
         </span>
-      </div>
+      </motion.div>
       <h1 className="text-heading-xl font-bold uppercase text-center section">Topics</h1>
 
       {topics.map((topic, index) => {

@@ -9,3 +9,9 @@ export const fadeSlideIn = {
 export const confettiColorsNormal = ['#FF007F', '#8A2BE2', '#00FFFF', '#FFFFFF'];
 
 export const confettiColorsGolden = ['#FF007F', '#8A2BE2', '#00FFFF', '#FFFFFF', '#cbad09'];
+
+export const revealRight = {
+    initial: { clipPath: 'inset(0 100% 0 0)' }, // Hide from right
+    animate: { clipPath: 'inset(0 0% 0 0)' },    // Reveal fully
+    transition: { duration: 1.2, ease: 'easeOut' },
+};
