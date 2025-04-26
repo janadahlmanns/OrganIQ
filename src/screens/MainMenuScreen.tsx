@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { useScreenSize } from '../hooks/useScreenSize';
-import { topics, lessonIds } from '../data/topics';
-import lessonStates from '../data/lessonStates';
+import { useAppSelector } from '../store/hooks';
+import { RootState } from '../store';
+
 import ScreenLayout from '../components/ScreenLayout';
 import Toast from '../components/Toast';
 import PrimaryButton from '../components/PrimaryButton';
 import LessonButton from '../components/LessonButton';
 import UtilityButton from '../components/UtilityButton';
+
+import { topics, lessonIds } from '../data/topics';
 import crownIcon from '../assets/images/icons/crown_icon.png';
 import lockIcon from '../assets/images/icons/lock_icon.png';
 import checkmarkIcon from '../assets/images/icons/checkmark_icon.png';
@@ -19,6 +22,7 @@ export default function MainMenuScreen() {
   const [toastMessage, setToastMessage] = useState('');
   const [toastVisible, setToastVisible] = useState(false);
   const { isWide, isMedium, isNarrow } = useScreenSize();
+  const lessons = useAppSelector((state: RootState) => state.lessons?.lessons || {});
 
   const showToast = (message: string) => {
     setToastMessage(message);
@@ -35,7 +39,7 @@ export default function MainMenuScreen() {
         // ✅ This helper must be inside so we can use topic.id
         const renderLessonButton = (lessonId: string) => {
           const lessonKey = `${topic.id}-${lessonId}`;
-          const status = lessonStates[lessonKey] || 'uncompleted';
+          const status = lessons[lessonKey] || 'uncompleted';
 
           // Determine props for LessonButton
           const state = status === 'perfect' || status === 'completed'
