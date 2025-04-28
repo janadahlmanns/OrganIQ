@@ -29,6 +29,15 @@ export default function MainMenuScreen() {
   const { isWide, isMedium, isNarrow } = useScreenSize();
   const lessons = useAppSelector((state: RootState) => state.lessons?.lessons || {});
 
+  const calculateTopicProgress = (topicId: string) => {
+    const completedLessons = lessonIds.filter((lessonId) => {
+      const lessonKey = `${topicId}-${lessonId}`;
+      const status = lessons[lessonKey];
+      return status === 'completed' || status === 'perfect';
+    });
+    return completedLessons.length;
+  };
+
   const showToast = (message: string) => {
     setToastMessage(message);
     setToastVisible(true);
@@ -112,10 +121,10 @@ export default function MainMenuScreen() {
               >
                 <span>{topic.name}</span>
                 <span className="text-sm text-white">
-                  {topic.progress === 10 ? (
+                  {calculateTopicProgress(topic.id) === 9 ? (
                     <img src={checkmarkIcon} alt="completed" className="w-5 h-5 inline" />
                   ) : (
-                    `${topic.progress}/10`
+                    `${calculateTopicProgress(topic.id)}/9`
                   )}
                 </span>
               </PrimaryButton>
