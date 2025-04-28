@@ -1,18 +1,15 @@
 export const topics = [
   {
     id: "lungs",
-    name: "Lungs",
-    progress: 10
+    name: "Lungs"
   },
   {
     id: "heart",
-    name: "Heart",
-    progress: 5
+    name: "Heart"
   },
   {
     id: "ear",
-    name: "Ear",
-    progress: 0
+    name: "Ear"
   }
 ];
 
