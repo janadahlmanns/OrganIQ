@@ -26,6 +26,7 @@ type OrderExerciseProps = {
     beforeProgress: number;
     progressStep: number;
     onContinue: (result: { incorrect: boolean; progressAfter: number }) => void;
+    onCancel: () => void;
 };
 
 type Item = {
@@ -33,7 +34,7 @@ type Item = {
     content: string;
 };
 
-export default function OrderExercise({ exerciseId, beforeProgress, progressStep, onContinue }: OrderExerciseProps) {
+export default function OrderExercise({ exerciseId, beforeProgress, progressStep, onContinue, onCancel }: OrderExerciseProps) {
     const [items, setItems] = useState<Item[]>([]);
     const [correctOrder, setCorrectOrder] = useState<string[]>([]);
     const [wasCorrect, setWasCorrect] = useState<boolean | null>(null);
@@ -100,7 +101,7 @@ export default function OrderExercise({ exerciseId, beforeProgress, progressStep
                 <div className="flex-1">
                     <ProgressBar currentProgress={beforeProgress} newProgress={progressAfter} />
                 </div>
-                <CancelButton className="ml-4" />
+                <CancelButton className="ml-4" onClick={onCancel} />
             </div>
 
             {/* Exercise instruction */}

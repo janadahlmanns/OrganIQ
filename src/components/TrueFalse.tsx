@@ -11,9 +11,10 @@ type TrueFalseProps = {
     beforeProgress: number;
     progressStep: number;
     onContinue: (result: { incorrect: boolean; progressAfter: number }) => void;
+    onCancel: () => void;
 };
 
-export default function TrueFalse({ exerciseId, beforeProgress, progressStep, onContinue }: TrueFalseProps) {
+export default function TrueFalse({ exerciseId, beforeProgress, progressStep, onContinue, onCancel }: TrueFalseProps) {
     const questionData = truefalseData.truefalse.find(q => q.id === exerciseId);
     const navigate = useNavigate();
 
@@ -62,7 +63,7 @@ export default function TrueFalse({ exerciseId, beforeProgress, progressStep, on
                         newProgress={progressAfter}
                     />
                 </div>
-                <CancelButton className="ml-4" />
+                <CancelButton className="ml-4" onClick={onCancel} />
             </div>
 
             {/* Question and options */}

@@ -12,6 +12,7 @@ type MemoryProps = {
     beforeProgress: number;
     progressStep: number;
     onContinue: (result: { incorrect: boolean; progressAfter: number }) => void;
+    onCancel: () => void;
 };
 
 type CardType = {
@@ -32,7 +33,7 @@ function shuffleArray<T>(array: T[]): T[] {
     return arr;
 }
 
-export default function Memory({ exerciseId, beforeProgress, progressStep, onContinue }: MemoryProps) {
+export default function Memory({ exerciseId, beforeProgress, progressStep, onContinue, onCancel }: MemoryProps) {
     const questionData = memoriesData.memory_pairs.find(q => q.id === exerciseId);
     const navigate = useNavigate();
 
@@ -172,7 +173,7 @@ export default function Memory({ exerciseId, beforeProgress, progressStep, onCon
                         newProgress={progressAfter}
                     />
                 </div>
-                <CancelButton className="ml-4" />
+                <CancelButton className="ml-4" onClick={onCancel} />
             </div>
 
             {/* Prompt */}
