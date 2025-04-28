@@ -11,9 +11,10 @@ type ClozeProps = {
     beforeProgress: number;
     progressStep: number;
     onContinue: (result: { incorrect: boolean; progressAfter: number }) => void;
+    onCancel: () => void;
 };
 
-export default function Cloze({ exerciseId, beforeProgress, progressStep, onContinue }: ClozeProps) {
+export default function Cloze({ exerciseId, beforeProgress, progressStep, onContinue, onCancel }: ClozeProps) {
     const questionData = clozesData.clozes.find(q => q.id === exerciseId);
     const navigate = useNavigate();
 
@@ -78,7 +79,7 @@ export default function Cloze({ exerciseId, beforeProgress, progressStep, onCont
                         newProgress={progressAfter}
                     />
                 </div>
-                <CancelButton className="ml-4" />
+                <CancelButton className="ml-4" onClick={onCancel} />
             </div>
 
             {/* Question and options */}

@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import ExerciseStage from '../components/ExerciseStage';
 import Question from '../components/Question';
@@ -10,36 +10,59 @@ import SuccessScreen from '../components/SuccessScreen';
 import { useAppDispatch } from '../store/hooks';
 import { completeLesson, perfectLesson, addXP, addCrown, unlockLesson } from '../store/lessonSlice';
 
-
 import exercisesData from '../data/exercises.json';
+import { loadLessonProgress, saveLessonProgress, clearLessonProgress } from '../utils/lessonProgressStorage';
 
 export default function LessonScreen() {
   const { topicId, lessonId } = useParams();
   const LESSON_LENGTH = 3;
-
+  const dispatch = useAppDispatch();
+  const [lessonExercises, setLessonExercises] = useState<number[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [incorrectIds, setIncorrectIds] = useState<number[]>([]);
   const [progress, setProgress] = useState(0);
-  const dispatch = useAppDispatch();
 
-  const topicExercises = exercisesData.exercises
-    .filter((e) =>
+  const topicExercises = exercisesData.exercises.filter(
+    (e) =>
       e.topic.toLowerCase() === topicId?.toLowerCase() &&
       ['question', 'cloze', 'truefalse', 'memory', 'ordering'].includes(e.type)
-    );
+  );
 
-  const lessonExercises = useMemo(() => {
-    if (topicExercises.length === 0) return [];
+  useEffect(() => {
+    const savedProgress = loadLessonProgress();
 
-    const shuffled = [...topicExercises].sort(() => Math.random() - 0.5);
-    const chosen: number[] = [];
+    if (savedProgress && topicExercises.length > 0) {
+      setLessonExercises(savedProgress.lessonExercises);
+      setCurrentIndex(savedProgress.currentIndex);
+      +   setProgress((savedProgress.currentIndex / LESSON_LENGTH) * 100); // ✅ THIS is missing
+    } else if (topicExercises.length > 0) {
+      const shuffled = [...topicExercises].sort(() => Math.random() - 0.5);
+      const chosen: number[] = [];
 
-    while (chosen.length < LESSON_LENGTH) {
-      const next = shuffled[chosen.length % shuffled.length]; // modulo = safely loops over
-      chosen.push(next.id);
+      while (chosen.length < LESSON_LENGTH) {
+        const next = shuffled[chosen.length % shuffled.length];
+        chosen.push(next.id);
+      }
+
+      setLessonExercises(chosen);
+      setCurrentIndex(0);
+      setProgress(0); // ✅ Also set initial progress to 0
+
+      saveLessonProgress({
+        lessonExercises: chosen,
+        currentIndex: 0,
+      });
     }
-    return chosen;
-  }, [topicExercises]);
+  }, []);
+
+  useEffect(() => {
+    if (lessonExercises.length > 0) {
+      saveLessonProgress({
+        lessonExercises,
+        currentIndex,
+      });
+    }
+  }, [lessonExercises, currentIndex]);
 
   const currentExerciseId = lessonExercises[currentIndex];
   const isLessonComplete = currentIndex >= LESSON_LENGTH;
@@ -68,6 +91,10 @@ export default function LessonScreen() {
     }
   };
 
+  const handleCancel = () => {
+    clearLessonProgress();
+  };
+
   const handleLessonComplete = () => {
     if (!topicId || !lessonId) return;
 
@@ -88,6 +115,8 @@ export default function LessonScreen() {
         dispatch(unlockLesson(`${topicId}-${nextLessonId}`));
       }
     }
+
+    clearLessonProgress();
   };
 
   useEffect(() => {
@@ -98,9 +127,6 @@ export default function LessonScreen() {
 
   const currentExercise = topicExercises.find((e) => e.id === currentExerciseId);
   const currentType = currentExercise?.type ?? 'question';
-
-
-
 
   return (
     <ExerciseStage>
@@ -117,6 +143,7 @@ export default function LessonScreen() {
           beforeProgress={progress}
           progressStep={progressStep}
           onContinue={handleContinue}
+          onCancel={handleCancel}
         />
       ) : currentType === 'truefalse' ? (
         <TrueFalse
@@ -125,6 +152,7 @@ export default function LessonScreen() {
           beforeProgress={progress}
           progressStep={progressStep}
           onContinue={handleContinue}
+          onCancel={handleCancel}
         />
       ) : currentType === 'memory' ? (
         <Memory
@@ -133,6 +161,7 @@ export default function LessonScreen() {
           beforeProgress={progress}
           progressStep={progressStep}
           onContinue={handleContinue}
+          onCancel={handleCancel}
         />
       ) : currentType === 'ordering' ? (
         <OrderExercise
@@ -141,6 +170,7 @@ export default function LessonScreen() {
           beforeProgress={progress}
           progressStep={progressStep}
           onContinue={handleContinue}
+          onCancel={handleCancel}
         />
       ) : (
         <Question
@@ -149,6 +179,7 @@ export default function LessonScreen() {
           beforeProgress={progress}
           progressStep={progressStep}
           onContinue={handleContinue}
+          onCancel={handleCancel}
         />
       )}
     </ExerciseStage>

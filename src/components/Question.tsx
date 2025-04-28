@@ -11,9 +11,10 @@ type QuestionProps = {
     beforeProgress: number;
     progressStep: number;
     onContinue: (result: { incorrect: boolean; progressAfter: number }) => void;
+    onCancel: () => void;
 };
 
-export default function Question({ exerciseId, beforeProgress, progressStep, onContinue }: QuestionProps) {
+export default function Question({ exerciseId, beforeProgress, progressStep, onContinue, onCancel }: QuestionProps) {
     const questionData = questionsData.questions.find(q => q.id === exerciseId);
     const navigate = useNavigate();
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -65,7 +66,6 @@ export default function Question({ exerciseId, beforeProgress, progressStep, onC
         setSelectedIndex(index);
         setWasCorrect(correct);
         setProgressAfter(Math.min(beforeProgress + progressStep, 100));
-
     };
 
     return (
@@ -78,7 +78,7 @@ export default function Question({ exerciseId, beforeProgress, progressStep, onC
                         newProgress={progressAfter}
                     />
                 </div>
-                <CancelButton className="ml-4" />
+                <CancelButton className="ml-4" onClick={onCancel} />
             </div>
 
             {/* Question and options */}
