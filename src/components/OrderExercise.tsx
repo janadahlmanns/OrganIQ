@@ -39,6 +39,7 @@ export default function OrderExercise({ exerciseId, beforeProgress, progressStep
     const [wasCorrect, setWasCorrect] = useState<boolean | null>(null);
     const [progressAfter, setProgressAfter] = useState<number>(beforeProgress);
     const [isEvaluated, setIsEvaluated] = useState<boolean>(false);
+    const [questionText, setQuestionText] = useState<string>('');
 
     useEffect(() => {
         const exercise = orderingData.ordering.find((ex) => ex.id === exerciseId);
@@ -53,6 +54,7 @@ export default function OrderExercise({ exerciseId, beforeProgress, progressStep
         const shuffledItems = [...correctItems].sort(() => Math.random() - 0.5);
         setItems(shuffledItems);
 
+        setQuestionText(exercise.question_text); // ✅ New line: set instruction text
         setProgressAfter(beforeProgress);
         setWasCorrect(null);
         setIsEvaluated(false);
@@ -104,7 +106,7 @@ export default function OrderExercise({ exerciseId, beforeProgress, progressStep
             {/* Exercise instruction */}
             <div className="text-center mb-6">
                 <h2 className="text-heading-xl font-bold">
-                    Arrange the items in the correct order:
+                    {questionText}
                 </h2>
             </div>
 
