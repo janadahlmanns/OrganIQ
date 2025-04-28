@@ -46,6 +46,7 @@ export default function ExerciseLabel({ id, content, variant = 'native', disable
                 transition,
                 willChange: 'transform',
                 opacity: isDragging ? 0.8 : 1,
+                touchAction: 'none', // 🚨 Add this line
             }}
             {...(disabled ? {} : attributes)}
             {...(disabled ? {} : listeners)}

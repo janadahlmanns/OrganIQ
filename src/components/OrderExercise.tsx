@@ -10,9 +10,11 @@ import {
     DndContext,
     closestCorners,
     PointerSensor,
+    TouchSensor,
     useSensor,
     useSensors,
 } from '@dnd-kit/core';
+
 import {
     arrayMove,
     SortableContext,
@@ -82,7 +84,10 @@ export default function OrderExercise({ exerciseId, beforeProgress, progressStep
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
-            activationConstraint: { distance: 1 },
+            activationConstraint: { distance: 1 }, // Desktop interaction
+        }),
+        useSensor(TouchSensor, {
+            activationConstraint: { delay: 100, tolerance: 5 }, // Mobile interaction
         })
     );
 
