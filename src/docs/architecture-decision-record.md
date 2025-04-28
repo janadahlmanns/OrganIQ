@@ -34,20 +34,27 @@ To ensure a unified design language and minimize hardcoded values, styling will 
 Accepted
 
 ### Context
-The legacy drag-and-drop (DnD) logic was based on native HTML5 DnD and/or older libraries like sortablejs, lacking mobile support.
+The legacy drag-and-drop (DnD) logic was based on native HTML5 DnD and/or older libraries like sortablejs, lacking mobile support. A modern, cross-device capable solution is needed for OrganIQ.
 
 ### Decision
-- Adopt `@dnd-kit/core` and `@dnd-kit/sortable` for drag-and-drop functionality.
-- Old DnD systems are considered deprecated and will be removed.
-- Full touch-native DnD support is now mandatory.
+- Adopted packages:
+  - `@dnd-kit/core`
+  - `@dnd-kit/sortable`
+  - `@dnd-kit/modifiers` (planned for future auto-scroll or custom behaviors)
+- Sensors configured:
+  - **Desktop:** `PointerSensor` with `activationConstraint: { distance: 1 }`
+  - **Mobile:** `TouchSensor` with `activationConstraint: { delay: 100, tolerance: 5 }`
+- CSS behavior:
+  - Apply `touch-action: none` to draggable elements to prevent mobile browsers from interpreting drag gestures as scroll gestures.
 
 ### Consequences
-- Consistent behavior across desktop and mobile.
-- Cleaner modular DnD architecture.
-- Small initial rework required on OrderingExercise.
+- Smooth, native-feeling drag-and-drop interactions on both desktop and mobile browsers.
+- Normal page scrolling remains functional when not interacting with draggable elements.
+- Auto-scrolling during drag (at screen edges) is not yet implemented; if needed, it will be added later using `@dnd-kit/modifiers`.
+- No additional packages required beyond the dnd-kit suite.
 
 ### Date
-2025-04-28
+2025-04-28 (Updated 2025-04-29 for mobile touch support clarification)
 
 ---
 
