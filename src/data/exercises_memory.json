@@ -15,7 +15,9 @@
         { "cardA": { "type": "image", "value": "cochlea.png" }, "cardB": { "type": "image", "value": "cochlea.png" } },
         { "cardA": { "type": "image", "value": "ossicles.png" }, "cardB": { "type": "image", "value": "ossicles.png" } },
         { "cardA": { "type": "image", "value": "hair_cell.png" }, "cardB": { "type": "image", "value": "hair_cell.png" } },
-        { "cardA": { "type": "image", "value": "stapes.png" }, "cardB": { "type": "image", "value": "stapes.png" } }
+        { "cardA": { "type": "image", "value": "stapes.png" }, "cardB": { "type": "image", "value": "stapes.png" } },
+        { "cardA": { "type": "image", "value": "eardrum.png" }, "cardB": { "type": "image", "value": "eardrum.png" } },
+        { "cardA": { "type": "image", "value": "semicircular_ducts.png" }, "cardB": { "type": "image", "value": "semicircular_ducts.png" } }
       ]
     },
     {
@@ -24,7 +26,9 @@
         { "cardA": { "type": "image", "value": "cochlea.png" }, "cardB": { "type": "text", "value": "Cochlea" } },
         { "cardA": { "type": "image", "value": "ossicles.png" }, "cardB": { "type": "text", "value": "Ossicles" } },
         { "cardA": { "type": "image", "value": "stapes.png" }, "cardB": { "type": "text", "value": "Stapes" } },
-        { "cardA": { "type": "image", "value": "hair_cell.png" }, "cardB": { "type": "text", "value": "Hair Cell" } }
+        { "cardA": { "type": "image", "value": "hair_cell.png" }, "cardB": { "type": "text", "value": "Hair Cell" } },
+        { "cardA": { "type": "image", "value": "eardrum.png" }, "cardB": { "type": "text", "value": "Eardrum" } },
+        { "cardA": { "type": "image", "value": "semicircular_ducts.png" }, "cardB": { "type": "text", "value": "Semicircular ducts" } }
       ]
     }
   ]

@@ -14,7 +14,7 @@
       { "id": 12, "topic": "Ear", "difficulty": 2, "type": "truefalse" },
       { "id": 13, "topic": "Ear", "difficulty": 2, "type": "memory" },
       { "id": 14, "topic": "Ear", "difficulty": 2, "type": "memory" },
-      { "id": 15, "topic": "Lungs", "difficulty": 2, "type": "ordering" },
+      { "id": 15, "topic": "Eyes", "difficulty": 2, "type": "ordering" },
       { "id": 16, "topic": "Lungs", "difficulty": 2, "type": "ordering" }
     ]
   }
