@@ -83,13 +83,14 @@ export default function MainMenuScreen() {
             ? () => showToast('Lesson locked. Complete previous lessons first.')
             : undefined;
 
-          const content = status === 'perfect'
-            ? { icon: "/images/icons/crown_icon.png", alt: 'perfect' }
-            : status === 'locked'
-              ? { icon: "/images/icons/lock_icon.png", alt: 'locked' }
-              : lessonId === 'review'
-                ? 'R'
-                : lessonId.padStart(2, '0');
+          const content =
+            lessonId === 'review'
+              ? { icon: "/images/icons/review_icon.png", alt: 'review', fallback: 'R' }
+              : status === 'perfect'
+                ? { icon: "/images/icons/crown_icon.png", alt: 'perfect', fallback: lessonId.padStart(2, '0') }
+                : status === 'locked'
+                  ? { icon: "/images/icons/lock_icon.png", alt: 'locked', fallback: lessonId.padStart(2, '0') }
+                  : { fallback: lessonId.padStart(2, '0') };
 
           return (
               <LessonButton
