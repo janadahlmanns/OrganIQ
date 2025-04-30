@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import cancelIcon from '../assets/images/icons/cancel_icon.png';
 
 type CancelButtonProps = {
   to?: string;          // default target route ("/")
@@ -14,7 +13,7 @@ export default function CancelButton({ to = "/", className = "", onClick }: Canc
       className={`btn-utility w-10 h-10 p-1 hover:drop-shadow-inner-glowWhite transition ${className}`}
       onClick={onClick}
     >
-      <img src={cancelIcon} alt="Cancel" className="w-full h-full object-contain" />
+      <img src="/images/icons/cancel_icon.png" alt="Cancel" className="w-full h-full object-contain" />
     </Link>
   );
 }

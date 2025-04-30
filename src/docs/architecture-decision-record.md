@@ -191,3 +191,27 @@ Managing human+AI collaboration at a high professional standard requires strict 
 2025-04-28
 
 ---
+## ADR-009: Image Preloading Strategy
+
+### Status
+Accepted
+
+### Context
+OrganIQ relies on consistent, visually engaging image assets across all screens, including memory exercises, UI icons, and success animations. During early testing, image load delays negatively impacted perceived quality. A balanced image preloading strategy was needed to ensure a smooth user experience without wasting bandwidth or introducing unnecessary complexity.
+
+### Decision
+- **Critical UI images** (icons, memory card backs) are preloaded using `<link rel="preload">` tags in `index.html`.
+- **All other images** (e.g. memory card fronts, topic-specific exercise visuals) remain in `/public/images/...` and are **not** preloaded via `<head>`.
+- Instead, components dynamically preload images using `new Image().src = ...` immediately upon mounting, warming up the cache before user interaction.
+- The `src/assets/images/` folder was deprecated in favor of `public/images/` to allow predictable URL-based access and direct preloading.
+- No image imports are used in components; all image paths are resolved as static URLs.
+
+### Consequences
+- ✅ Smooth, delay-free transitions for memory cards and visual elements
+- ✅ No unnecessary preloads for unused lessons or exercises
+- ✅ Full control over when and how each image is cached
+- ✅ Compatible with browser caching and DevTools inspection
+- ⚠️ Vite’s asset pipeline is bypassed for these images, so compression must be handled manually if needed
+
+### Date
+2025-04-29

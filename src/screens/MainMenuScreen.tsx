@@ -14,9 +14,6 @@ import LessonButton from '../components/LessonButton';
 import UtilityButton from '../components/UtilityButton';
 
 import { topics, lessonIds } from '../data/topics';
-import crownIcon from '../assets/images/icons/crown_icon.png';
-import lockIcon from '../assets/images/icons/lock_icon.png';
-import checkmarkIcon from '../assets/images/icons/checkmark_icon.png';
 
 export default function MainMenuScreen() {
   const [expandedTopicId, setExpandedTopicId] = useState<string | null>(() => {
@@ -60,7 +57,7 @@ export default function MainMenuScreen() {
         <span className="inline-flex items-center gap-2 flex-wrap justify-center">
           You have {crowns}
           <img
-            src={crownIcon}
+            src="/images/icons/crown_icon.png"
             alt="Crown"
             className="w-6 h-6 inline-block drop-shadow-inner-glowPink"
           />
@@ -70,7 +67,6 @@ export default function MainMenuScreen() {
       <h1 className="text-heading-xl font-bold uppercase text-center section">Topics</h1>
 
       {topics.map((topic, index) => {
-        // ✅ This helper must be inside so we can use topic.id
         const renderLessonButton = (lessonId: string) => {
           const lessonKey = `${topic.id}-${lessonId}`;
           const status = lessons[lessonKey] || 'uncompleted';
@@ -88,9 +84,9 @@ export default function MainMenuScreen() {
             : undefined;
 
           const content = status === 'perfect'
-            ? { icon: crownIcon, alt: 'perfect' }
+            ? { icon: "/images/icons/crown_icon.png", alt: 'perfect' }
             : status === 'locked'
-              ? { icon: lockIcon, alt: 'locked' }
+              ? { icon: "/images/icons/lock_icon.png", alt: 'locked' }
               : lessonId === 'review'
                 ? 'R'
                 : lessonId.padStart(2, '0');
@@ -122,7 +118,7 @@ export default function MainMenuScreen() {
                 <span>{topic.name}</span>
                 <span className="text-sm text-white">
                   {calculateTopicProgress(topic.id) === 9 ? (
-                    <img src={checkmarkIcon} alt="completed" className="w-5 h-5 inline" />
+                    <img src="/images/icons/checkmark_icon.png" alt="completed" className="w-5 h-5 inline" />
                   ) : (
                     `${calculateTopicProgress(topic.id)}/9`
                   )}

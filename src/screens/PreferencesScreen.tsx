@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useAppDispatch } from '../store/hooks';
 import { resetProgress } from '../store/lessonSlice';
 import UtilityButton from '../components/UtilityButton';
-import Toast from '../components/Toast'; // if you want a nice reset confirmation
+import Toast from '../components/Toast';
 
 
 export default function PreferencesScreen() {
