@@ -5,7 +5,7 @@ type LessonButtonProps = {
     to?: string;
     onClick?: () => void;
     state?: 'active' | 'inactive' | undefined;
-    content: string | { icon: string; alt: string; fallback: string };
+    content: string | { fallback: string; icon?: string; alt?: string };
     className?: string;
 };
 
