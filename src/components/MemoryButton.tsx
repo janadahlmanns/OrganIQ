@@ -2,9 +2,6 @@ import { useParams } from 'react-router-dom';
 import { motion, useAnimation } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import PrimaryButton from './PrimaryButton';
-import memoryBackside from '../assets/images/exercises/memory_backside.png';
-
-const exerciseImages = import.meta.glob('/src/assets/images/exercises/**/*.{png,jpg,jpeg}', { eager: true, import: 'default' }) as Record<string, string>;
 
 type MemoryButtonProps = {
     side?: 'front' | 'back';
@@ -27,7 +24,7 @@ export default function MemoryButton({
 }: MemoryButtonProps) {
     const { topicId } = useParams();
     const resolvedSrc = topicId
-        ? exerciseImages[`/src/assets/images/exercises/${topicId}/${frontValue}`]
+        ? `/images/exercises/${topicId}/${frontValue}`
         : undefined;
 
     const controls = useAnimation();
@@ -63,6 +60,13 @@ export default function MemoryButton({
         animateSequence();
     }, [side, solved, controls]);
 
+    useEffect(() => {
+        if (frontType === 'image' && topicId && frontValue) {
+            const preload = new Image();
+            preload.src = `/images/exercises/${topicId}/${frontValue}`;
+        }
+    }, [frontType, topicId, frontValue]);
+
     const content = showFront
         ? frontType === 'image'
             ? <img src={resolvedSrc || ''} alt="" className="w-full h-full object-cover" />
@@ -71,7 +75,7 @@ export default function MemoryButton({
                     {frontValue}
                 </span>
             </div>
-        : <img src={memoryBackside} alt="Memory Card Backside" className="w-full h-full object-cover" />;
+        : <img src="/images/exercises/memory_backside.png" alt="Memory Card Backside" className="w-full h-full object-cover" />;
 
     return (
         <motion.div

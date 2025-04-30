@@ -5,10 +5,6 @@ import confetti from 'canvas-confetti';
 import { confettiColorsNormal, confettiColorsGolden } from '../config/motion'
 import { motion } from 'framer-motion';
 
-import happyHeart from '../assets/images/characters/happy_heart.png';
-import happyLungs from '../assets/images/characters/happy_lungs.png';
-import happyEar from '../assets/images/characters/happy_ear.png';
-import crownIcon from '../assets/images/icons/crown_icon.png';
 
 type SuccessScreenProps = {
     topicId: string;
@@ -51,13 +47,13 @@ export default function SuccessScreen({ topicId, lessonLength, incorrectIds }: S
     const getHappyImage = (topicId: string) => {
         switch (topicId.toLowerCase()) {
             case 'heart':
-                return happyHeart;
+                return "/images/characters/happy_heart.png";
             case 'lungs':
-                return happyLungs;
+                return "/images/characters/happy_lungs.png";
             case 'ear':
-                return happyEar;
+                return "/images/characters/happy_ear.png";
             default:
-                return happyHeart;
+                return "/images/characters/happy_heart.png";
         }
     };
 
@@ -87,7 +83,7 @@ export default function SuccessScreen({ topicId, lessonLength, incorrectIds }: S
                     <div className="text-xl font-bold text-white">Perfect Score</div>
                     <div className="flex items-center justify-center space-x-3">
                         <motion.img
-                            src={crownIcon}
+                            src="/images/icons/crown_icon.png"
                             alt="Crown"
                             className="w-8 h-8 drop-shadow-inner-glowPink"
                             style={{transformStyle: 'preserve-3d' }}
