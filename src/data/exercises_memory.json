@@ -1,0 +1,35 @@
+{
+  "memory_pairs": [
+    {
+      "id": 4,
+      "pairs": [
+        { "cardA": { "type": "text", "value": "Aorta" }, "cardB": { "type": "text", "value": "Main artery" } },
+        { "cardA": { "type": "text", "value": "Vena cava" }, "cardB": { "type": "text", "value": "Main vein" } },
+        { "cardA": { "type": "text", "value": "AV node" }, "cardB": { "type": "text", "value": "Delays conduction" } },
+        { "cardA": { "type": "text", "value": "Sinoatrial node" }, "cardB": { "type": "text", "value": "Pacemaker of the heart" } }
+      ]
+    },
+    {
+      "id": 13,
+      "pairs": [
+        { "cardA": { "type": "image", "value": "cochlea.png" }, "cardB": { "type": "image", "value": "cochlea.png" } },
+        { "cardA": { "type": "image", "value": "ossicles.png" }, "cardB": { "type": "image", "value": "ossicles.png" } },
+        { "cardA": { "type": "image", "value": "hair_cell.png" }, "cardB": { "type": "image", "value": "hair_cell.png" } },
+        { "cardA": { "type": "image", "value": "stapes.png" }, "cardB": { "type": "image", "value": "stapes.png" } },
+        { "cardA": { "type": "image", "value": "eardrum.png" }, "cardB": { "type": "image", "value": "eardrum.png" } },
+        { "cardA": { "type": "image", "value": "semicircular_ducts.png" }, "cardB": { "type": "image", "value": "semicircular_ducts.png" } }
+      ]
+    },
+    {
+      "id": 14,
+      "pairs": [
+        { "cardA": { "type": "image", "value": "cochlea.png" }, "cardB": { "type": "text", "value": "Cochlea" } },
+        { "cardA": { "type": "image", "value": "ossicles.png" }, "cardB": { "type": "text", "value": "Ossicles" } },
+        { "cardA": { "type": "image", "value": "stapes.png" }, "cardB": { "type": "text", "value": "Stapes" } },
+        { "cardA": { "type": "image", "value": "hair_cell.png" }, "cardB": { "type": "text", "value": "Hair Cell" } },
+        { "cardA": { "type": "image", "value": "eardrum.png" }, "cardB": { "type": "text", "value": "Eardrum" } },
+        { "cardA": { "type": "image", "value": "semicircular_ducts.png" }, "cardB": { "type": "text", "value": "Semicircular ducts" } }
+      ]
+    }
+  ]
+}

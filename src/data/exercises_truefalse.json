@@ -1,0 +1,16 @@
+{
+    "truefalse": [
+      {
+        "id": 11,
+        "question_text": "The basilar membrane in the cochlea vibrates uniformly along its entire length in response to all sound frequencies.",
+        "correction": "Different parts of the basilar membrane are tuned to different frequencies — high frequencies near the base, low frequencies near the apex.",
+        "correct_option": false
+      },
+      {
+        "id": 12,
+        "question_text": "The inner hair cells of the cochlea are primarily responsible for converting mechanical sound vibrations into electrical signals that the brain can interpret.",
+        "correction": "",
+        "correct_option": true
+      }
+    ]
+  }
