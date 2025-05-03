@@ -6,6 +6,7 @@ import Cloze from '../components/Cloze';
 import TrueFalse from '../components/TrueFalse';
 import Memory from '../components/Memory';
 import OrderExercise from '../components/OrderExercise';
+import SliderExercise from '../components/SliderExercise';
 import SuccessScreen from '../components/SuccessScreen';
 import { useAppDispatch } from '../store/hooks';
 import { completeLesson, perfectLesson, addXP, addCrown, unlockLesson } from '../store/lessonSlice';
@@ -25,7 +26,7 @@ export default function LessonScreen() {
   const topicExercises = exercisesData.exercises.filter(
     (e) =>
       e.topic.toLowerCase() === topicId?.toLowerCase() &&
-      ['question', 'cloze', 'truefalse', 'memory', 'ordering'].includes(e.type)
+      ['question', 'cloze', 'truefalse', 'memory', 'ordering', 'slider'].includes(e.type)
   );
 
   useEffect(() => {
@@ -34,7 +35,7 @@ export default function LessonScreen() {
     if (savedProgress && topicExercises.length > 0) {
       setLessonExercises(savedProgress.lessonExercises);
       setCurrentIndex(savedProgress.currentIndex);
-      +   setProgress((savedProgress.currentIndex / LESSON_LENGTH) * 100); // ✅ THIS is missing
+      +   setProgress((savedProgress.currentIndex / LESSON_LENGTH) * 100); 
     } else if (topicExercises.length > 0) {
       const shuffled = [...topicExercises].sort(() => Math.random() - 0.5);
       const chosen: number[] = [];
@@ -172,6 +173,15 @@ export default function LessonScreen() {
           onContinue={handleContinue}
           onCancel={handleCancel}
         />
+      ) : currentType === 'slider' ? (
+        <SliderExercise
+          key={`${currentExerciseId}-${currentIndex}`}
+          exerciseId={currentExerciseId}
+          beforeProgress={progress}
+          progressStep={progressStep}
+          onContinue={handleContinue}
+          onCancel={handleCancel}
+        />
       ) : (
         <Question
           key={`${currentExerciseId}-${currentIndex}`}
@@ -183,5 +193,5 @@ export default function LessonScreen() {
         />
       )}
     </ExerciseStage>
-  );
+  );  
 }

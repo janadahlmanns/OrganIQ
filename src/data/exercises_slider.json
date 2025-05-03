@@ -1,0 +1,15 @@
+{
+    "slider": [
+      {
+        "id": 18,
+        "prompt": "Placeholder: Pick a high two digit number?",
+        "min": 1,
+        "max": 200,
+        "correct": 75,
+        "tolerance": 24,
+        "unit": "N",
+        "explanation": "High numbers are 50 through 99."
+      }
+    ]
+  }
+  
