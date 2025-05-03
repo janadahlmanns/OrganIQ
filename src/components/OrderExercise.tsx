@@ -31,10 +31,17 @@ type OrderExerciseProps = {
 
 type Item = {
     id: string;
-    content: string;
+    content?: string;
+    image?: string;
 };
 
-export default function OrderExercise({ exerciseId, beforeProgress, progressStep, onContinue, onCancel }: OrderExerciseProps) {
+export default function OrderExercise({
+    exerciseId,
+    beforeProgress,
+    progressStep,
+    onContinue,
+    onCancel,
+}: OrderExerciseProps) {
     const [items, setItems] = useState<Item[]>([]);
     const [correctOrder, setCorrectOrder] = useState<string[]>([]);
     const [wasCorrect, setWasCorrect] = useState<boolean | null>(null);
@@ -46,16 +53,28 @@ export default function OrderExercise({ exerciseId, beforeProgress, progressStep
         const exercise = orderingData.ordering.find((ex) => ex.id === exerciseId);
         if (!exercise) return;
 
-        const correctItems = exercise.items.map((text, index) => ({
-            id: String(index),
-            content: text,
-        }));
+        const isImageType = exercise.type === 'image';
+        const correctItems: Item[] = exercise.items.map((item: string, index: number) => {
+            return isImageType
+                ? { id: String(index), image: `/images/exercises/${item}` }
+                : { id: String(index), content: item };
+        });
 
-        setCorrectOrder(correctItems.map(item => item.id));
+        setCorrectOrder(correctItems.map((item) => item.id));
+
         const shuffledItems = [...correctItems].sort(() => Math.random() - 0.5);
         setItems(shuffledItems);
 
-        setQuestionText(exercise.question_text); // ✅ New line: set instruction text
+        if (isImageType) {
+            correctItems.forEach((item) => {
+                if (item.image) {
+                    const img = new Image();
+                    img.src = item.image;
+                }
+            });
+        }
+
+        setQuestionText(exercise.question_text);
         setProgressAfter(beforeProgress);
         setWasCorrect(null);
         setIsEvaluated(false);
@@ -64,7 +83,7 @@ export default function OrderExercise({ exerciseId, beforeProgress, progressStep
     const handleEvaluate = () => {
         if (isEvaluated) return;
 
-        const currentOrder = items.map(item => item.id);
+        const currentOrder = items.map((item) => item.id);
         const isCorrect = JSON.stringify(currentOrder) === JSON.stringify(correctOrder);
 
         setWasCorrect(isCorrect);
@@ -74,9 +93,7 @@ export default function OrderExercise({ exerciseId, beforeProgress, progressStep
 
     const handleDragEnd = (event: any) => {
         const { active, over } = event;
-        if (!over || active.id === over.id) {
-            return;
-        }
+        if (!over || active.id === over.id) return;
 
         const oldIndex = items.findIndex((item) => item.id === active.id);
         const newIndex = items.findIndex((item) => item.id === over.id);
@@ -86,17 +103,12 @@ export default function OrderExercise({ exerciseId, beforeProgress, progressStep
     };
 
     const sensors = useSensors(
-        useSensor(PointerSensor, {
-            activationConstraint: { distance: 1 }, // Desktop interaction
-        }),
-        useSensor(TouchSensor, {
-            activationConstraint: { delay: 100, tolerance: 5 }, // Mobile interaction
-        })
+        useSensor(PointerSensor, { activationConstraint: { distance: 1 } }),
+        useSensor(TouchSensor, { activationConstraint: { delay: 100, tolerance: 5 } })
     );
 
     return (
         <div className="w-full max-w-[480px] mx-auto px-4 pt-4 flex flex-col flex-1 font-sans text-white">
-            {/* Top bar with progress and cancel */}
             <div className="flex items-center justify-between mb-6">
                 <div className="flex-1">
                     <ProgressBar currentProgress={beforeProgress} newProgress={progressAfter} />
@@ -104,14 +116,10 @@ export default function OrderExercise({ exerciseId, beforeProgress, progressStep
                 <CancelButton className="ml-4" onClick={onCancel} />
             </div>
 
-            {/* Exercise instruction */}
             <div className="text-center mb-6">
-                <h2 className="text-heading-xl font-bold">
-                    {questionText}
-                </h2>
+                <h2 className="text-heading-xl font-bold">{questionText}</h2>
             </div>
 
-            {/* Drag and drop area */}
             <DndContext
                 sensors={sensors}
                 collisionDetection={closestCorners}
@@ -123,10 +131,12 @@ export default function OrderExercise({ exerciseId, beforeProgress, progressStep
                 >
                     <div className="relative flex flex-col gap-4 mb-6">
                         {items.map((item, index) => (
+                            <div className="flex justify-center">
                             <ExerciseLabel
                                 key={item.id}
                                 id={item.id}
                                 content={item.content}
+                                image={item.image}
                                 disabled={isEvaluated}
                                 variant={
                                     !isEvaluated
@@ -136,18 +146,17 @@ export default function OrderExercise({ exerciseId, beforeProgress, progressStep
                                             : 'incorrect'
                                 }
                             />
+                            </div>
                         ))}
                     </div>
                 </SortableContext>
             </DndContext>
 
-            {/* Done button */}
             {!isEvaluated && (
                 <PrimaryButton onClick={handleEvaluate} className="mx-auto w-2/3 !justify-center">
                     Done
                 </PrimaryButton>
             )}
-            {/* Feedback after evaluation */}
             {wasCorrect !== null && (
                 <FeedbackButton
                     evaluation={wasCorrect ? 'Correct!' : 'Incorrect!'}
