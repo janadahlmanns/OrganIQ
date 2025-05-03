@@ -3,6 +3,7 @@
     {
       "id": 15,
       "question_text": "Put the steps of phototransduction in chronological order.",
+      "type": "text",
       "items": [
         "Retinal captures a photon",
         "cAMP is produced",
@@ -13,6 +14,7 @@
     {
       "id": 16,
       "question_text": "Put the structures of the respiratory system in order, starting from the nose.",
+      "type": "text",
     "items": [
         "Nose",
         "Nasal cavity",
@@ -22,6 +24,17 @@
         "Bronchi",
         "Bronchioles",
         "Alveoli"
+    ]
+    },
+    {
+      "id": 17,
+      "question_text": "Put these in ascending order.",
+      "type": "image",
+    "items": [
+        "ear/test_one.png",
+        "ear/test_two.png",
+        "ear/test_three.png",
+        "ear/test_four.png"
     ]
     }
   ]
