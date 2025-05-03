@@ -1,1 +1,29 @@
-docs/
+# Exclude node dependencies and logs
+node_modules/
+*.log
+*.tgz
+.pnpm-debug.log*
+
+# Vite and build outputs
+dist/
+.vite/
+.vitest/
+.cache/
+build/
+out/
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Env and local config
+.env
+.env.*.local
+
+# IDE/OS clutter
+.vscode/
+.DS_Store
+Thumbs.db
+*.code-workspace
+
+# 🚫 Must exclude private documents
+src/docs/
