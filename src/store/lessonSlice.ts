@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { topics, lessonIds } from '../data/topics'; // ✅ Import your topics and lessonIds
+import { topics, lessonIds } from '../data/topics';
 
 type LessonStatus = 'uncompleted' | 'completed' | 'perfect' | 'locked';
 
@@ -9,16 +9,16 @@ export interface LessonsState {
     crowns: number;
 }
 
-// 🔥 Helper to initialize all lessons
+// Helper to initialize all lessons
 const initializeLessons = () => {
     const lessons: Record<string, LessonStatus> = {};
 
     topics.forEach((topic) => {
         lessonIds.forEach((lessonId) => {
             if (lessonId === '01' || lessonId === 'review') {
-                lessons[`${topic.id}-${lessonId}`] = 'uncompleted'; // unlocked by default
+                lessons[`${topic.id}-${lessonId}`] = 'uncompleted';
             } else {
-                lessons[`${topic.id}-${lessonId}`] = 'locked'; // all others locked
+                lessons[`${topic.id}-${lessonId}`] = 'locked';
             }
         });
     });
@@ -38,7 +38,10 @@ const lessonSlice = createSlice({
     reducers: {
         completeLesson: (state, action: PayloadAction<string>) => {
             const lessonId = action.payload;
-            state.lessons[lessonId] = 'completed';
+            const existing = state.lessons[lessonId];
+            if (existing !== 'perfect') {
+                state.lessons[lessonId] = 'completed';
+            }
         },
         perfectLesson: (state, action: PayloadAction<string>) => {
             const lessonId = action.payload;
@@ -55,7 +58,7 @@ const lessonSlice = createSlice({
             state.crowns += 1;
         },
         resetProgress: (state) => {
-            state.lessons = initializeLessons(); // 🔥 Reset to initial locked state
+            state.lessons = initializeLessons();
             state.xp = 0;
             state.crowns = 0;
         },
