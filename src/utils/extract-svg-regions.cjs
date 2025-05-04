@@ -1,78 +1,137 @@
-// utils/extract-svg-regions.cjs
-// Parses SVG with <polygon> or <path> (including inside <g>) and outputs region JSON
-// Supports transform="scale(...)" and simplified 'd' parsing for paths
+#!/usr/bin/env node
 
 const fs = require('fs');
 const path = require('path');
-const xml2js = require('xml2js');
+const { DOMParser } = require('xmldom');
+const parsePath = require('svg-path-parser');
 
-const inputFilePath = process.argv[2];
-if (!inputFilePath) {
-    console.error('Usage: node extract-svg-regions.cjs <your-file.svg>');
+// --- Utility: round to 4 decimals
+const round4 = (num) => Math.round(num * 10000) / 10000;
+
+// --- Utility: apply scale transform if present
+function applyTransform(point, transform) {
+    if (!transform) return point;
+    const scaleMatch = transform.match(/scale\(([\d.]+)(?:[ ,]+([\d.]+))?\)/);
+    if (scaleMatch) {
+        const sx = parseFloat(scaleMatch[1]);
+        const sy = scaleMatch[2] ? parseFloat(scaleMatch[2]) : sx;
+        return { x: point.x * sx, y: point.y * sy };
+    }
+    return point;
+}
+
+// --- Parse the d attribute into points
+function pathToPolygonPoints(d, transform) {
+    const commands = parsePath(d);
+    const points = [];
+    let current = { x: 0, y: 0 };
+    let subpathStart = null;
+
+    for (const cmd of commands) {
+        let point;
+        switch (cmd.code) {
+            case 'M':
+            case 'L':
+                point = { x: cmd.x, y: cmd.y };
+                break;
+            case 'm':
+            case 'l':
+                point = { x: current.x + cmd.x, y: current.y + cmd.y };
+                break;
+            case 'H':
+                point = { x: cmd.x, y: current.y };
+                break;
+            case 'h':
+                point = { x: current.x + cmd.x, y: current.y };
+                break;
+            case 'V':
+                point = { x: current.x, y: cmd.y };
+                break;
+            case 'v':
+                point = { x: current.x, y: current.y + cmd.y };
+                break;
+            case 'C':
+                point = { x: cmd.x, y: cmd.y };
+                break;
+            case 'c':
+                point = { x: current.x + cmd.x, y: current.y + cmd.y };
+                break;
+            case 'S':
+            case 's':
+            case 'Q':
+            case 'q':
+            case 'T':
+            case 't':
+            case 'A':
+            case 'a':
+                // Ignore control points, treat like line to end
+                point = cmd.relative
+                    ? { x: current.x + cmd.x, y: current.y + cmd.y }
+                    : { x: cmd.x, y: cmd.y };
+                break;
+            case 'Z':
+            case 'z':
+                if (subpathStart) {
+                    const scaled = applyTransform(subpathStart, transform);
+                    points.push({
+                        x: round4(scaled.x),
+                        y: round4(scaled.y)
+                    });
+                }
+                continue;
+            default:
+                continue;
+        }
+
+        // Save subpath start point for Z
+        if (cmd.code === 'M' || cmd.code === 'm') {
+            subpathStart = point;
+        }
+
+        const scaled = applyTransform(point, transform);
+        current = point;
+
+        points.push({
+            x: round4(scaled.x),
+            y: round4(scaled.y)
+        });
+    }
+
+    return points;
+}
+
+// --- Main
+function extractRegions(svgPath) {
+    const svgText = fs.readFileSync(svgPath, 'utf-8');
+    const doc = new DOMParser().parseFromString(svgText, 'image/svg+xml');
+    const paths = Array.from(doc.getElementsByTagName('path'));
+
+    const regions = paths.map((el) => {
+        const d = el.getAttribute('d');
+        const label = el.getAttribute('inkscape:label') || el.getAttribute('id');
+        const transform = el.getAttribute('transform');
+
+        const points = pathToPolygonPoints(d, transform);
+
+        return {
+            name: label || 'unnamed',
+            shape: 'polygon',
+            points
+        };
+    });
+
+    const outPath =
+        path.join(path.dirname(svgPath), path.basename(svgPath, '.svg') + '.regions.json');
+    fs.writeFileSync(outPath, JSON.stringify(regions, null, 2), 'utf-8');
+
+    console.log(`✅ Extracted ${regions.length} region(s) to: ${outPath}`);
+}
+
+// --- CLI entry
+const inputPath = process.argv[2];
+if (!inputPath) {
+    console.error('❌ Usage: node extract-svg-regions.cjs <path-to-svg>');
     process.exit(1);
 }
 
-const parser = new xml2js.Parser();
-
-fs.readFile(inputFilePath, 'utf8', (err, data) => {
-    if (err) throw err;
-
-    parser.parseString(data, (err, result) => {
-        if (err) throw err;
-
-        const regions = [];
-        const scaleRegex = /scale\(([^)]+)\)/;
-
-        const traverse = (nodes, transformScale = 1) => {
-            if (!Array.isArray(nodes)) return;
-
-            for (const node of nodes) {
-                const nodeScale = node.$?.transform?.match(scaleRegex);
-                const currentScale = nodeScale ? parseFloat(nodeScale[1]) : transformScale;
-
-                if (node.polygon) {
-                    for (const el of node.polygon) {
-                        const id = el.$.id || `region${regions.length}`;
-                        const points = el.$.points.trim().split(' ').map(p => {
-                            const [x, y] = p.split(',').map(Number);
-                            return { x: x * currentScale, y: y * currentScale };
-                        });
-                        regions.push({ id, name: id, shape: 'polygon', points });
-                    }
-                }
-
-                if (node.path) {
-                    for (const el of node.path) {
-                        const id = el.$.id || `region${regions.length}`;
-                        const d = el.$.d;
-                        const points = [];
-                        const cmdRegex = /([ML])\s*([\d.\-]+)[ ,]([\d.\-]+)/gi;
-                        let match;
-                        while ((match = cmdRegex.exec(d)) !== null) {
-                            const [, , x, y] = match;
-                            points.push({ x: parseFloat(x) * currentScale, y: parseFloat(y) * currentScale });
-                        }
-                        if (points.length > 0) {
-                            regions.push({ id, name: id, shape: 'polygon', points });
-                        }
-                    }
-                }
-
-                // Recursively handle groups
-                if (node.g) {
-                    traverse(node.g, currentScale);
-                }
-            }
-        };
-
-        traverse([result.svg]);
-
-        const outputPath = path.join(
-            path.dirname(inputFilePath),
-            path.basename(inputFilePath, '.svg') + '.regions.json'
-        );
-
-        fs.writeFileSync(outputPath, JSON.stringify(regions, null, 2));
-        console.log(`✅ Extracted ${regions.length} regions → ${outputPath}`);
-    });
-});
+extractRegions(inputPath);
