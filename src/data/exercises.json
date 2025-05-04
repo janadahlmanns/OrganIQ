@@ -17,6 +17,7 @@
       { "id": 15, "topic": "Eyes", "difficulty": 2, "type": "ordering" },
       { "id": 16, "topic": "Lungs", "difficulty": 2, "type": "ordering" },
       { "id": 17, "topic": "Ear", "difficulty": 2, "type": "ordering" },
-      { "id": 18, "topic": "Ear", "difficulty": 2, "type": "slider" }
+      { "id": 18, "topic": "Ear", "difficulty": 2, "type": "slider" },
+      { "id": 19, "topic": "Ear", "difficulty": 2, "type": "hotspot" }
     ]
   }
