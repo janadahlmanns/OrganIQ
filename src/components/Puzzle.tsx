@@ -56,7 +56,15 @@ export default function Puzzle({ exerciseId, beforeProgress, progressStep, onCon
     const [imagePath, setImagePath] = useState<string | null>(null);
     const [pieceState, setPieceState] = useState<PieceState>({});
 
-    const sensors = useSensors(useSensor(PointerSensor), useSensor(TouchSensor));
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(TouchSensor, {
+            activationConstraint: {
+                delay: 100,
+                tolerance: 10,
+            },
+        })
+    );
     const [, , vbWidth, vbHeight] = viewBox.split(' ').map(Number);
 
     useEffect(() => {
@@ -212,10 +220,10 @@ export default function Puzzle({ exerciseId, beforeProgress, progressStep, onCon
             </div>
 
             <div className="space-y-6 w-full">
-                <h2 className="text-xl font-bold text-center text-white">Assemble the puzzle</h2>
+                <h2 className="text-xl font-bold text-center text-white">Assemble the puzzle 2</h2>
                 <div className={`relative w-full aspect-square ${wasSolved ? 'bg-darkPurple border-3 border-neonCyan shadow-glowCyan' : 'bg-darkPurple border-3 border-white shadow-glowWhite'} rounded-2xl overflow-hidden`}>
                     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-                        <svg className="absolute w-full h-full" viewBox={viewBox}>
+                        <svg className="absolute w-full h-full touch-none" viewBox={viewBox}>
                             {regions
                                 .filter(region => pieceState[region.name]?.locked)
                                 .map(region => (
