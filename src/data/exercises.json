@@ -18,6 +18,9 @@
       { "id": 16, "topic": "Lungs", "difficulty": 2, "type": "ordering" },
       { "id": 17, "topic": "Ear", "difficulty": 2, "type": "ordering" },
       { "id": 18, "topic": "Ear", "difficulty": 2, "type": "slider" },
-      { "id": 19, "topic": "Ear", "difficulty": 2, "type": "hotspot" }
+      { "id": 19, "topic": "Ear", "difficulty": 2, "type": "hotspot" },
+      { "id": 20, "topic": "Ear", "difficulty": 2, "type": "hotspot" },
+      { "id": 21, "topic": "Ear", "difficulty": 2, "type": "hotspot" },
+      { "id": 22, "topic": "Ear", "difficulty": 2, "type": "hotspot" }
     ]
   }

@@ -7,6 +7,7 @@ import TrueFalse from '../components/TrueFalse';
 import Memory from '../components/Memory';
 import OrderExercise from '../components/OrderExercise';
 import SliderExercise from '../components/SliderExercise';
+import Hotspot from '../components/Hotspot';
 import SuccessScreen from '../components/SuccessScreen';
 import { useAppDispatch } from '../store/hooks';
 import { completeLesson, perfectLesson, addXP, addCrown, unlockLesson } from '../store/lessonSlice';
@@ -26,7 +27,8 @@ export default function LessonScreen() {
   const topicExercises = exercisesData.exercises.filter(
     (e) =>
       e.topic.toLowerCase() === topicId?.toLowerCase() &&
-      ['question', 'cloze', 'truefalse', 'memory', 'ordering', 'slider'].includes(e.type)
+      ['hotspot'].includes(e.type)
+      //['question', 'cloze', 'truefalse', 'memory', 'ordering', 'slider', 'hotspot'].includes(e.type)
   );
 
   useEffect(() => {
@@ -35,7 +37,7 @@ export default function LessonScreen() {
     if (savedProgress && topicExercises.length > 0) {
       setLessonExercises(savedProgress.lessonExercises);
       setCurrentIndex(savedProgress.currentIndex);
-      +   setProgress((savedProgress.currentIndex / LESSON_LENGTH) * 100); 
+      +   setProgress((savedProgress.currentIndex / LESSON_LENGTH) * 100);
     } else if (topicExercises.length > 0) {
       const shuffled = [...topicExercises].sort(() => Math.random() - 0.5);
       const chosen: number[] = [];
@@ -47,7 +49,7 @@ export default function LessonScreen() {
 
       setLessonExercises(chosen);
       setCurrentIndex(0);
-      setProgress(0); // ✅ Also set initial progress to 0
+      setProgress(0);
 
       saveLessonProgress({
         lessonExercises: chosen,
@@ -182,6 +184,15 @@ export default function LessonScreen() {
           onContinue={handleContinue}
           onCancel={handleCancel}
         />
+      ) : currentType === 'hotspot' ? (
+        <Hotspot
+          key={`${currentExerciseId}-${currentIndex}`}
+          exerciseId={currentExerciseId}
+          beforeProgress={progress}
+          progressStep={progressStep}
+          onContinue={handleContinue}
+          onCancel={handleCancel}
+        />
       ) : (
         <Question
           key={`${currentExerciseId}-${currentIndex}`}
@@ -193,5 +204,5 @@ export default function LessonScreen() {
         />
       )}
     </ExerciseStage>
-  );  
+  );
 }
