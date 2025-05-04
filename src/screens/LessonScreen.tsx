@@ -27,7 +27,7 @@ export default function LessonScreen() {
   const topicExercises = exercisesData.exercises.filter(
     (e) =>
       e.topic.toLowerCase() === topicId?.toLowerCase() &&
-      ['hotspot'].includes(e.type)
+      ['question', 'cloze', 'truefalse', 'memory', 'ordering', 'slider', 'hotspot'].includes(e.type)
       //['question', 'cloze', 'truefalse', 'memory', 'ordering', 'slider', 'hotspot'].includes(e.type)
   );
 
