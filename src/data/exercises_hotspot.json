@@ -1,0 +1,11 @@
+{
+  "id": 19,
+  "type": "hotspot",
+  "regionSourceId": "ear/puzzle_test",
+  "prompt": {
+    "en": "Click on the two",
+    "de": "Klicke auf die Zwei"
+  },
+  "targetRegionId": "two",
+  "tolerance": 12
+}

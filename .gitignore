@@ -1,29 +1,44 @@
-# Exclude node dependencies and logs
+# Node / Package
 node_modules/
-*.log
 *.tgz
-.pnpm-debug.log*
 
-# Vite and build outputs
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Vite / Build
 dist/
+dist-ssr/
 .vite/
 .vitest/
 .cache/
 build/
 out/
 
-# TypeScript build info
+# TypeScript
 *.tsbuildinfo
 
-# Env and local config
+# Env files
 .env
 .env.*.local
+*.local
 
 # IDE/OS clutter
 .vscode/
+!.vscode/extensions.json
+.idea/
 .DS_Store
 Thumbs.db
-*.code-workspace
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-# 🚫 Must exclude private documents
+# 🚫 Private docs
 src/docs/
