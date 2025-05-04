@@ -2,7 +2,7 @@
     "exercises": [
       { "id": 1, "topic": "Heart", "difficulty": 2, "type": "question" },
       { "id": 2, "topic": "Heart", "difficulty": 3, "type": "cloze" },
-      { "id": 3, "topic": "Lungs", "difficulty": 1, "type": "puzzle" },
+      { "id": 3, "topic": "Ear", "difficulty": 1, "type": "puzzle" },
       { "id": 4, "topic": "Heart", "difficulty": 2, "type": "memory" },
       { "id": 5, "topic": "Lungs", "difficulty": 2, "type": "question" },
       { "id": 6, "topic": "Ear", "difficulty": 2, "type": "cloze" },

@@ -2,9 +2,7 @@
     "puzzles": [
       {
         "id": 3,
-        "image_url": "https://example.com/lung-anatomy-puzzle.png",
-        "layout": "3x3"
+        "image": "ear/puzzle_test"
       }
     ]
   }
-  

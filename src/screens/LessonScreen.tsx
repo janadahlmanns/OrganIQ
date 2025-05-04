@@ -8,6 +8,7 @@ import Memory from '../components/Memory';
 import OrderExercise from '../components/OrderExercise';
 import SliderExercise from '../components/SliderExercise';
 import Hotspot from '../components/Hotspot';
+import Puzzle from '../components/Puzzle';
 import SuccessScreen from '../components/SuccessScreen';
 import { useAppDispatch } from '../store/hooks';
 import { completeLesson, perfectLesson, addXP, addCrown, unlockLesson } from '../store/lessonSlice';
@@ -27,8 +28,8 @@ export default function LessonScreen() {
   const topicExercises = exercisesData.exercises.filter(
     (e) =>
       e.topic.toLowerCase() === topicId?.toLowerCase() &&
-      ['question', 'cloze', 'truefalse', 'memory', 'ordering', 'slider', 'hotspot'].includes(e.type)
-      //['question', 'cloze', 'truefalse', 'memory', 'ordering', 'slider', 'hotspot'].includes(e.type)
+      ['question', 'cloze', 'truefalse', 'memory', 'ordering', 'slider', 'hotspot', 'puzzle'].includes(e.type)
+    //['question', 'cloze', 'truefalse', 'memory', 'ordering', 'slider', 'hotspot', 'puzzle'].includes(e.type)
   );
 
   useEffect(() => {
@@ -186,6 +187,15 @@ export default function LessonScreen() {
         />
       ) : currentType === 'hotspot' ? (
         <Hotspot
+          key={`${currentExerciseId}-${currentIndex}`}
+          exerciseId={currentExerciseId}
+          beforeProgress={progress}
+          progressStep={progressStep}
+          onContinue={handleContinue}
+          onCancel={handleCancel}
+        />
+      ) : currentType === 'puzzle' ? (
+        <Puzzle
           key={`${currentExerciseId}-${currentIndex}`}
           exerciseId={currentExerciseId}
           beforeProgress={progress}
