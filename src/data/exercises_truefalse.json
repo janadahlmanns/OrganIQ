@@ -1,16 +1,28 @@
 {
-    "truefalse": [
-      {
-        "id": 11,
-        "question_text": "The basilar membrane in the cochlea vibrates uniformly along its entire length in response to all sound frequencies.",
-        "correction": "Different parts of the basilar membrane are tuned to different frequencies — high frequencies near the base, low frequencies near the apex.",
-        "correct_option": false
+  "truefalse": [
+    {
+      "id": 11,
+      "question_text": {
+        "en": "The basilar membrane in the cochlea vibrates uniformly along its entire length in response to all sound frequencies.",
+        "de": "Die Basilarmembran in der Cochlea schwingt gleichmäßig entlang ihrer gesamten Länge als Reaktion auf alle Schallfrequenzen."
       },
-      {
-        "id": 12,
-        "question_text": "The inner hair cells of the cochlea are primarily responsible for converting mechanical sound vibrations into electrical signals that the brain can interpret.",
-        "correction": "",
-        "correct_option": true
+      "correct_option": false,
+      "explanation": {
+        "en": "Different parts of the basilar membrane are tuned to different frequencies — high frequencies near the base, low frequencies near the apex.",
+        "de": "Verschiedene Abschnitte der Basilarmembran sind auf unterschiedliche Frequenzen abgestimmt – hohe Frequenzen nahe der Basis, niedrige nahe der Spitze."
       }
-    ]
-  }
+    },
+    {
+      "id": 12,
+      "question_text": {
+        "en": "The inner hair cells of the cochlea are primarily responsible for converting mechanical sound vibrations into electrical signals that the brain can interpret.",
+        "de": "Die inneren Haarzellen der Cochlea sind hauptsächlich dafür verantwortlich, mechanische Schallschwingungen in elektrische Signale umzuwandeln, die das Gehirn interpretieren kann."
+      },
+      "correct_option": true,
+      "explanation": {
+        "en": "",
+        "de": ""
+      }
+    }
+  ]
+}

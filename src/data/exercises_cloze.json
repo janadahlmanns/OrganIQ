@@ -2,30 +2,51 @@
   "clozes": [
     {
       "id": 2,
-      "question_text": "The ___ valve prevents backflow from the left ventricle to the left atrium.",
-      "option_1": "mitral",
-      "option_2": "tricuspid",
-      "option_3": "aortic",
-      "option_4": "pulmonary",
-      "correct_option": 1
+      "question_text": {
+        "en": "The ___ valve prevents backflow from the left ventricle to the left atrium.",
+        "de": "Die ___-Klappe verhindert den Rückfluss vom linken Ventrikel in den linken Vorhof."
+      },
+      "option_1": { "en": "mitral", "de": "Mitralklappe" },
+      "option_2": { "en": "tricuspid", "de": "Trikuspidalklappe" },
+      "option_3": { "en": "aortic", "de": "Aortenklappe" },
+      "option_4": { "en": "pulmonary", "de": "Pulmonalklappe" },
+      "correct_option": 1,
+      "explanation": {
+        "en": "The mitral valve controls blood flow from the left atrium to the left ventricle and prevents backflow during ventricular contraction.",
+        "de": "Die Mitralklappe steuert den Blutfluss vom linken Vorhof zur linken Herzkammer und verhindert einen Rückfluss während der Kontraktion der Herzkammer."
+      }
     },
     {
       "id": 6,
-      "question_text": "The ___ is responsible for maintaining balance through fluid movement in the inner ear.",
-      "option_1": "cochlea",
-      "option_2": "vestibule",
-      "option_3": "ossicles",
-      "option_4": "eustachian tube",
-      "correct_option": 2
+      "question_text": {
+        "en": "The ___ is responsible for maintaining balance through fluid movement in the inner ear.",
+        "de": "Das ___ ist für das Gleichgewicht verantwortlich, indem es die Flüssigkeitsbewegung im Innenohr nutzt."
+      },
+      "option_1": { "en": "cochlea", "de": "Cochlea" },
+      "option_2": { "en": "vestibule", "de": "Vestibulum" },
+      "option_3": { "en": "ossicles", "de": "Gehörknöchelchen" },
+      "option_4": { "en": "eustachian tube", "de": "Eustachische Röhre" },
+      "correct_option": 2,
+      "explanation": {
+        "en": "The vestibule is a central part of the inner ear that helps detect changes in head position and balance using fluid movement and hair cells.",
+        "de": "Das Vestibulum ist ein zentraler Teil des Innenohrs, der mithilfe von Flüssigkeitsbewegung und Haarzellen Veränderungen der Kopfposition und das Gleichgewicht erkennt."
+      }
     },
     {
       "id": 9,
-      "question_text": "Coronary blood flow primarily occurs during ___ in the cardiac cycle.",
-      "option_1": "systole",
-      "option_2": "diastole",
-      "option_3": "isovolumetric contraction",
-      "option_4": "atrial kick",
-      "correct_option": 2
+      "question_text": {
+        "en": "Coronary blood flow primarily occurs during ___ in the cardiac cycle.",
+        "de": "Der koronare Blutfluss erfolgt hauptsächlich während der ___ im Herzzyklus."
+      },
+      "option_1": { "en": "systole", "de": "Systole" },
+      "option_2": { "en": "diastole", "de": "Diastole" },
+      "option_3": { "en": "isovolumetric contraction", "de": "isovolumetrische Kontraktion" },
+      "option_4": { "en": "atrial kick", "de": "Vorhofkontraktion" },
+      "correct_option": 2,
+      "explanation": {
+        "en": "During diastole, the heart muscle relaxes, allowing coronary arteries to fill and deliver oxygenated blood to the myocardium.",
+        "de": "Während der Diastole entspannt sich der Herzmuskel, wodurch sich die Koronararterien füllen und sauerstoffreiches Blut an den Herzmuskel liefern können."
+      }
     }
   ]
 }

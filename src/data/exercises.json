@@ -1,26 +1,26 @@
 {
-    "exercises": [
-      { "id": 1, "topic": "Heart", "difficulty": 2, "type": "question" },
-      { "id": 2, "topic": "Heart", "difficulty": 3, "type": "cloze" },
-      { "id": 3, "topic": "Ear", "difficulty": 1, "type": "puzzle" },
-      { "id": 4, "topic": "Heart", "difficulty": 2, "type": "memory" },
-      { "id": 5, "topic": "Lungs", "difficulty": 2, "type": "question" },
-      { "id": 6, "topic": "Ear", "difficulty": 2, "type": "cloze" },
-      { "id": 7, "topic": "Ear", "difficulty": 1, "type": "question" },
-      { "id": 8, "topic": "Heart", "difficulty": 3, "type": "question" },
-      { "id": 9, "topic": "Heart", "difficulty": 3, "type": "cloze" },
-      { "id": 10, "topic": "Heart", "difficulty": 4, "type": "question" },
-      { "id": 11, "topic": "Ear", "difficulty": 1, "type": "truefalse" },
-      { "id": 12, "topic": "Ear", "difficulty": 2, "type": "truefalse" },
-      { "id": 13, "topic": "Ear", "difficulty": 2, "type": "memory" },
-      { "id": 14, "topic": "Ear", "difficulty": 2, "type": "memory" },
-      { "id": 15, "topic": "Eyes", "difficulty": 2, "type": "ordering" },
-      { "id": 16, "topic": "Lungs", "difficulty": 2, "type": "ordering" },
-      { "id": 17, "topic": "Ear", "difficulty": 2, "type": "ordering" },
-      { "id": 18, "topic": "Ear", "difficulty": 2, "type": "slider" },
-      { "id": 19, "topic": "Ear", "difficulty": 2, "type": "hotspot" },
-      { "id": 20, "topic": "Ear", "difficulty": 2, "type": "hotspot" },
-      { "id": 21, "topic": "Ear", "difficulty": 2, "type": "hotspot" },
-      { "id": 22, "topic": "Ear", "difficulty": 2, "type": "hotspot" }
-    ]
-  }
+  "exercises": [
+    { "id": 1, "topic": "Heart", "difficulty": 2, "type": "question", "learningGoals": ["Bsp-5", "Bsp-10", "Bsp-41"] },
+    { "id": 2, "topic": "Heart", "difficulty": 3, "type": "cloze", "learningGoals": [] },
+    { "id": 3, "topic": "Ear", "difficulty": 1, "type": "puzzle", "learningGoals": [] },
+    { "id": 4, "topic": "Heart", "difficulty": 2, "type": "memory", "learningGoals": [] },
+    { "id": 5, "topic": "Lungs", "difficulty": 2, "type": "question", "learningGoals": [] },
+    { "id": 6, "topic": "Ear", "difficulty": 2, "type": "cloze", "learningGoals": [] },
+    { "id": 7, "topic": "Ear", "difficulty": 1, "type": "question", "learningGoals": [] },
+    { "id": 8, "topic": "Heart", "difficulty": 3, "type": "question", "learningGoals": [] },
+    { "id": 9, "topic": "Heart", "difficulty": 3, "type": "cloze", "learningGoals": [] },
+    { "id": 10, "topic": "Heart", "difficulty": 4, "type": "question", "learningGoals": [] },
+    { "id": 11, "topic": "Ear", "difficulty": 1, "type": "truefalse", "learningGoals": [] },
+    { "id": 12, "topic": "Ear", "difficulty": 2, "type": "truefalse", "learningGoals": [] },
+    { "id": 13, "topic": "Ear", "difficulty": 2, "type": "memory", "learningGoals": [] },
+    { "id": 14, "topic": "Ear", "difficulty": 2, "type": "memory", "learningGoals": [] },
+    { "id": 15, "topic": "Eyes", "difficulty": 2, "type": "ordering", "learningGoals": [] },
+    { "id": 16, "topic": "Lungs", "difficulty": 2, "type": "ordering", "learningGoals": [] },
+    { "id": 17, "topic": "Ear", "difficulty": 2, "type": "ordering", "learningGoals": [] },
+    { "id": 18, "topic": "Ear", "difficulty": 2, "type": "slider", "learningGoals": [] },
+    { "id": 19, "topic": "Ear", "difficulty": 2, "type": "hotspot", "learningGoals": [] },
+    { "id": 20, "topic": "Ear", "difficulty": 2, "type": "hotspot", "learningGoals": [] },
+    { "id": 21, "topic": "Ear", "difficulty": 2, "type": "hotspot", "learningGoals": [] },
+    { "id": 22, "topic": "Ear", "difficulty": 2, "type": "hotspot", "learningGoals": [] }
+  ]
+}

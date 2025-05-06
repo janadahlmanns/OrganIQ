@@ -21,6 +21,8 @@ import {
     verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 
+const LANGUAGE: 'en' | 'de' = 'en'; // 🔒 Hardcoded for now; will be read from storage later
+
 type OrderExerciseProps = {
     exerciseId: number;
     beforeProgress: number;
@@ -48,25 +50,29 @@ export default function OrderExercise({
     const [progressAfter, setProgressAfter] = useState<number>(beforeProgress);
     const [isEvaluated, setIsEvaluated] = useState<boolean>(false);
     const [questionText, setQuestionText] = useState<string>('');
+    const [explanation, setExplanation] = useState<string | undefined>(undefined);
 
     useEffect(() => {
         const exercise = orderingData.ordering.find((ex) => ex.id === exerciseId);
         if (!exercise) return;
 
         const isImageType = exercise.type === 'image';
-        const correctItems: Item[] = exercise.items.map((item: string, index: number) => {
-            return isImageType
-                ? { id: String(index), image: `/images/exercises/${item}` }
-                : { id: String(index), content: item };
-        });
 
-        setCorrectOrder(correctItems.map((item) => item.id));
+        const orderedItems: Item[] = isImageType
+            ? (exercise.items as string[]).map((imgPath: string, index: number) => ({
+                id: String(index),
+                image: `/images/exercises/${imgPath}`,
+            }))
+            : (exercise.items as Record<'en' | 'de', string[]>)[LANGUAGE].map((text: string, index: number) => ({
+                id: String(index),
+                content: text,
+            }));
 
-        const shuffledItems = [...correctItems].sort(() => Math.random() - 0.5);
-        setItems(shuffledItems);
+        setCorrectOrder(orderedItems.map((item) => item.id));
+        setItems([...orderedItems].sort(() => Math.random() - 0.5));
 
         if (isImageType) {
-            correctItems.forEach((item) => {
+            orderedItems.forEach((item) => {
                 if (item.image) {
                     const img = new Image();
                     img.src = item.image;
@@ -74,7 +80,16 @@ export default function OrderExercise({
             });
         }
 
-        setQuestionText(exercise.question_text);
+        setQuestionText(
+            typeof exercise.question_text === 'string' ? exercise.question_text : exercise.question_text[LANGUAGE]
+        );
+
+        if (typeof exercise.explanation === 'string') {
+            setExplanation(exercise.explanation);
+        } else if (exercise.explanation?.[LANGUAGE]) {
+            setExplanation(exercise.explanation[LANGUAGE]);
+        }
+
         setProgressAfter(beforeProgress);
         setWasCorrect(null);
         setIsEvaluated(false);
@@ -109,6 +124,7 @@ export default function OrderExercise({
 
     return (
         <div className="w-full max-w-[480px] mx-auto px-4 pt-4 flex flex-col flex-1 font-sans text-white">
+            {/* Top bar */}
             <div className="flex items-center justify-between mb-6">
                 <div className="flex-1">
                     <ProgressBar currentProgress={beforeProgress} newProgress={progressAfter} />
@@ -116,42 +132,37 @@ export default function OrderExercise({
                 <CancelButton className="ml-4" onClick={onCancel} />
             </div>
 
+            {/* Question */}
             <div className="text-center mb-6">
                 <h2 className="text-heading-xl font-bold">{questionText}</h2>
             </div>
 
-            <DndContext
-                sensors={sensors}
-                collisionDetection={closestCorners}
-                onDragEnd={handleDragEnd}
-            >
-                <SortableContext
-                    items={items.map((item) => item.id)}
-                    strategy={verticalListSortingStrategy}
-                >
+            {/* Sortable Items */}
+            <DndContext sensors={sensors} collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
+                <SortableContext items={items.map((item) => item.id)} strategy={verticalListSortingStrategy}>
                     <div className="relative flex flex-col gap-4 mb-6">
                         {items.map((item, index) => (
-                            <div className="flex justify-center">
-                            <ExerciseLabel
-                                key={item.id}
-                                id={item.id}
-                                content={item.content}
-                                image={item.image}
-                                disabled={isEvaluated}
-                                variant={
-                                    !isEvaluated
-                                        ? 'native'
-                                        : item.id === correctOrder[index]
-                                            ? 'correct'
-                                            : 'incorrect'
-                                }
-                            />
+                            <div className="flex justify-center" key={item.id}>
+                                <ExerciseLabel
+                                    id={item.id}
+                                    content={item.content}
+                                    image={item.image}
+                                    disabled={isEvaluated}
+                                    variant={
+                                        !isEvaluated
+                                            ? 'native'
+                                            : item.id === correctOrder[index]
+                                                ? 'correct'
+                                                : 'incorrect'
+                                    }
+                                />
                             </div>
                         ))}
                     </div>
                 </SortableContext>
             </DndContext>
 
+            {/* Buttons */}
             {!isEvaluated && (
                 <PrimaryButton onClick={handleEvaluate} className="mx-auto w-2/3 !justify-center">
                     Done
@@ -160,7 +171,7 @@ export default function OrderExercise({
             {wasCorrect !== null && (
                 <FeedbackButton
                     evaluation={wasCorrect ? 'Correct!' : 'Incorrect!'}
-                    explanation={!wasCorrect ? 'Explanation goes here.' : undefined}
+                    explanation={!wasCorrect ? explanation : undefined}
                     correct={wasCorrect}
                     onContinue={() => onContinue({ incorrect: !wasCorrect, progressAfter })}
                 />

@@ -6,6 +6,8 @@ import CancelButton from './CancelButton';
 import FeedbackButton from './FeedbackButton';
 import questionsData from '../data/exercises_questions.json';
 
+const LANGUAGE: 'en' | 'de' = 'en'; // 🔒 Temporary hardcoded language
+
 type QuestionProps = {
     exerciseId: number;
     beforeProgress: number;
@@ -31,10 +33,10 @@ export default function Question({ exerciseId, beforeProgress, progressStep, onC
         if (!questionData) return;
 
         const newOptions = [
-            { text: questionData.option_1, isCorrect: questionData.correct_option === 1 },
-            { text: questionData.option_2, isCorrect: questionData.correct_option === 2 },
-            { text: questionData.option_3, isCorrect: questionData.correct_option === 3 },
-            { text: questionData.option_4, isCorrect: questionData.correct_option === 4 },
+            { text: questionData.option_1[LANGUAGE], isCorrect: questionData.correct_option === 1 },
+            { text: questionData.option_2[LANGUAGE], isCorrect: questionData.correct_option === 2 },
+            { text: questionData.option_3[LANGUAGE], isCorrect: questionData.correct_option === 3 },
+            { text: questionData.option_4[LANGUAGE], isCorrect: questionData.correct_option === 4 },
         ];
 
         const shuffled = newOptions.sort(() => Math.random() - 0.5);
@@ -83,7 +85,7 @@ export default function Question({ exerciseId, beforeProgress, progressStep, onC
 
             {/* Question and options */}
             <div className="space-y-6 w-full">
-                <h2 className="text-xl font-bold text-center">{questionData.question_text}</h2>
+                <h2 className="text-xl font-bold text-center">{questionData.question_text[LANGUAGE]}</h2>
 
                 <div className="flex flex-col gap-4">
                     {shuffledOptions.map((option, index) => (
@@ -109,7 +111,7 @@ export default function Question({ exerciseId, beforeProgress, progressStep, onC
                 {wasCorrect !== null && (
                     <FeedbackButton
                         evaluation={wasCorrect ? 'Correct!' : 'Incorrect!'}
-                        explanation={!wasCorrect ? 'Explanation goes here.' : undefined}
+                        explanation={!wasCorrect ? questionData.explanation?.[LANGUAGE] : undefined}
                         correct={wasCorrect}
                         onContinue={() => onContinue({ incorrect: !wasCorrect, progressAfter })}
                     />
