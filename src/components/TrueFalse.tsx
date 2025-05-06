@@ -6,6 +6,8 @@ import CancelButton from './CancelButton';
 import FeedbackButton from './FeedbackButton';
 import truefalseData from '../data/exercises_truefalse.json';
 
+const LANGUAGE: 'en' | 'de' = 'en'; // 🔒 Hardcoded for now
+
 type TrueFalseProps = {
     exerciseId: number;
     beforeProgress: number;
@@ -14,7 +16,13 @@ type TrueFalseProps = {
     onCancel: () => void;
 };
 
-export default function TrueFalse({ exerciseId, beforeProgress, progressStep, onContinue, onCancel }: TrueFalseProps) {
+export default function TrueFalse({
+    exerciseId,
+    beforeProgress,
+    progressStep,
+    onContinue,
+    onCancel,
+}: TrueFalseProps) {
     const questionData = truefalseData.truefalse.find(q => q.id === exerciseId);
     const navigate = useNavigate();
 
@@ -53,22 +61,29 @@ export default function TrueFalse({ exerciseId, beforeProgress, progressStep, on
         setProgressAfter(beforeProgress + progressStep);
     };
 
+    const questionText =
+        typeof questionData.question_text === 'string'
+            ? questionData.question_text
+            : questionData.question_text[LANGUAGE];
+
+    const explanation =
+        typeof questionData.explanation === 'string'
+            ? questionData.explanation
+            : questionData.explanation?.[LANGUAGE];
+
     return (
         <div className="w-full max-w-[480px] mx-auto px-4 pt-4 flex flex-col flex-1">
             {/* Top bar with progress + cancel */}
             <div className="flex items-center justify-between mb-6">
                 <div className="flex-1">
-                    <ProgressBar
-                        currentProgress={beforeProgress}
-                        newProgress={progressAfter}
-                    />
+                    <ProgressBar currentProgress={beforeProgress} newProgress={progressAfter} />
                 </div>
                 <CancelButton className="ml-4" onClick={onCancel} />
             </div>
 
             {/* Question and options */}
             <div className="space-y-6 w-full">
-                <h2 className="text-xl font-bold text-center">{questionData.question_text}</h2>
+                <h2 className="text-xl font-bold text-center">{questionText}</h2>
 
                 <div className="flex flex-col gap-4">
                     <PrimaryButton
@@ -107,7 +122,7 @@ export default function TrueFalse({ exerciseId, beforeProgress, progressStep, on
                 {wasCorrect !== null && (
                     <FeedbackButton
                         evaluation={wasCorrect ? 'Correct!' : 'Incorrect!'}
-                        explanation={questionData.correct_option === false ? questionData.correction : undefined}
+                        explanation={!wasCorrect && explanation ? explanation : undefined}
                         correct={wasCorrect}
                         onContinue={() => onContinue({ incorrect: !wasCorrect, progressAfter })}
                     />

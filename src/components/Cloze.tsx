@@ -6,6 +6,8 @@ import CancelButton from './CancelButton';
 import FeedbackButton from './FeedbackButton';
 import clozesData from '../data/exercises_cloze.json';
 
+const LANGUAGE = 'en'; // 🔒 temporary fixed language, ready for future dynamic setting
+
 type ClozeProps = {
     exerciseId: number;
     beforeProgress: number;
@@ -32,10 +34,10 @@ export default function Cloze({ exerciseId, beforeProgress, progressStep, onCont
         if (!questionData) return;
 
         const newOptions = [
-            { text: questionData.option_1, isCorrect: questionData.correct_option === 1 },
-            { text: questionData.option_2, isCorrect: questionData.correct_option === 2 },
-            { text: questionData.option_3, isCorrect: questionData.correct_option === 3 },
-            { text: questionData.option_4, isCorrect: questionData.correct_option === 4 },
+            { text: questionData.option_1[LANGUAGE], isCorrect: questionData.correct_option === 1 },
+            { text: questionData.option_2[LANGUAGE], isCorrect: questionData.correct_option === 2 },
+            { text: questionData.option_3[LANGUAGE], isCorrect: questionData.correct_option === 3 },
+            { text: questionData.option_4[LANGUAGE], isCorrect: questionData.correct_option === 4 },
         ];
 
         const shuffled = newOptions.sort(() => Math.random() - 0.5);
@@ -85,7 +87,7 @@ export default function Cloze({ exerciseId, beforeProgress, progressStep, onCont
             {/* Question and options */}
             <div className="space-y-6 w-full">
                 <h2 className="text-xl font-bold text-center">
-                    {questionData.question_text.split('___').map((chunk, i, arr) => (
+                    {questionData.question_text[LANGUAGE].split('___').map((chunk, i, arr) => (
                         <span key={i}>
                             {chunk}
                             {i < arr.length - 1 && (
@@ -119,7 +121,7 @@ export default function Cloze({ exerciseId, beforeProgress, progressStep, onCont
                 {wasCorrect !== null && (
                     <FeedbackButton
                         evaluation={wasCorrect ? 'Correct!' : 'Incorrect!'}
-                        explanation={!wasCorrect ? 'Explanation goes here.' : undefined}
+                        explanation={!wasCorrect ? questionData.explanation?.[LANGUAGE] : undefined}
                         correct={wasCorrect}
                         onContinue={() => onContinue({ incorrect: !wasCorrect, progressAfter })}
                     />
