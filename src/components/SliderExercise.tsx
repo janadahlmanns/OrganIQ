@@ -5,6 +5,8 @@ import ProgressBar from './ProgressBar';
 import CancelButton from './CancelButton';
 import sliderData from '../data/exercises_slider.json';
 
+const LANGUAGE: 'en' | 'de' = 'en'; // 🔒 Hardcoded for now; will later be read from storage
+
 type SliderExerciseProps = {
   exerciseId: number;
   beforeProgress: number;
@@ -27,6 +29,7 @@ export default function SliderExercise({
   const [tolerance, setTolerance] = useState(0);
   const [unit, setUnit] = useState('');
   const [value, setValue] = useState(50);
+  const [explanation, setExplanation] = useState<string | undefined>(undefined);
 
   const [wasCorrect, setWasCorrect] = useState<boolean | null>(null);
   const [isEvaluated, setIsEvaluated] = useState(false);
@@ -36,7 +39,13 @@ export default function SliderExercise({
     const exercise = sliderData.slider.find((ex) => ex.id === exerciseId);
     if (!exercise) return;
 
-    setPrompt(exercise.prompt);
+    // Handle multilingual fields
+    setPrompt(typeof exercise.prompt === 'string' ? exercise.prompt : exercise.prompt[LANGUAGE]);
+    setExplanation(
+      typeof exercise.explanation === 'string' ? exercise.explanation : exercise.explanation?.[LANGUAGE]
+    );
+
+    // Load numeric fields
     setMin(exercise.min);
     setMax(exercise.max);
     setCorrect(exercise.correct);
@@ -44,6 +53,7 @@ export default function SliderExercise({
     setUnit(exercise.unit || '');
     setValue((exercise.min + exercise.max) / 2);
 
+    // Reset state
     setProgressAfter(beforeProgress);
     setWasCorrect(null);
     setIsEvaluated(false);
@@ -90,10 +100,11 @@ export default function SliderExercise({
           Done
         </PrimaryButton>
       )}
+
       {wasCorrect !== null && (
         <FeedbackButton
           evaluation={wasCorrect ? 'Correct!' : 'Incorrect!'}
-          explanation={!wasCorrect ? 'Explanation goes here.' : undefined}
+          explanation={!wasCorrect ? explanation : undefined}
           correct={wasCorrect}
           onContinue={() => onContinue({ incorrect: !wasCorrect, progressAfter })}
         />

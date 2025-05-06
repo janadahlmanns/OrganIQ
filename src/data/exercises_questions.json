@@ -1,49 +1,84 @@
 {
-    "questions": [
-      {
-        "id": 1,
-        "question_text": "Which chamber of the heart pumps oxygenated blood into the aorta?",
-        "option_1": "Right atrium",
-        "option_2": "Left atrium",
-        "option_3": "Left ventricle",
-        "option_4": "Right ventricle",
-        "correct_option": 3
+  "questions": [
+    {
+      "id": 1,
+      "question_text": {
+        "en": "Which chamber of the heart pumps oxygenated blood into the aorta?",
+        "de": "Welche Herzkammer pumpt sauerstoffreiches Blut in die Aorta?"
       },
-      {
-        "id": 5,
-        "question_text": "What structure prevents alveoli from collapsing after exhalation?",
-        "option_1": "Cilia",
-        "option_2": "Surfactant",
-        "option_3": "Bronchioles",
-        "option_4": "Mucus",
-        "correct_option": 2
-      },
-      {
-        "id": 7,
-        "question_text": "Which part of the ear converts sound waves into electrical signals?",
-        "option_1": "Ossicles",
-        "option_2": "Cochlea",
-        "option_3": "Tympanic membrane",
-        "option_4": "Pinna",
-        "correct_option": 2
-      },
-      {
-        "id": 8,
-        "question_text": "What happens to blood flow velocity as cross-sectional area increases in the capillaries?",
-        "option_1": "It increases",
-        "option_2": "It decreases",
-        "option_3": "It stays the same",
-        "option_4": "It oscillates",
-        "correct_option": 2
-      },
-      {
-        "id": 10,
-        "question_text": "During isovolumetric contraction, which of the following is true?",
-        "option_1": "The AV valves are open",
-        "option_2": "Both sets of valves are closed",
-        "option_3": "Ventricular pressure decreases",
-        "option_4": "The aortic valve opens",
-        "correct_option": 2
+      "option_1": { "en": "Right atrium", "de": "Rechter Vorhof" },
+      "option_2": { "en": "Left atrium", "de": "Linker Vorhof" },
+      "option_3": { "en": "Left ventricle", "de": "Linke Herzkammer" },
+      "option_4": { "en": "Right ventricle", "de": "Rechte Herzkammer" },
+      "correct_option": 3,
+      "explanation": {
+        "en": "The left ventricle pumps oxygenated blood into the aorta to supply the body.",
+        "de": "Die linke Herzkammer pumpt sauerstoffreiches Blut in die Aorta, um den Körper zu versorgen."
       }
-    ]
-  }
+    },
+    {
+      "id": 5,
+      "question_text": {
+        "en": "What structure prevents alveoli from collapsing after exhalation?",
+        "de": "Welche Struktur verhindert das Kollabieren der Alveolen nach dem Ausatmen?"
+      },
+      "option_1": { "en": "Cilia", "de": "Zilien" },
+      "option_2": { "en": "Surfactant", "de": "Surfactant" },
+      "option_3": { "en": "Bronchioles", "de": "Bronchiolen" },
+      "option_4": { "en": "Mucus", "de": "Schleim" },
+      "correct_option": 2,
+      "explanation": {
+        "en": "Surfactant reduces surface tension in the alveoli, preventing collapse after exhalation.",
+        "de": "Surfactant reduziert die Oberflächenspannung in den Alveolen und verhindert so deren Kollaps nach dem Ausatmen."
+      }
+    },
+    {
+      "id": 7,
+      "question_text": {
+        "en": "Which part of the ear converts sound waves into electrical signals?",
+        "de": "Welcher Teil des Ohrs wandelt Schallwellen in elektrische Signale um?"
+      },
+      "option_1": { "en": "Ossicles", "de": "Gehörknöchelchen" },
+      "option_2": { "en": "Cochlea", "de": "Cochlea" },
+      "option_3": { "en": "Tympanic membrane", "de": "Trommelfell" },
+      "option_4": { "en": "Pinna", "de": "Ohrmuschel" },
+      "correct_option": 2,
+      "explanation": {
+        "en": "The cochlea contains hair cells that convert mechanical sound vibrations into electrical signals for the brain.",
+        "de": "Die Cochlea enthält Haarzellen, die mechanische Schwingungen in elektrische Signale für das Gehirn umwandeln."
+      }
+    },
+    {
+      "id": 8,
+      "question_text": {
+        "en": "What happens to blood flow velocity as cross-sectional area increases in the capillaries?",
+        "de": "Was passiert mit der Blutflussgeschwindigkeit, wenn die Querschnittsfläche in den Kapillaren zunimmt?"
+      },
+      "option_1": { "en": "It increases", "de": "Sie nimmt zu" },
+      "option_2": { "en": "It decreases", "de": "Sie nimmt ab" },
+      "option_3": { "en": "It stays the same", "de": "Sie bleibt gleich" },
+      "option_4": { "en": "It oscillates", "de": "Sie schwankt" },
+      "correct_option": 2,
+      "explanation": {
+        "en": "As cross-sectional area increases, flow velocity decreases due to distribution of volume across more vessels.",
+        "de": "Mit zunehmender Querschnittsfläche sinkt die Flussgeschwindigkeit, da sich das Blut auf mehr Gefäße verteilt."
+      }
+    },
+    {
+      "id": 10,
+      "question_text": {
+        "en": "During isovolumetric contraction, which of the following is true?",
+        "de": "Welche Aussage trifft während der isovolumetrischen Kontraktion zu?"
+      },
+      "option_1": { "en": "The AV valves are open", "de": "Die AV-Klappen sind offen" },
+      "option_2": { "en": "Both sets of valves are closed", "de": "Beide Klappensätze sind geschlossen" },
+      "option_3": { "en": "Ventricular pressure decreases", "de": "Der Ventrikeldruck sinkt" },
+      "option_4": { "en": "The aortic valve opens", "de": "Die Aortenklappe öffnet sich" },
+      "correct_option": 2,
+      "explanation": {
+        "en": "During isovolumetric contraction, all heart valves are closed while the ventricles build pressure.",
+        "de": "Während der isovolumetrischen Kontraktion sind alle Herzklappen geschlossen, während die Ventrikel Druck aufbauen."
+      }
+    }
+  ]
+}

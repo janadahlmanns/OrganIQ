@@ -7,6 +7,8 @@ import FeedbackButton from './FeedbackButton';
 import MemoryButton from './MemoryButton';
 import memoriesData from '../data/exercises_memory.json';
 
+const LANGUAGE: 'en' | 'de' = 'en'; // 🔒 Temporary hardcoded language
+
 type MemoryProps = {
     exerciseId: number;
     beforeProgress: number;
@@ -23,6 +25,11 @@ type CardType = {
     side: 'front' | 'back';
     solved?: boolean;
 };
+
+// helper to handle string vs {en, de}
+function resolveValue(value: string | { en: string; de: string }, lang: 'en' | 'de'): string {
+    return typeof value === 'string' ? value : value[lang];
+}
 
 function shuffleArray<T>(array: T[]): T[] {
     const arr = [...array];
@@ -57,7 +64,7 @@ export default function Memory({ exerciseId, beforeProgress, progressStep, onCon
                 id: idCounter++,
                 pairId: pairIndex,
                 frontType: pair.cardA.type as 'text' | 'image',
-                frontValue: pair.cardA.value,
+                frontValue: resolveValue(pair.cardA.value, LANGUAGE),
                 side: 'back',
                 solved: false,
             });
@@ -65,14 +72,13 @@ export default function Memory({ exerciseId, beforeProgress, progressStep, onCon
                 id: idCounter++,
                 pairId: pairIndex,
                 frontType: pair.cardB.type as 'text' | 'image',
-                frontValue: pair.cardB.value,
+                frontValue: resolveValue(pair.cardB.value, LANGUAGE),
                 side: 'back',
                 solved: false,
             });
         });
 
-        const shuffled = shuffleArray(builtCards);
-        setCards(shuffled);
+        setCards(shuffleArray(builtCards));
     }, [questionData, beforeProgress]);
 
     if (!questionData) {
@@ -118,7 +124,6 @@ export default function Memory({ exerciseId, beforeProgress, progressStep, onCon
 
             if (firstCard && secondCard) {
                 if (firstCard.pairId === secondCard.pairId) {
-
                     setCards(prevCards =>
                         prevCards.map(card =>
                             card.id === firstCard.id || card.id === secondCard.id
@@ -130,11 +135,8 @@ export default function Memory({ exerciseId, beforeProgress, progressStep, onCon
                     const allSolved = cards.every(card =>
                         card.solved || card.id === firstCard.id || card.id === secondCard.id
                     );
-                    if (allSolved) {
-                        handleSolved();
-                    }
+                    if (allSolved) handleSolved();
                 } else {
-                    // Incorrect pair → flip both cards back after short delay
                     setTimeout(() => {
                         setCards(prevCards =>
                             prevCards.map(card =>
@@ -143,10 +145,9 @@ export default function Memory({ exerciseId, beforeProgress, progressStep, onCon
                                     : card
                             )
                         );
-                    }, 1000); // wait so user sees the second flip
+                    }, 1000);
                 }
             }
-
 
             setTimeout(() => {
                 setGuessClicks(0);
@@ -159,19 +160,15 @@ export default function Memory({ exerciseId, beforeProgress, progressStep, onCon
         setTimeout(() => {
             setWasCorrect(true);
             setProgressAfter(prev => Math.min(prev + progressStep, 100));
-        }, 1700); // wait before marking solved
+        }, 1700);
     };
-
 
     return (
         <div className="w-full max-w-[480px] mx-auto px-4 pt-4 flex flex-col flex-1">
             {/* Top bar with progress + cancel */}
             <div className="flex items-center justify-between mb-6">
                 <div className="flex-1">
-                    <ProgressBar
-                        currentProgress={beforeProgress}
-                        newProgress={progressAfter}
-                    />
+                    <ProgressBar currentProgress={beforeProgress} newProgress={progressAfter} />
                 </div>
                 <CancelButton className="ml-4" onClick={onCancel} />
             </div>
@@ -196,11 +193,9 @@ export default function Memory({ exerciseId, beforeProgress, progressStep, onCon
             </div>
 
             {/* Moves counter */}
-            <div className="text-white text-center mb-4">
-                Moves: {moves}
-            </div>
+            <div className="text-white text-center mb-4">Moves: {moves}</div>
 
-            {/* Feedback button */}
+            {/* Feedback */}
             {wasCorrect !== null && (
                 <FeedbackButton
                     evaluation={wasCorrect ? 'Correct!' : 'Incorrect!'}

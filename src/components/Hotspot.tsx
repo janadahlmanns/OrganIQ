@@ -6,6 +6,8 @@ import CancelButton from './CancelButton';
 import FeedbackButton from './FeedbackButton';
 import hotspotData from '../data/exercises_hotspot.json';
 
+const LANGUAGE = 'en'; // 🔒 Temporary hardcoded language
+
 type HotspotRegion = {
     name: string;
     shape: 'polygon';
@@ -21,13 +23,13 @@ type HotspotProps = {
 };
 
 export default function Hotspot({ exerciseId, beforeProgress, progressStep, onContinue, onCancel }: HotspotProps) {
-    const exercise = hotspotData.find((ex) => ex.id === exerciseId);
+    const exercise = hotspotData.hotspots.find((ex) => ex.id === exerciseId);
     const navigate = useNavigate();
 
     const [wasCorrect, setWasCorrect] = useState<boolean | null>(null);
     const [progressAfter, setProgressAfter] = useState<number>(beforeProgress);
     const [regions, setRegions] = useState<HotspotRegion[]>([]);
-    const [viewBox, setViewBox] = useState<string>('0 0 100 100'); // default fallback
+    const [viewBox, setViewBox] = useState<string>('0 0 100 100'); // fallback
 
     useEffect(() => {
         setWasCorrect(null);
@@ -37,7 +39,6 @@ export default function Hotspot({ exerciseId, beforeProgress, progressStep, onCo
 
         const loadRegions = async () => {
             try {
-                // Load region data
                 const res = await fetch(`/images/exercises/${exercise.regionSourceId}.regions.json`);
                 const data = await res.json();
                 setRegions(data);
@@ -46,7 +47,6 @@ export default function Hotspot({ exerciseId, beforeProgress, progressStep, onCo
             }
 
             try {
-                // Load and parse the SVG to extract viewBox
                 const svgRes = await fetch(`/images/exercises/${exercise.regionSourceId}.svg`);
                 const svgText = await svgRes.text();
                 const parser = new DOMParser();
@@ -100,8 +100,9 @@ export default function Hotspot({ exerciseId, beforeProgress, progressStep, onCo
             for (let i = 0, j = points.length - 1; i < points.length; j = i++) {
                 const xi = points[i].x, yi = points[i].y;
                 const xj = points[j].x, yj = points[j].y;
-                const intersect = yi > svgPoint.y !== yj > svgPoint.y &&
-                    svgPoint.x < (xj - xi) * (svgPoint.y - yi) / (yj - yi + 0.0001) + xi;
+                const intersect =
+                    yi > svgPoint.y !== yj > svgPoint.y &&
+                    svgPoint.x < ((xj - xi) * (svgPoint.y - yi)) / (yj - yi + 0.0001) + xi;
                 if (intersect) inside = !inside;
             }
             return inside;
@@ -122,7 +123,7 @@ export default function Hotspot({ exerciseId, beforeProgress, progressStep, onCo
             </div>
 
             <div className="space-y-6 w-full">
-                <h2 className="text-xl font-bold text-center">{exercise.prompt.en}</h2>
+                <h2 className="text-xl font-bold text-center">{exercise.prompt[LANGUAGE]}</h2>
 
                 <div className="relative w-full aspect-square overflow-hidden">
                     <img

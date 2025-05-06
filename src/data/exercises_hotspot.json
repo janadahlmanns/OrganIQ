@@ -1,46 +1,44 @@
-[
-  {
-    "id": 19,
-    "type": "hotspot",
-    "regionSourceId": "ear/puzzle_test",
-    "prompt": {
-      "en": "Click on the two",
-      "de": "Klicke auf die Zwei"
+{
+  "hotspots": [
+    {
+      "id": 19,
+      "regionSourceId": "ear/puzzle_test",
+      "prompt": {
+        "en": "Click on the two",
+        "de": "Klicke auf die Zwei"
+      },
+      "targetRegionId": "two",
+      "tolerance": 12
     },
-    "targetRegionId": "two",
-    "tolerance": 12
-  },
-  {
-    "id": 20,
-    "type": "hotspot",
-    "regionSourceId": "ear/puzzle_test",
-    "prompt": {
-      "en": "Click on the one",
-      "de": "Klicke auf die Eins"
+    {
+      "id": 20,
+      "regionSourceId": "ear/puzzle_test",
+      "prompt": {
+        "en": "Click on the one",
+        "de": "Klicke auf die Eins"
+      },
+      "targetRegionId": "one",
+      "tolerance": 12
     },
-    "targetRegionId": "one",
-    "tolerance": 12
-  },
-  {
-    "id": 21,
-    "type": "hotspot",
-    "regionSourceId": "ear/puzzle_test",
-    "prompt": {
-      "en": "Click on the three",
-      "de": "Klicke auf die Drei"
+    {
+      "id": 21,
+      "regionSourceId": "ear/puzzle_test",
+      "prompt": {
+        "en": "Click on the three",
+        "de": "Klicke auf die Drei"
+      },
+      "targetRegionId": "three",
+      "tolerance": 12
     },
-    "targetRegionId": "three",
-    "tolerance": 12
-  },
-  {
-    "id": 22,
-    "type": "hotspot",
-    "regionSourceId": "ear/puzzle_test",
-    "prompt": {
-      "en": "Click on the four",
-      "de": "Klicke auf die Vier"
-    },
-    "targetRegionId": "four",
-    "tolerance": 12
-  }
-]
+    {
+      "id": 22,
+      "regionSourceId": "ear/puzzle_test",
+      "prompt": {
+        "en": "Click on the four",
+        "de": "Klicke auf die Vier"
+      },
+      "targetRegionId": "four",
+      "tolerance": 12
+    }
+  ]
+}

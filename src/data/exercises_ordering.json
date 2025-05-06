@@ -2,40 +2,81 @@
   "ordering": [
     {
       "id": 15,
-      "question_text": "Put the steps of phototransduction in chronological order.",
+      "question_text": {
+        "en": "Put the steps of phototransduction in chronological order.",
+        "de": "Bringe die Schritte der Phototransduktion in die richtige Reihenfolge."
+      },
       "type": "text",
-      "items": [
-        "Retinal captures a photon",
-        "cAMP is produced",
-        "Neurotransmitter release decreases",
-        "Ganglion cell fires an action potential"
-    ]
+      "items": {
+        "en": [
+          "Retinal captures a photon",
+          "cAMP is produced",
+          "Neurotransmitter release decreases",
+          "Ganglion cell fires an action potential"
+        ],
+        "de": [
+          "Retinal fängt ein Photon ein",
+          "cAMP wird produziert",
+          "Die Freisetzung von Neurotransmittern nimmt ab",
+          "Ganglienzelle feuert ein Aktionspotenzial"
+        ]
+      },
+      "explanation": {
+        "en": "Phototransduction begins when retinal absorbs light. This leads to cAMP production, which reduces neurotransmitter release. Finally, the signal reaches ganglion cells, triggering an action potential.",
+        "de": "Die Phototransduktion beginnt, wenn Retinal Licht aufnimmt. Dies führt zur Produktion von cAMP, was die Neurotransmitterfreisetzung verringert. Am Ende erreicht das Signal die Ganglienzellen und löst ein Aktionspotenzial aus."
+      }
     },
     {
       "id": 16,
-      "question_text": "Put the structures of the respiratory system in order, starting from the nose.",
+      "question_text": {
+        "en": "Put the structures of the respiratory system in order, starting from the nose.",
+        "de": "Bringe die Strukturen des Atmungssystems in die richtige Reihenfolge, beginnend mit der Nase."
+      },
       "type": "text",
-    "items": [
-        "Nose",
-        "Nasal cavity",
-        "Pharynx",
-        "Larynx",
-        "Trachea",
-        "Bronchi",
-        "Bronchioles",
-        "Alveoli"
-    ]
+      "items": {
+        "en": [
+          "Nose",
+          "Nasal cavity",
+          "Pharynx",
+          "Larynx",
+          "Trachea",
+          "Bronchi",
+          "Bronchioles",
+          "Alveoli"
+        ],
+        "de": [
+          "Nase",
+          "Nasenhöhle",
+          "Rachen",
+          "Kehlkopf",
+          "Luftröhre",
+          "Bronchien",
+          "Bronchiolen",
+          "Alveolen"
+        ]
+      },
+      "explanation": {
+        "en": "Air enters through the nose and passes sequentially through each anatomical structure until reaching the alveoli, where gas exchange occurs.",
+        "de": "Die Luft tritt durch die Nase ein und durchläuft nacheinander jede anatomische Struktur, bis sie die Alveolen erreicht, wo der Gasaustausch stattfindet."
+      }
     },
     {
       "id": 17,
-      "question_text": "Put these in ascending order.",
+      "question_text": {
+        "en": "Put these in ascending order.",
+        "de": "Bringe diese in aufsteigender Reihenfolge."
+      },
       "type": "image",
-    "items": [
+      "items": [
         "ear/test_one.png",
         "ear/test_two.png",
         "ear/test_three.png",
         "ear/test_four.png"
-    ]
+      ],
+      "explanation": {
+        "en": "The correct order follows numerical progression from one to four, as represented in the image labels.",
+        "de": "Die richtige Reihenfolge entspricht dem numerischen Verlauf von eins bis vier, wie in den Bildbeschriftungen dargestellt."
+      }
     }
   ]
 }

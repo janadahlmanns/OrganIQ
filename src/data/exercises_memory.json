@@ -3,10 +3,22 @@
     {
       "id": 4,
       "pairs": [
-        { "cardA": { "type": "text", "value": "Aorta" }, "cardB": { "type": "text", "value": "Main artery" } },
-        { "cardA": { "type": "text", "value": "Vena cava" }, "cardB": { "type": "text", "value": "Main vein" } },
-        { "cardA": { "type": "text", "value": "AV node" }, "cardB": { "type": "text", "value": "Delays conduction" } },
-        { "cardA": { "type": "text", "value": "Sinoatrial node" }, "cardB": { "type": "text", "value": "Pacemaker of the heart" } }
+        {
+          "cardA": { "type": "text", "value": { "en": "Aorta", "de": "Aorta" } },
+          "cardB": { "type": "text", "value": { "en": "Main artery", "de": "Hauptschlagader" } }
+        },
+        {
+          "cardA": { "type": "text", "value": { "en": "Vena cava", "de": "Vena cava" } },
+          "cardB": { "type": "text", "value": { "en": "Main vein", "de": "Hohlvene" } }
+        },
+        {
+          "cardA": { "type": "text", "value": { "en": "AV node", "de": "AV-Knoten" } },
+          "cardB": { "type": "text", "value": { "en": "Delays conduction", "de": "Verzögert die Erregungsleitung" } }
+        },
+        {
+          "cardA": { "type": "text", "value": { "en": "Sinoatrial node", "de": "Sinusknoten" } },
+          "cardB": { "type": "text", "value": { "en": "Pacemaker of the heart", "de": "Taktgeber des Herzens" } }
+        }
       ]
     },
     {
@@ -23,12 +35,30 @@
     {
       "id": 14,
       "pairs": [
-        { "cardA": { "type": "image", "value": "cochlea.png" }, "cardB": { "type": "text", "value": "Cochlea" } },
-        { "cardA": { "type": "image", "value": "ossicles.png" }, "cardB": { "type": "text", "value": "Ossicles" } },
-        { "cardA": { "type": "image", "value": "stapes.png" }, "cardB": { "type": "text", "value": "Stapes" } },
-        { "cardA": { "type": "image", "value": "hair_cell.png" }, "cardB": { "type": "text", "value": "Hair Cell" } },
-        { "cardA": { "type": "image", "value": "eardrum.png" }, "cardB": { "type": "text", "value": "Eardrum" } },
-        { "cardA": { "type": "image", "value": "semicircular_ducts.png" }, "cardB": { "type": "text", "value": "Semicircular ducts" } }
+        {
+          "cardA": { "type": "image", "value": "cochlea.png" },
+          "cardB": { "type": "text", "value": { "en": "Cochlea", "de": "Cochlea" } }
+        },
+        {
+          "cardA": { "type": "image", "value": "ossicles.png" },
+          "cardB": { "type": "text", "value": { "en": "Ossicles", "de": "Gehörknöchelchen" } }
+        },
+        {
+          "cardA": { "type": "image", "value": "stapes.png" },
+          "cardB": { "type": "text", "value": { "en": "Stapes", "de": "Steigbügel" } }
+        },
+        {
+          "cardA": { "type": "image", "value": "hair_cell.png" },
+          "cardB": { "type": "text", "value": { "en": "Hair Cell", "de": "Haarzelle" } }
+        },
+        {
+          "cardA": { "type": "image", "value": "eardrum.png" },
+          "cardB": { "type": "text", "value": { "en": "Eardrum", "de": "Trommelfell" } }
+        },
+        {
+          "cardA": { "type": "image", "value": "semicircular_ducts.png" },
+          "cardB": { "type": "text", "value": { "en": "Semicircular ducts", "de": "Bogengänge" } }
+        }
       ]
     }
   ]

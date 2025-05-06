@@ -1,15 +1,20 @@
 {
-    "slider": [
-      {
-        "id": 18,
-        "prompt": "Placeholder: Pick a high two digit number?",
-        "min": 1,
-        "max": 200,
-        "correct": 75,
-        "tolerance": 24,
-        "unit": "N",
-        "explanation": "High numbers are 50 through 99."
+  "slider": [
+    {
+      "id": 18,
+      "prompt": {
+        "en": "Placeholder: Pick a high two digit number?",
+        "de": "Platzhalter: Wähle eine hohe zweistellige Zahl?"
+      },
+      "min": 1,
+      "max": 200,
+      "correct": 75,
+      "tolerance": 24,
+      "unit": "N",
+      "explanation": {
+        "en": "High numbers are 50 through 99.",
+        "de": "Hohe Zahlen liegen zwischen 50 und 99."
       }
-    ]
-  }
-  
+    }
+  ]
+}
