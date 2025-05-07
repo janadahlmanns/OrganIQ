@@ -16,7 +16,7 @@ import UtilityButton from '../components/UtilityButton';
 import { topics, lessonIds } from '../data/topics';
 
 export default function MainMenuScreen() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [expandedTopicId, setExpandedTopicId] = useState<string | null>(() => {
     return localStorage.getItem('lastTopicId') || null;
@@ -118,7 +118,7 @@ export default function MainMenuScreen() {
                 className="w-full"
                 active={expandedTopicId === topic.id}
               >
-                <span>{topic.name}</span>
+                <span>{typeof topic.name === 'string' ? topic.name : topic.name[i18n.language as 'en' | 'de']}</span>
                 <span className="text-sm text-white">
                   {calculateTopicProgress(topic.id) === 9 ? (
                     <img src="/images/icons/checkmark_icon.png" alt="completed" className="w-5 h-5 inline" />
