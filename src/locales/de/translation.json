@@ -1,0 +1,48 @@
+{
+  "preferences": {
+    "title": "Einstellungen",
+    "reset": "Fortschritt zurücksetzen",
+    "toastReset": "Fortschritt zurückgesetzt!",
+    "uiLanguage": "App-Sprache",
+    "exerciseLanguage": "Übungssprache",
+    "back": "Zurück zum Hauptmenü"
+  },
+  "language": {
+    "english": "🇬🇧 Englisch",
+    "german": "🇩🇪 Deutsch"
+  },
+"main": {
+  "topics": "Themen",
+  "preferences": "Einstellungen",
+  "stats": "Statistik",
+  "toastLockedLesson": "Lektion gesperrt. Schließe vorherige Lektionen ab.",
+  "youHave": "Du hast",
+  "getMore": "Lass uns spielen, um mehr zu bekommen..."
+},
+"shared": {
+  "continue": "Weiter",
+  "questionNotFound": "Frage nicht gefunden.",
+  "hotspotNotFound": "Hotspot-Daten nicht gefunden.",
+  "backToMenu": "Zurück zum Hauptmenü",
+  "correct": "Richtig!",
+  "incorrect": "Falsch!",
+  "done": "Fertig"
+},
+"memory": {
+  "findThePairs": "Finde die Paare",
+  "moves": "Züge: {{count}}",
+  "feedbackMoves": "Du hast {{count}} Züge gebraucht."
+},
+"success": {
+  "title": "Lektion abgeschlossen!",
+  "perfectScore": "Perfekte Punktzahl",
+  "crownEarned": "Krone verdient",
+  "correctCount": "{{correct}} von {{total}} korrekt",
+  "backToMenu": "Zurück zum Menü"
+},
+"truefalse": {
+  "true": "Wahr",
+  "false": "Falsch"
+}
+
+}
