@@ -1,15 +1,24 @@
 export const topics = [
   {
     id: "lungs",
-    name: "Lungs"
+    name: {
+      en: "Lungs",
+      de: "Lunge"
+    }
   },
   {
     id: "heart",
-    name: "Heart"
+    name: {
+      en: "Heart",
+      de: "Herz"
+    }
   },
   {
     id: "ear",
-    name: "Ear"
+    name: {
+      en: "Ear",
+      de: "Ohr"
+    }
   }
 ];
 
