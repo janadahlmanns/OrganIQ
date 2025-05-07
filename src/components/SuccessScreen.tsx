@@ -68,7 +68,7 @@ export default function SuccessScreen({ topicId, lessonLength, incorrectIds }: S
                 ref={imgRef} // anchor for confetti
                 src={getHappyImage(topicId)}
                 alt="Happy organ"
-                className="w-2/3 h-auto object-contain"
+                className="w-full max-w-[240px] h-auto object-contain"
                 initial={{ scale: 0 }}
                 animate={{
                     scale: [0, 1, 1.1, 1],
