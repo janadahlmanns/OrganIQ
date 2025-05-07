@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import PrimaryButton from './PrimaryButton';
 import FeedbackButton from './FeedbackButton';
 import ProgressBar from './ProgressBar';
 import CancelButton from './CancelButton';
+import { useAppSelector } from '../store/hooks';
 import sliderData from '../data/exercises_slider.json';
 
-const LANGUAGE: 'en' | 'de' = 'en'; // 🔒 Hardcoded for now; will later be read from storage
 
 type SliderExerciseProps = {
   exerciseId: number;
@@ -22,6 +23,8 @@ export default function SliderExercise({
   onContinue,
   onCancel,
 }: SliderExerciseProps) {
+  const { t } = useTranslation();
+  const exerciseLanguage = useAppSelector((state) => state.settings.exerciseLanguage);
   const [prompt, setPrompt] = useState('');
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(100);
@@ -40,9 +43,9 @@ export default function SliderExercise({
     if (!exercise) return;
 
     // Handle multilingual fields
-    setPrompt(typeof exercise.prompt === 'string' ? exercise.prompt : exercise.prompt[LANGUAGE]);
+    setPrompt(typeof exercise.prompt === 'string' ? exercise.prompt : exercise.prompt[exerciseLanguage]);
     setExplanation(
-      typeof exercise.explanation === 'string' ? exercise.explanation : exercise.explanation?.[LANGUAGE]
+      typeof exercise.explanation === 'string' ? exercise.explanation : exercise.explanation?.[exerciseLanguage]
     );
 
     // Load numeric fields
@@ -97,13 +100,13 @@ export default function SliderExercise({
 
       {!isEvaluated && (
         <PrimaryButton onClick={handleEvaluate} className="mx-auto w-2/3 !justify-center">
-          Done
+          {t('shared.done')}
         </PrimaryButton>
       )}
 
       {wasCorrect !== null && (
         <FeedbackButton
-          evaluation={wasCorrect ? 'Correct!' : 'Incorrect!'}
+          evaluation={wasCorrect ? t('shared.correct') : t('shared.incorrect')}
           explanation={!wasCorrect ? explanation : undefined}
           correct={wasCorrect}
           onContinue={() => onContinue({ incorrect: !wasCorrect, progressAfter })}

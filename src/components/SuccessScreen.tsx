@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import PrimaryButton from './PrimaryButton';
 import confetti from 'canvas-confetti';
 import { confettiColorsNormal, confettiColorsGolden } from '../config/motion'
@@ -13,6 +14,7 @@ type SuccessScreenProps = {
 };
 
 export default function SuccessScreen({ topicId, lessonLength, incorrectIds }: SuccessScreenProps) {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const imgRef = useRef<HTMLImageElement>(null);
 
@@ -77,10 +79,10 @@ export default function SuccessScreen({ topicId, lessonLength, incorrectIds }: S
                     ease: 'easeOut',
                 }}
             />
-            <div className="text-2xl font-bold text-white">Lesson complete!</div>
+            <div className="text-2xl font-bold text-white">{t('success.title')}</div>
             {crownEarned ? (
                 <div className="flex flex-col items-center justify-center space-y-1">
-                    <div className="text-xl font-bold text-white">Perfect Score</div>
+                    <div className="text-xl font-bold text-white">{t('success.perfectScore')}</div>
                     <div className="flex items-center justify-center space-x-3">
                         <motion.img
                             src="/images/icons/crown_icon.png"
@@ -95,13 +97,13 @@ export default function SuccessScreen({ topicId, lessonLength, incorrectIds }: S
                                 duration: 4,
                             }}
                         />
-                        <div className="text-2xl font-bold text-neonPink drop-shadow-inner-glowPink">Crown Earned</div>
+                        <div className="text-2xl font-bold text-neonPink drop-shadow-inner-glowPink">{t('success.crownEarned')}</div>
                     </div>
                 </div>
             ) : (
-                <div className="text-xl font-bold text-white">
-                    {lessonLength - incorrectIds.length}/{lessonLength} correct
-                </div>
+                    <div className="text-xl font-bold text-white">
+                        {t('success.correctCount', { correct: lessonLength - incorrectIds.length, total: lessonLength })}
+                    </div>
             )}
 
             <div className="text-xl text-cyan-300 font-semibold">{xpGainedText}</div>
@@ -115,7 +117,7 @@ export default function SuccessScreen({ topicId, lessonLength, incorrectIds }: S
                     navigate('/');
                 }}
             >
-                Back to Menu
+                {t('success.backToMenu')}
             </PrimaryButton>
         </div>
     );

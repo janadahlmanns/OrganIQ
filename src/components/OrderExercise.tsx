@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import PrimaryButton from './PrimaryButton';
 import ProgressBar from './ProgressBar';
 import CancelButton from './CancelButton';
 import FeedbackButton from './FeedbackButton';
 import ExerciseLabel from './ExerciseLabel';
+import { useAppSelector } from '../store/hooks';
 import orderingData from '../data/exercises_ordering.json';
 
 import {
@@ -21,7 +23,6 @@ import {
     verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 
-const LANGUAGE: 'en' | 'de' = 'en'; // 🔒 Hardcoded for now; will be read from storage later
 
 type OrderExerciseProps = {
     exerciseId: number;
@@ -44,6 +45,8 @@ export default function OrderExercise({
     onContinue,
     onCancel,
 }: OrderExerciseProps) {
+    const { t } = useTranslation();
+    const exerciseLanguage = useAppSelector((state) => state.settings.exerciseLanguage);
     const [items, setItems] = useState<Item[]>([]);
     const [correctOrder, setCorrectOrder] = useState<string[]>([]);
     const [wasCorrect, setWasCorrect] = useState<boolean | null>(null);
@@ -63,7 +66,7 @@ export default function OrderExercise({
                 id: String(index),
                 image: `/images/exercises/${imgPath}`,
             }))
-            : (exercise.items as Record<'en' | 'de', string[]>)[LANGUAGE].map((text: string, index: number) => ({
+            : (exercise.items as Record<string, string[]>)[exerciseLanguage].map((text: string, index: number) => ({
                 id: String(index),
                 content: text,
             }));
@@ -81,13 +84,13 @@ export default function OrderExercise({
         }
 
         setQuestionText(
-            typeof exercise.question_text === 'string' ? exercise.question_text : exercise.question_text[LANGUAGE]
+            typeof exercise.question_text === 'string' ? exercise.question_text : exercise.question_text[exerciseLanguage]
         );
 
         if (typeof exercise.explanation === 'string') {
             setExplanation(exercise.explanation);
-        } else if (exercise.explanation?.[LANGUAGE]) {
-            setExplanation(exercise.explanation[LANGUAGE]);
+        } else if (exercise.explanation?.[exerciseLanguage]) {
+            setExplanation(exercise.explanation[exerciseLanguage]);
         }
 
         setProgressAfter(beforeProgress);
@@ -165,12 +168,12 @@ export default function OrderExercise({
             {/* Buttons */}
             {!isEvaluated && (
                 <PrimaryButton onClick={handleEvaluate} className="mx-auto w-2/3 !justify-center">
-                    Done
+                    {t('shared.done')}
                 </PrimaryButton>
             )}
             {wasCorrect !== null && (
                 <FeedbackButton
-                    evaluation={wasCorrect ? 'Correct!' : 'Incorrect!'}
+                    evaluation={t(wasCorrect ? 'shared.correct' : 'shared.incorrect')}
                     explanation={!wasCorrect ? explanation : undefined}
                     correct={wasCorrect}
                     onContinue={() => onContinue({ incorrect: !wasCorrect, progressAfter })}

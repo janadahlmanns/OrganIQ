@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import PrimaryButton from './PrimaryButton';
 import ProgressBar from './ProgressBar';
 import CancelButton from './CancelButton';
 import FeedbackButton from './FeedbackButton';
+import { useAppSelector } from '../store/hooks';
 import truefalseData from '../data/exercises_truefalse.json';
-
-const LANGUAGE: 'en' | 'de' = 'en'; // 🔒 Hardcoded for now
 
 type TrueFalseProps = {
     exerciseId: number;
@@ -23,6 +23,8 @@ export default function TrueFalse({
     onContinue,
     onCancel,
 }: TrueFalseProps) {
+    const { t } = useTranslation();
+    const exerciseLanguage = useAppSelector((state) => state.settings.exerciseLanguage);
     const questionData = truefalseData.truefalse.find(q => q.id === exerciseId);
     const navigate = useNavigate();
 
@@ -39,14 +41,14 @@ export default function TrueFalse({
     if (!questionData) {
         return (
             <div className="text-white text-center space-y-4">
-                <div className="text-xl font-bold">Question not found.</div>
+                <div className="text-xl font-bold">{t('feedback.questionNotFound')}</div>
                 <PrimaryButton
                     variant="white"
                     active
                     className="w-2/3 mx-auto"
                     onClick={() => navigate('/')}
                 >
-                    Back to Menu
+                    {t('feedback.backToMenu')}
                 </PrimaryButton>
             </div>
         );
@@ -64,12 +66,12 @@ export default function TrueFalse({
     const questionText =
         typeof questionData.question_text === 'string'
             ? questionData.question_text
-            : questionData.question_text[LANGUAGE];
+            : questionData.question_text[exerciseLanguage];
 
     const explanation =
         typeof questionData.explanation === 'string'
             ? questionData.explanation
-            : questionData.explanation?.[LANGUAGE];
+            : questionData.explanation?.[exerciseLanguage];
 
     return (
         <div className="w-full max-w-[480px] mx-auto px-4 pt-4 flex flex-col flex-1">
@@ -99,7 +101,7 @@ export default function TrueFalse({
                                     : 'pink'
                         }
                     >
-                        True
+                        {t('truefalse.true')}
                     </PrimaryButton>
 
                     <PrimaryButton
@@ -115,13 +117,13 @@ export default function TrueFalse({
                                     : 'pink'
                         }
                     >
-                        False
+                        {t('truefalse.false')}
                     </PrimaryButton>
                 </div>
 
                 {wasCorrect !== null && (
                     <FeedbackButton
-                        evaluation={wasCorrect ? 'Correct!' : 'Incorrect!'}
+                        evaluation={wasCorrect ? t('shared.correct') : t('shared.incorrect')}
                         explanation={!wasCorrect && explanation ? explanation : undefined}
                         correct={wasCorrect}
                         onContinue={() => onContinue({ incorrect: !wasCorrect, progressAfter })}

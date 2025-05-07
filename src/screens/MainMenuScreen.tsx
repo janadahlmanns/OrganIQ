@@ -5,7 +5,7 @@ import { RootState } from '../store';
 import { motion } from 'framer-motion';
 import { revealRight } from '../config/motion';
 import { useFirstVisit } from '../hooks/useFirstVisit';
-
+import { useTranslation } from 'react-i18next';
 
 import ScreenLayout from '../components/ScreenLayout';
 import Toast from '../components/Toast';
@@ -16,6 +16,8 @@ import UtilityButton from '../components/UtilityButton';
 import { topics, lessonIds } from '../data/topics';
 
 export default function MainMenuScreen() {
+  const { t } = useTranslation();
+
   const [expandedTopicId, setExpandedTopicId] = useState<string | null>(() => {
     return localStorage.getItem('lastTopicId') || null;
   });
@@ -55,16 +57,16 @@ export default function MainMenuScreen() {
         style={{ willChange: 'clip-path' }}
       >
         <span className="inline-flex items-center gap-2 flex-wrap justify-center">
-          You have {crowns}
+          {t('main.youHave')} {crowns}
           <img
             src="/images/icons/crown_icon.png"
             alt="Crown"
             className="w-6 h-6 inline-block drop-shadow-inner-glowPink"
           />
-          Let's play to get more...
+          {t('main.getMore')}
         </span>
       </motion.div>
-      <h1 className="text-heading-xl font-bold uppercase text-center section">Topics</h1>
+      <h1 className="text-heading-xl font-bold uppercase text-center section">{t('main.topics')}</h1>
 
       {topics.map((topic, index) => {
         const renderLessonButton = (lessonId: string) => {
@@ -80,7 +82,7 @@ export default function MainMenuScreen() {
 
           const to = state !== 'inactive' ? `/lesson/${topic.id}/${lessonId}` : undefined;
           const onClick = state === 'inactive'
-            ? () => showToast('Lesson locked. Complete previous lessons first.')
+            ? () => showToast(t('main.toastLockedLesson'))
             : undefined;
 
           const content =
@@ -205,8 +207,8 @@ export default function MainMenuScreen() {
       })}
 
       <div className="mt-8 flex justify-center space-x-8">
-        <UtilityButton to="/stats">Stats</UtilityButton>
-        <UtilityButton to="/preferences">Preferences</UtilityButton>
+        <UtilityButton to="/stats">{t('main.stats')}</UtilityButton>
+        <UtilityButton to="/preferences">{t('main.preferences')}</UtilityButton>
       </div>
     </ScreenLayout>
   );

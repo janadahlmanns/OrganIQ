@@ -1,6 +1,7 @@
 import PrimaryButton from './PrimaryButton';
 import { motion } from 'framer-motion';
 import { fadeSlideIn } from '../config/motion';
+import { useTranslation } from 'react-i18next';
 
 type FeedbackButtonProps = {
     evaluation: string;
@@ -10,6 +11,7 @@ type FeedbackButtonProps = {
 };
 
 export default function FeedbackButton({ evaluation, explanation, onContinue, correct }: FeedbackButtonProps) {
+    const { t } = useTranslation();
     return (
         <motion.div
             style={{ willChange: 'transform, opacity' }}
@@ -36,7 +38,7 @@ export default function FeedbackButton({ evaluation, explanation, onContinue, co
 
                 {/* Bottom: Continue */}
                 <span className="font-bold text-center">
-                    Continue
+                    {t('shared.continue')}
                 </span>
             </PrimaryButton>
         </motion.div>

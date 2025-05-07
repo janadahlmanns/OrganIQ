@@ -13,15 +13,18 @@ import {
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 
 import lessonReducer from './lessonSlice.ts';
+import settingsReducer from './settingsSlice';
+
 
 const rootReducer = combineReducers({
     lessons: lessonReducer,
+    settings: settingsReducer,
 });
 
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['lessons'], // only persist lessons slice for now
+    whitelist: ['lessons', 'settings'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

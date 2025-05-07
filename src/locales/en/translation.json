@@ -1,0 +1,48 @@
+{
+  "preferences": {
+    "title": "⚙️ Preferences",
+    "reset": "Reset Progress",
+    "toastReset": "Progress reset!",
+    "uiLanguage": "App Language",
+    "exerciseLanguage": "Exercise Language",
+    "back": "Back to Main Menu"
+  },
+  "language": {
+    "english": "🇬🇧 English",
+    "german": "🇩🇪 German"
+  },
+"main": {
+  "topics": "Topics",
+  "preferences": "Preferences",
+  "stats": "Stats",
+  "toastLockedLesson": "Lesson locked. Complete previous lessons first.",
+  "youHave": "You have",
+  "getMore": "Let's play to get more..."
+},
+"shared": {
+  "continue": "Continue",
+  "questionNotFound": "Question not found.",
+  "hotspotNotFound": "Hotspot data not found.",
+  "backToMenu": "Back to Menu",
+  "correct": "Correct!",
+  "incorrect": "Incorrect!",
+  "done": "Done"
+},
+"memory": {
+  "findThePairs": "Find the pairs",
+  "moves": "Moves: {{count}}",
+  "feedbackMoves": "You took {{count}} moves."
+},
+"success": {
+  "title": "Lesson complete!",
+  "perfectScore": "Perfect Score",
+  "crownEarned": "Crown Earned",
+  "correctCount": "{{correct}}/{{total}} correct",
+  "backToMenu": "Back to Menu"
+},
+"truefalse": {
+  "true": "True",
+  "false": "False"
+}
+
+}

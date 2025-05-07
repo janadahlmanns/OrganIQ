@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import PrimaryButton from './PrimaryButton';
 import ProgressBar from './ProgressBar';
 import CancelButton from './CancelButton';
 import FeedbackButton from './FeedbackButton';
+import { useAppSelector } from '../store/hooks';
 import hotspotData from '../data/exercises_hotspot.json';
 
-const LANGUAGE = 'en'; // 🔒 Temporary hardcoded language
+
 
 type HotspotRegion = {
     name: string;
@@ -23,6 +25,8 @@ type HotspotProps = {
 };
 
 export default function Hotspot({ exerciseId, beforeProgress, progressStep, onContinue, onCancel }: HotspotProps) {
+    const { t } = useTranslation();
+    const exerciseLanguage = useAppSelector((state) => state.settings.exerciseLanguage);
     const exercise = hotspotData.hotspots.find((ex) => ex.id === exerciseId);
     const navigate = useNavigate();
 
@@ -68,14 +72,14 @@ export default function Hotspot({ exerciseId, beforeProgress, progressStep, onCo
     if (!exercise) {
         return (
             <div className="text-white text-center space-y-4">
-                <div className="text-xl font-bold">Hotspot data not found.</div>
+                <div className="text-xl font-bold">{t('shared.hotspotNotFound')}</div>
                 <PrimaryButton
                     variant="white"
                     active
                     className="w-2/3 mx-auto"
                     onClick={() => navigate('/')}
                 >
-                    Back to Menu
+                    {t('shared.backToMenu')}
                 </PrimaryButton>
             </div>
         );
@@ -123,7 +127,7 @@ export default function Hotspot({ exerciseId, beforeProgress, progressStep, onCo
             </div>
 
             <div className="space-y-6 w-full">
-                <h2 className="text-xl font-bold text-center">{exercise.prompt[LANGUAGE]}</h2>
+                <h2 className="text-xl font-bold text-center">{exercise.prompt[exerciseLanguage]}</h2>
 
                 <div className="relative w-full aspect-square overflow-hidden">
                     <img
@@ -150,8 +154,7 @@ export default function Hotspot({ exerciseId, beforeProgress, progressStep, onCo
 
                 {wasCorrect !== null && (
                     <FeedbackButton
-                        evaluation={wasCorrect ? 'Correct!' : 'Incorrect!'}
-                        explanation={!wasCorrect ? 'Explanation goes here.' : undefined}
+                        evaluation={t(wasCorrect ? 'shared.correct' : 'shared.incorrect')}
                         correct={wasCorrect}
                         onContinue={() => onContinue({ incorrect: !wasCorrect, progressAfter })}
                     />

@@ -28,7 +28,7 @@ module.exports = {
         neonPink: '#FF007F',
         glowPurple: '#8A2BE2',
         neonCyan: '#00FFFF',
-        darkPurple: '#0b0019', // from moodboard — for background
+        darkPurple: '#0b0019', // for background
         gray: '#ffffff33',
       },
       boxShadow: {
