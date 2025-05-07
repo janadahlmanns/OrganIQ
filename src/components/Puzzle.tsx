@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import ProgressBar from './ProgressBar';
 import CancelButton from './CancelButton';
 import FeedbackButton from './FeedbackButton';
@@ -47,6 +48,7 @@ type PuzzleProps = {
 };
 
 export default function Puzzle({ exerciseId, beforeProgress, progressStep, onContinue, onCancel }: PuzzleProps) {
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     const [wasSolved, setWasSolved] = useState(false);
@@ -240,7 +242,7 @@ export default function Puzzle({ exerciseId, beforeProgress, progressStep, onCon
 
                 {wasSolved && (
                     <FeedbackButton
-                        evaluation="Puzzle Complete!"
+                        evaluation={t('shared.puzzleComplete')}
                         correct
                         onContinue={() => onContinue({ incorrect: false, progressAfter })}
                     />

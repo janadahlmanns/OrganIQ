@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import PrimaryButton from './PrimaryButton';
 import ProgressBar from './ProgressBar';
 import CancelButton from './CancelButton';
 import FeedbackButton from './FeedbackButton';
 import MemoryButton from './MemoryButton';
+import { useAppSelector } from '../store/hooks';
 import memoriesData from '../data/exercises_memory.json';
 
-const LANGUAGE: 'en' | 'de' = 'en'; // 🔒 Temporary hardcoded language
 
 type MemoryProps = {
     exerciseId: number;
@@ -41,6 +42,8 @@ function shuffleArray<T>(array: T[]): T[] {
 }
 
 export default function Memory({ exerciseId, beforeProgress, progressStep, onContinue, onCancel }: MemoryProps) {
+    const { t } = useTranslation();
+    const exerciseLanguage = useAppSelector((state) => state.settings.exerciseLanguage);
     const questionData = memoriesData.memory_pairs.find(q => q.id === exerciseId);
     const navigate = useNavigate();
 
@@ -64,7 +67,7 @@ export default function Memory({ exerciseId, beforeProgress, progressStep, onCon
                 id: idCounter++,
                 pairId: pairIndex,
                 frontType: pair.cardA.type as 'text' | 'image',
-                frontValue: resolveValue(pair.cardA.value, LANGUAGE),
+                frontValue: resolveValue(pair.cardA.value, exerciseLanguage),
                 side: 'back',
                 solved: false,
             });
@@ -72,7 +75,7 @@ export default function Memory({ exerciseId, beforeProgress, progressStep, onCon
                 id: idCounter++,
                 pairId: pairIndex,
                 frontType: pair.cardB.type as 'text' | 'image',
-                frontValue: resolveValue(pair.cardB.value, LANGUAGE),
+                frontValue: resolveValue(pair.cardB.value, exerciseLanguage),
                 side: 'back',
                 solved: false,
             });
@@ -84,14 +87,14 @@ export default function Memory({ exerciseId, beforeProgress, progressStep, onCon
     if (!questionData) {
         return (
             <div className="text-white text-center space-y-4">
-                <div className="text-xl font-bold">Question not found.</div>
+                <div className="text-xl font-bold">{t('shared.questionNotFound')}</div>
                 <PrimaryButton
                     variant="white"
                     active
                     className="w-2/3 mx-auto"
                     onClick={() => navigate('/')}
                 >
-                    Back to Menu
+                    {t('shared.backToMenu')}
                 </PrimaryButton>
             </div>
         );
@@ -174,7 +177,7 @@ export default function Memory({ exerciseId, beforeProgress, progressStep, onCon
             </div>
 
             {/* Prompt */}
-            <h2 className="text-xl font-bold text-left text-white mb-6">Find the pairs</h2>
+            <h2 className="text-xl font-bold text-left text-white mb-6">{t('memory.findThePairs')}</h2>
 
             {/* Memory board */}
             <div className="grid grid-cols-3 gap-4 mb-6">
@@ -193,13 +196,15 @@ export default function Memory({ exerciseId, beforeProgress, progressStep, onCon
             </div>
 
             {/* Moves counter */}
-            <div className="text-white text-center mb-4">Moves: {moves}</div>
+            <div className="text-white text-center mb-4">
+                {t('memory.moves', { count: moves })}
+            </div>
 
             {/* Feedback */}
             {wasCorrect !== null && (
                 <FeedbackButton
-                    evaluation={wasCorrect ? 'Correct!' : 'Incorrect!'}
-                    explanation={wasCorrect ? `You took ${moves} moves.` : undefined}
+                    evaluation={t(wasCorrect ? 'shared.correct' : 'shared.incorrect')}
+                    explanation={wasCorrect ? t('memory.feedbackMoves', { count: moves }) : undefined}
                     correct={wasCorrect}
                     onContinue={() => onContinue({ incorrect: !wasCorrect, progressAfter })}
                 />

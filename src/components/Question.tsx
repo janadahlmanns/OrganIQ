@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import PrimaryButton from './PrimaryButton';
 import ProgressBar from './ProgressBar';
 import CancelButton from './CancelButton';
 import FeedbackButton from './FeedbackButton';
+import { useAppSelector } from '../store/hooks';
 import questionsData from '../data/exercises_questions.json';
-
-const LANGUAGE: 'en' | 'de' = 'en'; // 🔒 Temporary hardcoded language
 
 type QuestionProps = {
     exerciseId: number;
@@ -17,6 +17,8 @@ type QuestionProps = {
 };
 
 export default function Question({ exerciseId, beforeProgress, progressStep, onContinue, onCancel }: QuestionProps) {
+    const { t } = useTranslation();
+    const exerciseLanguage = useAppSelector((state) => state.settings.exerciseLanguage);
     const questionData = questionsData.questions.find(q => q.id === exerciseId);
     const navigate = useNavigate();
     const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -33,10 +35,10 @@ export default function Question({ exerciseId, beforeProgress, progressStep, onC
         if (!questionData) return;
 
         const newOptions = [
-            { text: questionData.option_1[LANGUAGE], isCorrect: questionData.correct_option === 1 },
-            { text: questionData.option_2[LANGUAGE], isCorrect: questionData.correct_option === 2 },
-            { text: questionData.option_3[LANGUAGE], isCorrect: questionData.correct_option === 3 },
-            { text: questionData.option_4[LANGUAGE], isCorrect: questionData.correct_option === 4 },
+            { text: questionData.option_1[exerciseLanguage], isCorrect: questionData.correct_option === 1 },
+            { text: questionData.option_2[exerciseLanguage], isCorrect: questionData.correct_option === 2 },
+            { text: questionData.option_3[exerciseLanguage], isCorrect: questionData.correct_option === 3 },
+            { text: questionData.option_4[exerciseLanguage], isCorrect: questionData.correct_option === 4 },
         ];
 
         const shuffled = newOptions.sort(() => Math.random() - 0.5);
@@ -48,14 +50,14 @@ export default function Question({ exerciseId, beforeProgress, progressStep, onC
     if (!questionData) {
         return (
             <div className="text-white text-center space-y-4">
-                <div className="text-xl font-bold">Question not found.</div>
+                <div className="text-xl font-bold">{t('shared.questionNotFound')}</div>
                 <PrimaryButton
                     variant="white"
                     active
                     className="w-2/3 mx-auto"
                     onClick={() => navigate('/')}
                 >
-                    Back to Menu
+                    {t('shared.backToMenu')}
                 </PrimaryButton>
             </div>
         );
@@ -85,7 +87,7 @@ export default function Question({ exerciseId, beforeProgress, progressStep, onC
 
             {/* Question and options */}
             <div className="space-y-6 w-full">
-                <h2 className="text-xl font-bold text-center">{questionData.question_text[LANGUAGE]}</h2>
+                <h2 className="text-xl font-bold text-center">{questionData.question_text[exerciseLanguage]}</h2>
 
                 <div className="flex flex-col gap-4">
                     {shuffledOptions.map((option, index) => (
@@ -110,8 +112,8 @@ export default function Question({ exerciseId, beforeProgress, progressStep, onC
 
                 {wasCorrect !== null && (
                     <FeedbackButton
-                        evaluation={wasCorrect ? 'Correct!' : 'Incorrect!'}
-                        explanation={!wasCorrect ? questionData.explanation?.[LANGUAGE] : undefined}
+                        evaluation={wasCorrect ? t('shared.correct') : t('shared.incorrect')}
+                        explanation={!wasCorrect ? questionData.explanation?.[exerciseLanguage] : undefined}
                         correct={wasCorrect}
                         onContinue={() => onContinue({ incorrect: !wasCorrect, progressAfter })}
                     />
