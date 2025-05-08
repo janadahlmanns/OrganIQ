@@ -1,0 +1,27 @@
+{
+    "labeling": [
+      {
+        "id": 23,
+      "image": "ear/puzzle_test",
+      "labels": [
+        {
+          "text": { "de": "Eins", "en": "One" },
+          "targetRegion": "one"
+        },
+        {
+          "text": { "de": "Zwei", "en": "Two" },
+          "targetRegion": "two"
+        },
+        {
+          "text": { "de": "Drei", "en": "Three" },
+          "targetRegion": "three"
+        },
+        {
+          "text": { "de": "Vier", "en": "Four" },
+          "targetRegion": "four"
+        }
+      ]
+    }
+  ]
+}
+  
