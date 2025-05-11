@@ -1,4 +1,6 @@
-// /src/config/motion.ts
+// © 2025 Dr. Jana Katharina Dahlmanns. All Rights Reserved.
+// This file is part of the OrganIQ project.
+// No reuse, redistribution, or modification is permitted without explicit written permission.
 
 export const fadeSlideIn = {
     initial: { opacity: 0, y: 20 },

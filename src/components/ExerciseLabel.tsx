@@ -1,3 +1,7 @@
+// © 2025 Dr. Jana Katharina Dahlmanns. All Rights Reserved.
+// This file is part of the OrganIQ project.
+// No reuse, redistribution, or modification is permitted without explicit written permission.
+
 import { motion } from 'framer-motion';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -54,7 +58,7 @@ export default function ExerciseLabel({
             {...(disabled ? {} : listeners)}
             className={`select-none rounded border-2 ${borderColor} ${draggingClasses} ${
                 image ? 'inline-block' : 'w-full px-4 py-2 text-center font-bold text-white'
-              }`}                       
+              }`}
         >
             {image ? (
                 <img

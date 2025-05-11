@@ -1,3 +1,7 @@
+// © 2025 Dr. Jana Katharina Dahlmanns. All Rights Reserved.
+// This file is part of the OrganIQ project.
+// No reuse, redistribution, or modification is permitted without explicit written permission.
+
 import { useParams } from 'react-router-dom';
 import { motion, useAnimation } from 'framer-motion';
 import { useEffect, useState } from 'react';
