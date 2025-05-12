@@ -43,6 +43,10 @@
 "truefalse": {
   "true": "Wahr",
   "false": "Falsch"
+},
+"puzzle": {
+  "title": "Setze das Puzzle zusammen",
+  "puzzleComplete": "Puzzle gelöst!"
 }
 
 }

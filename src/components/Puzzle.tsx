@@ -226,7 +226,7 @@ export default function Puzzle({ exerciseId, beforeProgress, progressStep, onCon
             </div>
 
             <div className="space-y-6 w-full">
-                <h2 className="text-xl font-bold text-center text-white">Assemble the puzzle 2</h2>
+                <h2 className="text-xl font-bold text-center text-white">{t('puzzle.title')}</h2>
                 <div className={`relative w-full aspect-square ${wasSolved ? 'bg-darkPurple border-3 border-neonCyan shadow-glowCyan' : 'bg-darkPurple border-3 border-white shadow-glowWhite'} rounded-2xl overflow-hidden`}>
                     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
                         <svg className="absolute w-full h-full touch-none" viewBox={viewBox}>
@@ -246,7 +246,7 @@ export default function Puzzle({ exerciseId, beforeProgress, progressStep, onCon
 
                 {wasSolved && (
                     <FeedbackButton
-                        evaluation={t('shared.puzzleComplete')}
+                        evaluation={t('puzzle.puzzleComplete')}
                         correct
                         onContinue={() => onContinue({ incorrect: false, progressAfter })}
                     />

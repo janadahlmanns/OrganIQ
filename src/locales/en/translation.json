@@ -43,6 +43,10 @@
 "truefalse": {
   "true": "True",
   "false": "False"
+},
+"puzzle": {
+  "title": "Assemble the puzzle",
+  "puzzleComplete": "Puzzle complete!"
 }
 
 }
