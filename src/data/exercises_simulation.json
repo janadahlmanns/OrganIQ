@@ -1,0 +1,53 @@
+{
+  "simulations": [
+    {
+      "id": 23,
+      "type": "slider_image",
+      "title": {
+        "en": "Soundwave Explorer",
+        "de": "Schallwellen-Explorer"
+      },
+      "description": {
+        "en": "Adjust the frequency and pressure to see how a soundwave changes over time.",
+        "de": "Verändere Frequenz und Schalldruck, um zu sehen, wie sich eine Schallwelle über die Zeit verändert."
+      },
+      "explanation": {
+        "en": "The frequency determines the pitch of a tone, the sound pressure determines the volume.",
+        "de": "Die Frequenz bestimmt die Tonhöhe, der Schalldruck bestimmt die Lautstärke."
+      },
+      "sliders": [
+        {
+          "label": {
+            "en": "Frequency (Hz)",
+            "de": "Frequenz (Hz)"
+          },
+          "key": "frequency",
+          "min": 100,
+          "max": 2000,
+          "initial": 440
+        },
+        {
+          "label": {
+            "en": "Pressure (Pa)",
+            "de": "Schalldruck (Pa)"
+          },
+          "key": "amplitude",
+          "min": 0.05,
+          "max": 1.0,
+          "initial": 0.5
+        }
+      ],
+      "waveform": {
+        "mode": "procedural",
+        "generator": "sine",
+        "width": 400,
+        "height": 120,
+        "timeWindowMs": 10,
+        "pressureRangePa": 2
+      },
+      "audio": {
+        "enabled": true
+      }
+    }
+  ]
+}
