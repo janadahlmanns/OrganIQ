@@ -11,6 +11,10 @@
         "en": "Adjust the frequency and pressure to see how a soundwave changes over time.",
         "de": "Verändere Frequenz und Schalldruck, um zu sehen, wie sich eine Schallwelle über die Zeit verändert."
       },
+      "explanation": {
+        "en": "The frequency determines the pitch of a tone, the sound pressure determines the volume.",
+        "de": "Die Frequenz bestimmt die Tonhöhe, der Schalldruck bestimmt die Lautstärke."
+      },
       "sliders": [
         {
           "label": {

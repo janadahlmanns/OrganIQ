@@ -34,9 +34,10 @@ type ExerciseData = {
     type: string;
     title: { en: string; de: string };
     description: { en: string; de: string };
+    explanation?: { en: string; de: string };
     sliders: SliderConfig[];
     waveform: {
-        mode: 'procedural';
+        mode: 'procedural' | 'image' | 'static';
         generator: string;
         width: number;
         height: number;
@@ -45,6 +46,7 @@ type ExerciseData = {
     };
     audio?: { enabled: boolean };
 };
+
 
 export default function SliderImage({ exerciseId, beforeProgress, progressStep, onContinue, onCancel }: Props) {
     const { i18n, t } = useTranslation();
@@ -55,8 +57,12 @@ export default function SliderImage({ exerciseId, beforeProgress, progressStep, 
 
     useEffect(() => {
         const entry = simulationData.simulations.find((sim) => sim.id === exerciseId);
-        if (entry && entry.type === 'slider_image') {
-            setData(entry);
+        if (
+            entry &&
+            entry.type === 'slider_image' &&
+            entry.waveform?.mode === 'procedural'
+        ) {
+            setData(entry as ExerciseData);
             const initialSliderState: Record<string, number> = {};
             entry.sliders.forEach((s: SliderConfig) => {
                 initialSliderState[s.key] = s.initial;
@@ -79,7 +85,7 @@ export default function SliderImage({ exerciseId, beforeProgress, progressStep, 
     };
 
     const language = i18n.language as 'en' | 'de';
-    const { width, height: baseHeight, pressureRangePa, timeWindowMs } = data.waveform;
+    const { width, height: baseHeight} = data.waveform;
     const height = baseHeight * 2;
 
     const yRange = height * 0.85;
@@ -87,17 +93,31 @@ export default function SliderImage({ exerciseId, beforeProgress, progressStep, 
     const yEnd = yStart + yRange;
 
     // Remap 0 Pa to new vertical coordinate
-    const xAxisY = yStart + ((1.1 - 0) / 1.2) * yRange;
+    const xAxisY = yStart + (1.1 / 2.2) * yRange; // maps pressure = 0 to vertical center
 
-    const xStart = (width - width * 0.85) / 2;
-    const xRange = width * 0.85;
+    const xRange = width * 0.80;
+    const xStart = (width - xRange) / 2;
+
+    const totalMs = 10.5; // for the full arrow
+    const tickMs = 10;    // ticks only go up to 10
+    const tickRatio = tickMs / totalMs; // ≈ 0.952
+
 
     const translatedPath = rawPath.replace(/([ML])\s*([\d.]+),([\d.]+)/g, (_, cmd, xRaw, yRaw) => {
-        const x = xStart + parseFloat(xRaw) * xRange / width;
+        const x = xStart + parseFloat(xRaw) * xRange / width * tickRatio;
 
         const yOrig = parseFloat(yRaw);
         const pressure = (data.waveform.height / 2 - yOrig) * (data.waveform.pressureRangePa / data.waveform.height);
-        const y = yStart + ((1.1 - pressure) / 1.2) * yRange;
+
+        const logicalSpan = 2.2; // total y-axis: −1.1 to +1.1
+        const waveformSpan = 2.0; // waveform: −1 to +1
+        const marginRatio = (logicalSpan - waveformSpan) / logicalSpan;
+
+        const inset = (marginRatio / 2) * yRange;
+        const yInsetStart = yStart + inset;
+        const yInsetRange = yRange - 2 * inset;
+
+        const y = yInsetStart + ((1 - pressure) / 2) * yInsetRange;
 
         return `${cmd} ${x.toFixed(2)},${y.toFixed(2)}`;
     });
@@ -128,8 +148,8 @@ export default function SliderImage({ exerciseId, beforeProgress, progressStep, 
                     </defs>
                     {/* Y-axis with arrow */}
                     <line
-                        x1={(width - width * 0.85) / 2}
-                        x2={(width - width * 0.85) / 2}
+                        x1={xStart}
+                        x2={xStart}
                         y1={yEnd}
                         y2={yStart}
                         stroke="white"
@@ -137,9 +157,15 @@ export default function SliderImage({ exerciseId, beforeProgress, progressStep, 
                         markerEnd="url(#arrow)"
                     />
                     {/* Y-axis ticks and labels */}
-                    {[0, 0.5, 1].map((v) => {
-                        const y = yStart + ((1.1 - v) / 1.2) * yRange;
-                        const x = (width - width * 0.85) / 2;
+                    {[-1, -0.5, 0, 0.5, 1].map((v) => {
+                        const y = yStart + ((1.1 - v) / 2.2) * yRange;
+                        const x = xStart;
+
+                        const showLabel = v === 0 || v === 1 || v === -1;
+                        const label =
+                            v === 1 ? '+1 Pa' :
+                                v === -1 ? '−1 Pa' :
+                                    '0';
 
                         return (
                             <g key={`ytick-${v}`}>
@@ -151,23 +177,25 @@ export default function SliderImage({ exerciseId, beforeProgress, progressStep, 
                                     stroke="white"
                                     strokeWidth={1}
                                 />
-                                <text
-                                    x={x - 8}
-                                    y={y + 4}
-                                    fontSize="12"
-                                    textAnchor="end"
-                                    fill="white"
-                                    fontFamily="Inter"
-                                >
-                                    {v === 1 ? `${v} Pa` : v}
-                                </text>
+                                {showLabel && (
+                                    <text
+                                        x={x - 8}
+                                        y={y + 4}
+                                        fontSize="12"
+                                        textAnchor="end"
+                                        fill="white"
+                                        fontFamily="Inter"
+                                    >
+                                        {label}
+                                    </text>
+                                )}
                             </g>
                         );
                     })}
                     {/* X-axis with arrow */}
                     <line
-                        x1={(width - width * 0.85) / 2}
-                        x2={(width - width * 0.85) / 2 + width * 0.90}
+                        x1={xStart}
+                        x2={xStart + xRange}
                         y1={xAxisY}
                         y2={xAxisY}
                         stroke="white"
@@ -177,7 +205,8 @@ export default function SliderImage({ exerciseId, beforeProgress, progressStep, 
                     {/* X-axis ticks and labels */}
                     {[...Array(11)].map((_, i) => {
                         if (i === 0) return null;
-                        const x = (width - width * 0.85) / 2 + (width * 0.85) * (i / 10);
+                        const tickVisualX = (i / 10) * tickRatio; // ratio compresses ticks into 10/10.5
+                        const x = xStart + tickVisualX * xRange;
                         return (
                             <g key={`tick-${i}`}>
                                 <line
@@ -244,7 +273,8 @@ export default function SliderImage({ exerciseId, beforeProgress, progressStep, 
             ) : (
                 <FeedbackButton
                     correct
-                    evaluation={t('shared.simulationComplete')}
+                    evaluation={t('shared.done')}
+                        explanation={data.explanation?.[language]}
                     onContinue={() => onContinue({ incorrect: false, progressAfter })}
                 />
             )}
