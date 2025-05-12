@@ -10,6 +10,7 @@ import CancelButton from '../CancelButton';
 import FeedbackButton from '../FeedbackButton';
 import { waveformGenerators } from '../../utils/waveformGenerators';
 import simulationData from '../../data/exercises_simulation.json';
+import { useAppSelector } from '../../store/hooks';
 
 // Types
 
@@ -49,7 +50,9 @@ type ExerciseData = {
 
 
 export default function SliderImage({ exerciseId, beforeProgress, progressStep, onContinue, onCancel }: Props) {
-    const { i18n, t } = useTranslation();
+    const { t } = useTranslation();
+    const exerciseLanguage = useAppSelector((state) => state.settings.exerciseLanguage) as 'en' | 'de';
+
     const [data, setData] = useState<ExerciseData | null>(null);
     const [sliderValues, setSliderValues] = useState<Record<string, number>>({});
     const [isEvaluated, setIsEvaluated] = useState(false);
@@ -84,7 +87,6 @@ export default function SliderImage({ exerciseId, beforeProgress, progressStep, 
         setProgressAfter(Math.min(beforeProgress + progressStep, 100));
     };
 
-    const language = i18n.language as 'en' | 'de';
     const { width, height: baseHeight} = data.waveform;
     const height = baseHeight * 2;
 
@@ -133,8 +135,8 @@ export default function SliderImage({ exerciseId, beforeProgress, progressStep, 
 
             {/* Title */}
             <div className="text-center mb-2">
-                <h2 className="text-heading-xl font-bold">{data.title[language]}</h2>
-                <p className="text-base text-gray-300">{data.description[language]}</p>
+                <h2 className="text-heading-xl font-bold">{data.title[exerciseLanguage]}</h2>
+                <p className="text-base text-gray-300">{data.description[exerciseLanguage]}</p>
             </div>
 
             {/* SVG Plot */}
@@ -247,7 +249,7 @@ export default function SliderImage({ exerciseId, beforeProgress, progressStep, 
                 {data.sliders.map(slider => (
                     <div key={slider.key}>
                         <label className="block text-sm font-medium mb-1">
-                            {slider.label[language]}:{' '}
+                            {slider.label[exerciseLanguage]}:{' '}
                             {slider.key === 'frequency'
                                 ? `${Math.round(sliderValues[slider.key])} Hz`
                                 : `${sliderValues[slider.key].toFixed(2)} Pa`}
@@ -274,7 +276,7 @@ export default function SliderImage({ exerciseId, beforeProgress, progressStep, 
                 <FeedbackButton
                     correct
                     evaluation={t('shared.done')}
-                        explanation={data.explanation?.[language]}
+                        explanation={data.explanation?.[exerciseLanguage]}
                     onContinue={() => onContinue({ incorrect: false, progressAfter })}
                 />
             )}

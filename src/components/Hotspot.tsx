@@ -12,10 +12,10 @@ import FeedbackButton from './FeedbackButton';
 import { useAppSelector } from '../store/hooks';
 import hotspotData from '../data/exercises_hotspot.json';
 
-
+type LocalizedName = { en: string; de: string };
 
 type HotspotRegion = {
-    name: string;
+    name: LocalizedName;
     shape: 'polygon';
     points: { x: number; y: number }[];
 };
@@ -31,6 +31,8 @@ type HotspotProps = {
 export default function Hotspot({ exerciseId, beforeProgress, progressStep, onContinue, onCancel }: HotspotProps) {
     const { t } = useTranslation();
     const exerciseLanguage = useAppSelector((state) => state.settings.exerciseLanguage);
+    const lang = exerciseLanguage as keyof LocalizedName;
+
     const exercise = hotspotData.hotspots.find((ex) => ex.id === exerciseId);
     const navigate = useNavigate();
 
@@ -116,7 +118,7 @@ export default function Hotspot({ exerciseId, beforeProgress, progressStep, onCo
             return inside;
         });
 
-        const isCorrect = clickedRegion?.name === exercise.targetRegionId;
+        const isCorrect = clickedRegion?.name[lang] === exercise.targetRegionId
         setWasCorrect(isCorrect);
         setProgressAfter(Math.min(beforeProgress + progressStep, 100));
     };
