@@ -1,6 +1,6 @@
 [
   {
-    "name": "four",
+    "name": { "en": "four", "de": "vier" },
     "shape": "polygon",
     "points": [
       {
@@ -230,7 +230,7 @@
     ]
   },
   {
-    "name": "three",
+    "name": { "en": "three", "de": "drei" },
     "shape": "polygon",
     "points": [
       {
@@ -444,7 +444,7 @@
     ]
   },
   {
-    "name": "two",
+    "name": { "en": "two", "de": "zwei" },
     "shape": "polygon",
     "points": [
       {
@@ -694,7 +694,7 @@
     ]
   },
   {
-    "name": "one",
+    "name": { "en": "one", "de": "eins" },
     "shape": "polygon",
     "points": [
       {

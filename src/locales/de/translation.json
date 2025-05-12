@@ -26,7 +26,8 @@
   "backToMenu": "Zurück zum Hauptmenü",
   "correct": "Richtig!",
   "incorrect": "Falsch!",
-  "done": "Fertig"
+  "done": "Fertig",
+  "labelingInstruction": "Beschrifte die Abbildung"
 },
 "memory": {
   "findThePairs": "Finde die Paare",

@@ -26,7 +26,8 @@
   "backToMenu": "Back to Menu",
   "correct": "Correct!",
   "incorrect": "Incorrect!",
-  "done": "Done"
+  "done": "Done",
+  "labelingInstruction": "Label each region on the image"
 },
 "memory": {
   "findThePairs": "Find the pairs",
