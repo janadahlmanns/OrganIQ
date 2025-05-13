@@ -15,6 +15,7 @@ import Hotspot from '../components/Hotspot';
 import Puzzle from '../components/Puzzle';
 import SliderImage from '../components/simulations/SliderImage';
 import LabelingExercise from '../components/LabelingExercise';
+import MatchingExercise from '../components/MatchingExercise'
 import SuccessScreen from '../components/SuccessScreen';
 import { useAppDispatch } from '../store/hooks';
 import { completeLesson, perfectLesson, addXP, addCrown, unlockLesson } from '../store/lessonSlice';
@@ -34,8 +35,8 @@ export default function LessonScreen() {
   const topicExercises = exercisesData.exercises.filter(
     (e) =>
       e.topic.toLowerCase() === topicId?.toLowerCase() &&
-      ['question', 'cloze', 'truefalse', 'memory', 'ordering', 'slider', 'hotspot', 'puzzle', 'simulation/SliderImage', 'labeling'].includes(e.type)
-    //['question', 'cloze', 'truefalse', 'memory', 'ordering', 'slider', 'hotspot', 'puzzle', 'simulation/SliderImage', 'labeling'].includes(e.type)
+      ['matching'].includes(e.type)
+    //['question', 'cloze', 'truefalse', 'memory', 'ordering', 'slider', 'hotspot', 'puzzle', 'simulation/SliderImage', 'labeling', 'matching'].includes(e.type)
 
   );
 
@@ -221,6 +222,15 @@ export default function LessonScreen() {
         />
       ) : currentType === 'labeling' ? (
         <LabelingExercise
+          key={`${currentExerciseId}-${currentIndex}`}
+          exerciseId={currentExerciseId}
+          beforeProgress={progress}
+          progressStep={progressStep}
+          onContinue={handleContinue}
+          onCancel={handleCancel}
+        />
+      ) : currentType === 'matching' ? (
+        <MatchingExercise
           key={`${currentExerciseId}-${currentIndex}`}
           exerciseId={currentExerciseId}
           beforeProgress={progress}

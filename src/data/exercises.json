@@ -23,6 +23,7 @@
     { "id": 21, "topic": "Ear", "difficulty": 2, "type": "hotspot", "learningGoals": [] },
     { "id": 22, "topic": "Ear", "difficulty": 2, "type": "hotspot", "learningGoals": [] },
     { "id": 23, "topic": "Ear", "difficulty": 2, "type": "simulation/SliderImage", "learningGoals": [] },
-    { "id": 24, "topic": "Ear", "difficulty": 2, "type": "labeling", "learningGoals": [] }
+    { "id": 24, "topic": "Ear", "difficulty": 2, "type": "labeling", "learningGoals": [] },
+    { "id": 25, "topic": "Ear", "difficulty": 2, "type": "matching", "learningGoals": [] }
   ]
 }
