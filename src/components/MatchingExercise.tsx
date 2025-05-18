@@ -3,8 +3,8 @@
 // No reuse, redistribution, or modification is permitted without explicit written permission.
 
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import PrimaryButton from './PrimaryButton';
 import ProgressBar from './ProgressBar';
 import CancelButton from './CancelButton';
@@ -34,6 +34,7 @@ function DraggableB({ id }: { id: string }) {
                 transform: transform
                     ? `translate(${transform.x}px, ${transform.y}px)`
                     : undefined,
+                touchAction: 'none',
             }}
         >
             {id}
@@ -52,15 +53,20 @@ function DropZone({
 }) {
     const { isOver, setNodeRef } = useDroppable({ id: label });
 
-    let color = 'bg-white text-black';
-    if (highlight === 'cyan') color = 'bg-neonCyan text-black';
-    if (highlight === 'pink') color = 'bg-neonPink text-white';
+    const highlightClass =
+        highlight === 'cyan'
+            ? 'bg-neonCyan text-black'
+            : highlight === 'pink'
+                ? 'bg-neonPink text-white'
+                : 'bg-darkPurple text-white border-white';
 
     return (
         <div
             ref={setNodeRef}
-            className={`rounded-xl px-4 py-2 text-center shadow transition-all min-h-[48px] flex flex-col items-center justify-center
-      ${color} ${isOver ? 'ring-4 ring-cyan-400 scale-105' : ''}`}
+            className={`border-2 rounded px-6 py-3 font-semibold
+              ${highlightClass}
+              ${isOver ? 'ring-4 ring-cyan-400 scale-105' : ''}
+              transition-all duration-150 ease-in-out`}
         >
             <div className="font-bold">{label}</div>
             {attached && (
@@ -75,6 +81,7 @@ function DropZone({
 
 export default function MatchingExercise({ exerciseId, beforeProgress, progressStep, onContinue, onCancel }: MatchingExerciseProps) {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const exerciseLanguage = useAppSelector((state) => state.settings.exerciseLanguage);
     const matchingData = questionsData.matching_pairs.find(q => q.id === exerciseId);
 
@@ -95,7 +102,6 @@ export default function MatchingExercise({ exerciseId, beforeProgress, progressS
         );
     }
     const evaluationMode = matchingData.type; // 'repel' or 'evaluate'
-    const navigate = useNavigate();
     const [wasCorrect, setWasCorrect] = useState<boolean | null>(null);
     const [progressAfter, setProgressAfter] = useState<number>(beforeProgress);
     const [bQueue, setBQueue] = useState<string[]>([]);
@@ -109,7 +115,6 @@ export default function MatchingExercise({ exerciseId, beforeProgress, progressS
         ])
     );
     const [highlighted, setHighlighted] = useState<{ [a: string]: 'cyan' | 'pink' | null }>({});
-    const [bInFlight, setBInFlight] = useState<string | null>(null);
     const [attachedB, setAttachedB] = useState<{ [a: string]: string }>({});
 
 
@@ -130,7 +135,6 @@ export default function MatchingExercise({ exerciseId, beforeProgress, progressS
         const target = over.id as string;
 
         const isCorrect = correctMap[target] === dragged;
-        setBInFlight(dragged);
 
         if (evaluationMode === 'repel') {
             if (assignments[target]) return; // already assigned
@@ -164,7 +168,7 @@ export default function MatchingExercise({ exerciseId, beforeProgress, progressS
         if (evaluationMode === 'evaluate') {
             // Reassign old if needed
             let reassigned = { ...attachedB };
-            const alreadyAttached = Object.entries(attachedB).find(([a, b]) => b === dragged);
+            const alreadyAttached = Object.entries(attachedB).find(([_, b]) => b === dragged);
             if (alreadyAttached) {
                 delete reassigned[alreadyAttached[0]];
             }

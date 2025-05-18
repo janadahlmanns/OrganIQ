@@ -28,7 +28,7 @@ type ShapePoint = {
 };
 
 type PuzzleRegion = {
-    name: string;
+    name: string | { en: string; de: string };
     shape: ShapePoint[];
     targetX: number;
     targetY: number;
@@ -78,7 +78,7 @@ export default function Puzzle({ exerciseId, beforeProgress, progressStep, onCon
             setWasSolved(false);
             setProgressAfter(beforeProgress);
 
-            const entry = puzzleData.puzzles.find((p) => p.id === exerciseId);
+            const entry = puzzleData.puzzles.find((p) => p.id === Number(exerciseId));
             if (!entry) return navigate('/');
 
             const basePath = `/images/exercises/${entry.image}`;
@@ -94,8 +94,9 @@ export default function Puzzle({ exerciseId, beforeProgress, progressStep, onCon
                     const points = Array.isArray(region.points) ? region.points : [];
                     const anchor = points[0] || { x: 0, y: 0 };
                     const shape = points.map((p: any) => ({ x: p.x - anchor.x, y: p.y - anchor.y }));
+                    const regionName = typeof region.name === 'string' ? region.name : region.name.en;
                     return {
-                        name: region.name,
+                        name: regionName,
                         shape,
                         targetX: anchor.x,
                         targetY: anchor.y,
@@ -123,7 +124,7 @@ export default function Puzzle({ exerciseId, beforeProgress, progressStep, onCon
     }, [exerciseId, beforeProgress]);
 
     useEffect(() => {
-        if (regions.length > 0 && Object.keys(pieceState).length === 0) {
+        if (regions.length > 0 && Object.keys(pieceState).length === 0 && !isNaN(vbWidth) && !isNaN(vbHeight)) {
             const initialState: PieceState = {};
             regions.forEach((region) => {
                 const minX = vbWidth * 0.1;
@@ -132,7 +133,7 @@ export default function Puzzle({ exerciseId, beforeProgress, progressStep, onCon
                 const maxY = vbHeight * 0.9;
                 const randX = Math.random() * (maxX - minX) + minX;
                 const randY = Math.random() * (maxY - minY) + minY;
-                initialState[region.name] = { x: randX, y: randY, locked: false };
+                initialState[region.name as string] = { x: randX, y: randY, locked: false };
             });
             setPieceState(initialState);
         }
@@ -174,31 +175,28 @@ export default function Puzzle({ exerciseId, beforeProgress, progressStep, onCon
     };
 
     const DraggablePiece = ({ region }: { region: PuzzleRegion }) => {
-        const piece = pieceState[region.name];
+        const regionName = region.name as string;
+        const piece = pieceState[regionName];
         if (!piece) return null;
 
-        const polygonPoints = region.originalPoints.map(p => `${p.x},${p.y}`).join(' ');
         const translate = `translate(${piece.x - region.targetX}, ${piece.y - region.targetY})`;
 
         const commonChildren = (
-            <>
-                <clipPath id={`clip-${region.name}`}><polygon points={polygonPoints} /></clipPath>
-                <image
-                    href={imagePath!}
-                    x={0}
-                    y={0}
-                    width={vbWidth}
-                    height={vbHeight}
-                    clipPath={`url(#clip-${region.name})`}
-                />
-            </>
+            <image
+                href={imagePath!}
+                x={0}
+                y={0}
+                width={vbWidth}
+                height={vbHeight}
+                clipPath={`url(#clip-${regionName})`}
+            />
         );
 
         if (piece.locked) {
             return <g transform={translate}>{commonChildren}</g>;
         }
 
-        const { attributes, listeners, setNodeRef, transform } = useDraggable({ id: region.name });
+        const { attributes, listeners, setNodeRef, transform } = useDraggable({ id: regionName });
         const dragX = transform?.x ?? 0;
         const dragY = transform?.y ?? 0;
         const offset = `translate(${piece.x + dragX - region.targetX}, ${piece.y + dragY - region.targetY})`;
@@ -230,15 +228,23 @@ export default function Puzzle({ exerciseId, beforeProgress, progressStep, onCon
                 <div className={`relative w-full aspect-square ${wasSolved ? 'bg-darkPurple border-3 border-neonCyan shadow-glowCyan' : 'bg-darkPurple border-3 border-white shadow-glowWhite'} rounded-2xl overflow-hidden`}>
                     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
                         <svg className="absolute w-full h-full touch-none" viewBox={viewBox}>
+                            <defs>
+                                {regions.map((region) => (
+                                    <clipPath key={`clip-${region.name}`} id={`clip-${region.name}`}>
+                                        <polygon points={region.originalPoints.map(p => `${p.x},${p.y}`).join(' ')} />
+                                    </clipPath>
+                                ))}
+                            </defs>
+
                             {regions
-                                .filter(region => pieceState[region.name]?.locked)
+                                .filter(region => pieceState[region.name as string]?.locked)
                                 .map(region => (
-                                    <DraggablePiece key={region.name + '-locked'} region={region} />
+                                    <DraggablePiece key={`${region.name}-locked`} region={region} />
                                 ))}
                             {regions
-                                .filter(region => !pieceState[region.name]?.locked)
+                                .filter(region => !pieceState[region.name as string]?.locked)
                                 .map(region => (
-                                    <DraggablePiece key={region.name + '-unlocked'} region={region} />
+                                    <DraggablePiece key={`${region.name}-unlocked`} region={region} />
                                 ))}
                         </svg>
                     </DndContext>

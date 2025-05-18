@@ -2,7 +2,7 @@
   "matching_pairs": [
     {
       "id": 25,
-      "type": "repel",
+      "type": "evaluate",
       "title": {
         "en": "Match the typical loudness in decibels (dB) to its sound source",
         "de": "Ordne den Schallquellen ihrer typischen Lautstärken in Dezibel (dB) zu"

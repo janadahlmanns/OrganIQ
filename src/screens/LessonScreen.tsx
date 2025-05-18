@@ -25,6 +25,7 @@ import { loadLessonProgress, saveLessonProgress, clearLessonProgress } from '../
 
 export default function LessonScreen() {
   const { topicId, lessonId } = useParams();
+
   const LESSON_LENGTH = 3;
   const dispatch = useAppDispatch();
   const [lessonExercises, setLessonExercises] = useState<number[]>([]);
