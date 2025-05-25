@@ -9,6 +9,7 @@ import CancelButton from './CancelButton';
 import FeedbackButton from './FeedbackButton';
 import { useAppSelector } from '../store/hooks';
 import { DndContext, useDraggable, useDroppable, DragEndEvent } from '@dnd-kit/core';
+import { motion } from 'framer-motion';
 import questionsData from '../data/exercises_matching.json';
 
 type MatchingExerciseProps = {
@@ -149,9 +150,33 @@ export default function MatchingExercise({
         }
     }, [currentB, bSize]);
 
+    const updateStateAfterDropOff = (dragged: string, target: string) => {
+        if (!matchingData) return;
+        const oldB = attachedB[target];
+        let nextQueue = bQueue.filter((b) => b !== dragged);
+        if (oldB) nextQueue = [oldB, ...nextQueue];
+
+        const updated = { ...attachedB, [target]: dragged };
+
+        setAttachedB(updated);
+        setBQueue(nextQueue);
+        setCurrentB(nextQueue[0] ?? null);
+
+        if (Object.keys(updated).length === matchingData.pairs.length) {
+            handleFinalEvaluation(updated);
+        }
+    };
+
+    const [snapAnimation, setSnapAnimation] = useState<{
+        id: string;
+        from: DOMRect;
+        to: DOMRect;
+        target: string;
+    } | null>(null);
+
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
-        if (!over || !matchingData) return;
+        if (!over) return;
 
         const dragged = active.id as string;
         const target = over.id as string;
@@ -185,21 +210,22 @@ export default function MatchingExercise({
         }
 
         if (evaluationMode === 'evaluate') {
-            const updated = { ...attachedB };
             const alreadyAttached = Object.entries(attachedB).find(([_, b]) => b === dragged);
-            if (alreadyAttached) delete updated[alreadyAttached[0]];
+            const targetElement = document.querySelector(`[data-drop-target="${target}"]`) as HTMLElement;
+            if (!bRef.current || !targetElement) return;
 
-            const oldB = attachedB[target];
-            let nextQueue = bQueue.filter((b) => b !== dragged);
-            if (oldB) nextQueue = [oldB, ...nextQueue];
-            updated[target] = dragged;
+            const draggedElement = document.querySelector(`[data-id="${dragged}"]`);
+            if (!draggedElement || !targetElement) return;
 
-            setAttachedB(updated);
-            setBQueue(nextQueue);
-            setCurrentB(nextQueue[0] ?? null);
+            const from = draggedElement.getBoundingClientRect();
+            const to = targetElement.getBoundingClientRect();
 
-            if (Object.keys(updated).length === matchingData.pairs.length) {
-                handleFinalEvaluation(updated);
+            setSnapAnimation({ id: dragged, from, to, target });
+
+            if (alreadyAttached) {
+                const updated = { ...attachedB };
+                delete updated[alreadyAttached[0]];
+                setAttachedB(updated); // Detach old one immediately
             }
         }
     };
@@ -229,7 +255,39 @@ export default function MatchingExercise({
                         {currentB && (
                             <div className="absolute inset-0 flex justify-center items-center z-50">
                                 <div ref={bRef}>
-                                    <DraggableB id={currentB} />
+                                    {snapAnimation?.id === currentB ? (
+                                        <div className="invisible">
+                                            <DraggableB id={currentB} />
+                                        </div>
+                                    ) : (
+                                        <DraggableB id={currentB} />
+                                    )}
+                                    {snapAnimation && (
+                                        <motion.div
+                                            initial={{
+                                                position: 'fixed',
+                                                left: snapAnimation.from.left,
+                                                top: snapAnimation.from.top,
+                                                width: snapAnimation.from.width,
+                                                height: snapAnimation.from.height,
+                                            }}
+                                            animate={{
+                                                left: snapAnimation.to.left,
+                                                top: snapAnimation.to.top,
+                                            }}
+                                            transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                            onAnimationComplete={() => {
+                                                updateStateAfterDropOff(snapAnimation.id, snapAnimation.target);
+                                                setSnapAnimation(null);
+                                            }}
+                                            className="z-50"
+                                            style={{ pointerEvents: 'none' }}
+                                        >
+                                            <div className="bg-[rgba(255,255,255,0.2)] text-white rounded-xl px-4 py-2 shadow-md backdrop-blur-sm text-center">
+                                                {snapAnimation.id}
+                                            </div>
+                                        </motion.div>
+                                    )}
                                 </div>
                             </div>
                         )}
