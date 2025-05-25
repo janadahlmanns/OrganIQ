@@ -25,6 +25,32 @@
           "cardB": { "type": "text", "value": { "en": "30 dB", "de": "30 dB" } }
         }
       ]
+    },
+    {
+      "id": 26,
+      "type": "repel",
+      "title": {
+        "en": "Match the typical loudness in decibels (dB) to its sound source",
+        "de": "Ordne den Schallquellen ihrer typischen Lautstärken in Dezibel (dB) zu"
+      },
+      "pairs": [
+        {
+          "cardA": { "type": "text", "value": { "en": "Rustling leaves", "de": "Raschelndes Laub" } },
+          "cardB": { "type": "text", "value": { "en": "20 dB", "de": "20 dB" } }
+        },
+        {
+          "cardA": { "type": "text", "value": { "en": "Normal conversation", "de": "Normales Gespräch" } },
+          "cardB": { "type": "text", "value": { "en": "60 dB", "de": "60 dB" } }
+        },
+        {
+          "cardA": { "type": "text", "value": { "en": "Jet engine (close)", "de": "Düsentriebwerk (nah)" } },
+          "cardB": { "type": "text", "value": { "en": "120 dB", "de": "120 dB" } }
+        },
+        {
+          "cardA": { "type": "text", "value": { "en": "Whisper", "de": "Flüstern" } },
+          "cardB": { "type": "text", "value": { "en": "30 dB", "de": "30 dB" } }
+        }
+      ]
     }
   ]
 }

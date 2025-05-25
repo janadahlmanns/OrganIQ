@@ -149,7 +149,7 @@ export default function OrderExercise({
                 <SortableContext items={items.map((item) => item.id)} strategy={verticalListSortingStrategy}>
                     <div className="relative flex flex-col gap-4 mb-6">
                         {items.map((item, index) => (
-                            <div className="flex justify-center" key={item.id}>
+                            <div className="inline-flex justify-center" key={item.id}>
                                 <ExerciseLabel
                                     id={item.id}
                                     content={item.content}

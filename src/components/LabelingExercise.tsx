@@ -12,7 +12,17 @@ import FeedbackButton from './FeedbackButton';
 import { useAppSelector } from '../store/hooks';
 import labelingData from '../data/exercises_labeling.json';
 
-import { DndContext, useDraggable, useDroppable, DragEndEvent } from '@dnd-kit/core';
+import {
+    DndContext,
+    PointerSensor,
+    TouchSensor,
+    useSensor,
+    useSensors,
+    useDroppable,
+    useDraggable,
+    DragEndEvent
+} from '@dnd-kit/core';
+
 
 // --- Types ---
 type LocalizedName = { en: string; de: string };
@@ -92,7 +102,7 @@ function DraggableLabel({ id, label }: { id: string; label: string }) {
             data-id={id}
             {...listeners}
             {...attributes}
-            className="bg-white text-darkPurple rounded-2xl px-4 py-1 cursor-pointer select-none text-center"
+            className="bg-white text-darkPurple rounded-md px-6 py-2 text-base font-medium cursor-pointer select-none text-center"
             style={{
                 transform: transform ? `translate(${transform.x}px, ${transform.y}px)` : undefined,
             }}
@@ -116,6 +126,15 @@ export default function LabelingExercise({ exerciseId, beforeProgress, progressS
     const [wasCorrect, setWasCorrect] = useState<boolean | null>(null);
     const [progressAfter, setProgressAfter] = useState(beforeProgress);
     const [labelResults, setLabelResults] = useState<{ [label: string]: boolean }>({});
+
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: { distance: 1 },
+        }),
+        useSensor(TouchSensor, {
+            activationConstraint: { delay: 100, tolerance: 5 },
+        })
+    );
 
     useEffect(() => {
         if (!exercise) return;
@@ -222,7 +241,7 @@ export default function LabelingExercise({ exerciseId, beforeProgress, progressS
     const placedLabels = labels.filter((l) => l.region !== null);
 
     return (
-        <DndContext onDragEnd={handleDragEnd}>
+        <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
             <div className="w-full max-w-[480px] mx-auto px-4 pt-4 flex flex-col flex-1">
                 <div className="flex items-center justify-between mb-6">
                     <div className="flex-1">

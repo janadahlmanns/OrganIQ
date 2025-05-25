@@ -75,7 +75,10 @@ export default function MemoryButton({
         ? frontType === 'image'
             ? <img src={resolvedSrc || ''} alt="" className="w-full h-full object-cover" />
             : <div className="w-full h-full flex items-center justify-center p-2">
-                <span className="text-center text-white font-bold text-sm md:text-base lg:text-lg leading-tight break-words">
+                <span
+                    className="text-center text-white font-bold text-sm md:text-base lg:text-lg leading-tight break-words hyphens-auto w-full"
+                    style={{ wordBreak: 'break-word' }}
+                >
                     {frontValue}
                 </span>
             </div>
