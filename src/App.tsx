@@ -7,8 +7,16 @@ import MainMenuScreen from './screens/MainMenuScreen';
 import LessonScreen from './screens/LessonScreen';
 import StatsScreen from './screens/StatsScreen';
 import PreferencesScreen from './screens/PreferencesScreen';
+import { useEffect } from 'react';
+import { useAppSelector } from './store/hooks';
 
-function App() {
+export default function App() {
+  const exerciseLanguage = useAppSelector((state) => state.settings.exerciseLanguage);
+
+  useEffect(() => {
+    document.documentElement.lang = exerciseLanguage;
+  }, [exerciseLanguage]);
+
   return (
     <Routes>
       <Route path="/" element={<MainMenuScreen />} />
@@ -18,5 +26,3 @@ function App() {
     </Routes>
   );
 }
-
-export default App;

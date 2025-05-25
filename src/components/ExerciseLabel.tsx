@@ -64,7 +64,7 @@ export default function ExerciseLabel({
                 <img
                     src={image}
                     alt=""
-                    className="w-full h-auto rounded object-contain max-h-[120px]"
+                    className="max-w-full h-auto rounded object-contain max-h-[120px]"
                     draggable={false}
                 />
             ) : (
