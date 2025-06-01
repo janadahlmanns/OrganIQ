@@ -48,12 +48,14 @@ function DropZone({
     highlight,
     placeholderSize,
     animatingId,
+    returnAnimation,
 }: {
     label: string;
     attached?: string | null;
     highlight?: 'cyan' | 'pink' | null;
     placeholderSize?: { width: number; height: number } | null;
     animatingId?: string | null;
+    returnAnimation?: { id: string; source: string } | null;
 }) {
     const { isOver, setNodeRef } = useDroppable({ id: label });
 
@@ -64,7 +66,11 @@ function DropZone({
                 ? 'bg-neonPink text-white'
                 : 'bg-darkPurple text-white border-white';
 
-    const showAttached = attached && attached !== animatingId;
+    const showAttached =
+        attached &&
+        attached !== animatingId &&
+        !(returnAnimation && returnAnimation.source === label && returnAnimation.id === attached);
+
 
     return (
         <div
@@ -126,6 +132,11 @@ export default function MatchingExercise({
 
     const evaluationMode = matchingData?.type;
 
+    const SNAP_DURATION = 0.3;
+    const RETURN_DELAY = 0.2;
+    const RETURN_DURATION = 0.3
+    const AFTER_SNAP_UPDATE_DELAY = (RETURN_DELAY + RETURN_DURATION - SNAP_DURATION) * 1000;
+
     useEffect(() => {
         if (matchingData) {
             const bItems = matchingData.pairs.map((p) => p.cardB.value[exerciseLanguage]);
@@ -174,6 +185,13 @@ export default function MatchingExercise({
         target: string;
     } | null>(null);
 
+    const [returnAnimation, setReturnAnimation] = useState<{
+        id: string;
+        from: DOMRect;
+        to: DOMRect;
+        source: string;
+    } | null>(null);
+
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
         if (!over) return;
@@ -210,7 +228,7 @@ export default function MatchingExercise({
         }
 
         if (evaluationMode === 'evaluate') {
-            const alreadyAttached = Object.entries(attachedB).find(([_, b]) => b === dragged);
+            const previousB = attachedB[target];
             const targetElement = document.querySelector(`[data-drop-target="${target}"]`) as HTMLElement;
             if (!bRef.current || !targetElement) return;
 
@@ -222,11 +240,24 @@ export default function MatchingExercise({
 
             setSnapAnimation({ id: dragged, from, to, target });
 
-            if (alreadyAttached) {
+            if (previousB) {
+                const oldTarget = previousB[0];
+                const oldTargetElement = document.querySelector(`[data-drop-target="${target}"]`) as HTMLElement;
+                const trayElement = bRef.current;
+
+                if (oldTargetElement && trayElement) {
+                    const from = oldTargetElement.getBoundingClientRect();
+                    const to = trayElement.getBoundingClientRect();
+
+                    setReturnAnimation({ id: previousB, from, to, source: target });
+
+                }
+
                 const updated = { ...attachedB };
-                delete updated[alreadyAttached[0]];
-                setAttachedB(updated); // Detach old one immediately
+                delete updated[oldTarget];
+                setAttachedB(updated); // Detach old one
             }
+
         }
     };
 
@@ -275,16 +306,41 @@ export default function MatchingExercise({
                                                 left: snapAnimation.to.left,
                                                 top: snapAnimation.to.top,
                                             }}
-                                            transition={{ duration: 0.3, ease: 'easeInOut' }}
+                                            transition={{ duration: SNAP_DURATION, ease: 'easeInOut' }}
                                             onAnimationComplete={() => {
-                                                updateStateAfterDropOff(snapAnimation.id, snapAnimation.target);
-                                                setSnapAnimation(null);
+                                                setTimeout(() => {
+                                                    updateStateAfterDropOff(snapAnimation.id, snapAnimation.target);
+                                                    setSnapAnimation(null);
+                                                }, AFTER_SNAP_UPDATE_DELAY);
                                             }}
                                             className="z-50"
                                             style={{ pointerEvents: 'none' }}
                                         >
                                             <div className="bg-[rgba(255,255,255,0.2)] text-white rounded-xl px-4 py-2 shadow-md backdrop-blur-sm text-center">
                                                 {snapAnimation.id}
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                    {returnAnimation && (
+                                        <motion.div
+                                            initial={{
+                                                position: 'fixed',
+                                                left: returnAnimation.from.left,
+                                                top: returnAnimation.from.top,
+                                                width: returnAnimation.from.width,
+                                                height: returnAnimation.from.height,
+                                            }}
+                                            animate={{
+                                                left: returnAnimation.to.left,
+                                                top: returnAnimation.to.top,
+                                            }}
+                                            transition={{ duration: RETURN_DURATION, delay: RETURN_DELAY, ease: 'easeInOut' }}
+                                            onAnimationComplete={() => setReturnAnimation(null)}
+                                            className="z-50"
+                                            style={{ pointerEvents: 'none' }}
+                                        >
+                                            <div className="bg-[rgba(255,255,255,0.2)] text-white rounded-xl px-4 py-2 shadow-md backdrop-blur-sm text-center">
+                                                {returnAnimation.id}
                                             </div>
                                         </motion.div>
                                     )}
@@ -303,6 +359,8 @@ export default function MatchingExercise({
                                     highlight={highlighted[label] ?? null}
                                     attached={attachedB[label]}
                                     placeholderSize={bSize}
+                                    animatingId={snapAnimation?.id}
+                                    returnAnimation={returnAnimation}
                                 />
                             );
                         })}
